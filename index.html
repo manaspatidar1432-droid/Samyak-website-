@@ -1,2116 +1,799 @@
-const ComponentFunction = function() {
-  // @section:imports @depends:[]
-  var React = require('react');
-  var useState = React.useState;
-  var useEffect = React.useEffect;
-  var useContext = React.useContext;
-  var useMemo = React.useMemo;
-  var useCallback = React.useCallback;
-  var useRef = React.useRef;
-  var RN = require('react-native');
-  var View = RN.View;
-  var Text = RN.Text;
-  var StyleSheet = RN.StyleSheet;
-  var ScrollView = RN.ScrollView;
-  var TouchableOpacity = RN.TouchableOpacity;
-  var TextInput = RN.TextInput;
-  var Modal = RN.Modal;
-  var Alert = RN.Alert;
-  var Platform = RN.Platform;
-  var StatusBar = RN.StatusBar;
-  var ActivityIndicator = RN.ActivityIndicator;
-  var FlatList = RN.FlatList;
-  var Dimensions = RN.Dimensions;
-  var Image = RN.Image;
-  var Switch = RN.Switch;
-  var KeyboardAvoidingView = RN.KeyboardAvoidingView;
-  var Ionicons = require('@react-native-vector-icons/ionicons').default;
-  var MaterialIcons = require('@react-native-vector-icons/material-icons').default;
-  var MaterialDesignIcons = require('@react-native-vector-icons/material-design-icons').default;
-  var createBottomTabNavigator = require('@react-navigation/bottom-tabs').createBottomTabNavigator;
-  var createStackNavigator = require('@react-navigation/stack').createStackNavigator;
-  var useSafeAreaInsets = require('react-native-safe-area-context').useSafeAreaInsets;
-  var platformHooks = require('platform-hooks');
-  var useQuery = platformHooks.useQuery;
-  var useMutation = platformHooks.useMutation;
-  var useStorage = platformHooks.useStorage;
-  var useCamera = platformHooks.useCamera;
-  var useShare = platformHooks.useShare;
-  var useFilePicker = platformHooks.useFilePicker;
-  var useKeepAwake = platformHooks.useKeepAwake;
-  var useBiometrics = platformHooks.useBiometrics;
-  var usePushNotifications = platformHooks.usePushNotifications;
-  // @end:imports
-
-  // @section:theme @depends:[]
-  var primaryColor = '#2E5090';
-  var accentColor = '#F59E0B';
-  var backgroundColor = '#F0F4F9';
-  var cardColor = '#FFFFFF';
-  var textPrimary = '#1A1A2E';
-  var textSecondary = '#6B7280';
-  var successColor = '#10B981';
-  var errorColor = '#EF4444';
-  var warningColor = '#F59E0B';
-  var TAB_MENU_HEIGHT = Platform.OS === 'web' ? 56 : 49;
-  var SCROLL_EXTRA_PADDING = 16;
-  var WEB_TAB_MENU_PADDING = 90;
-  var FAB_SPACING = 16;
-  var HEADER_HEIGHT = 60;
-  var screenWidth = Dimensions.get('window').width;
-  // @end:theme
-
-  // @section:navigation-setup @depends:[]
-  var Tab = createBottomTabNavigator();
-  var Stack = createStackNavigator();
-  // @end:navigation-setup
-
-  // @section:static-data @depends:[]
-  var COURSES_CATALOG = [
-    { id: 'cat-1', course_name: 'MS Office', description: 'Microsoft Office Suite - Word, Excel, PowerPoint', duration_hours: 60, course_fee: 3500, icon: 'desktop-windows', color: '#E74C3C' },
-    { id: 'cat-2', course_name: 'Basic Computer', description: 'Fundamentals of computers and internet', duration_hours: 40, course_fee: 2500, icon: 'computer', color: '#3498DB' },
-    { id: 'cat-3', course_name: 'Advanced Excel', description: 'Advanced Excel with formulas, pivot tables and macros', duration_hours: 50, course_fee: 4500, icon: 'grid-on', color: '#27AE60' },
-    { id: 'cat-4', course_name: 'Tally with GST', description: 'Accounting software with GST compliance', duration_hours: 80, course_fee: 6000, icon: 'account-balance', color: '#8E44AD' },
-    { id: 'cat-5', course_name: 'Graphic Designing', description: 'Photoshop, CorelDraw and design principles', duration_hours: 90, course_fee: 7500, icon: 'palette', color: '#E67E22' },
-    { id: 'cat-6', course_name: 'Banking Diploma', description: 'Banking operations, finance and compliance', duration_hours: 120, course_fee: 9000, icon: 'account-balance-wallet', color: '#1ABC9C' },
-    { id: 'cat-7', course_name: 'Digital Marketing', description: 'SEO, Social Media and online advertising', duration_hours: 70, course_fee: 8000, icon: 'trending-up', color: '#D35400' },
-    { id: 'cat-8', course_name: 'Python', description: 'Python programming from basics to advanced', duration_hours: 100, course_fee: 8500, icon: 'code', color: '#2C3E50' },
-    { id: 'cat-9', course_name: 'Data Science', description: 'Data analysis, ML and visualization', duration_hours: 150, course_fee: 12000, icon: 'bar-chart', color: '#16A085' },
-    { id: 'cat-10', course_name: 'Ethical Hacking', description: 'Cybersecurity and penetration testing', duration_hours: 120, course_fee: 11000, icon: 'security', color: '#C0392B' },
-    { id: 'cat-11', course_name: 'Spoken English', description: 'English communication and grammar', duration_hours: 60, course_fee: 4000, icon: 'record-voice-over', color: '#2980B9' },
-  ];
-
-  var SAMPLE_STUDENTS = [
-    { id: 'stu-1', full_name:'Samyak Computer Clases', student_id: 'SCC001', email: 'indoresamyak@email.com', mobile: '9876543210', course_name: 'Python', attendance_percentage: 85, fee_status: 'paid', joining_date: '2024-01-15' },
-    { id: 'stu-2', full_name: 'Priya Verma', student_id: 'SCC002', email: 'priya@email.com', mobile: '9876543211', course_name: 'Data Science', attendance_percentage: 92, fee_status: 'partial', joining_date: '2024-01-20' },
-    { id: 'stu-3', full_name: 'Amit Kumar', student_id: 'SCC003', email: 'amit@email.com', mobile: '9876543212', course_name: 'Tally with GST', attendance_percentage: 78, fee_status: 'pending', joining_date: '2024-02-01' },
-    { id: 'stu-4', full_name: 'Sneha Patel', student_id: 'SCC004', email: 'sneha@email.com', mobile: '9876543213', course_name: 'Graphic Designing', attendance_percentage: 95, fee_status: 'paid', joining_date: '2024-02-10' },
-    { id: 'stu-5', full_name: 'Vikram Singh', student_id: 'SCC005', email: 'vikram@email.com', mobile: '9876543214', course_name: 'Digital Marketing', attendance_percentage: 70, fee_status: 'partial', joining_date: '2024-02-15' },
-  ];
-
-  var SAMPLE_NOTICES = [
-    { id: 'not-1', notice_title: 'Diwali Holiday', notice_description: 'The institute will remain closed from Oct 31 to Nov 3 on account of Diwali celebrations. Classes will resume on Nov 4.', notice_type: 'holiday', priority: 'high', created_at: '2024-10-25' },
-    { id: 'not-2', notice_title: 'Python Batch Exam', notice_description: 'Online exam for Python batch will be conducted on November 10. Prepare chapters 1-8.', notice_type: 'exam', priority: 'high', created_at: '2024-10-22' },
-    { id: 'not-3', notice_title: 'New Batch Starting', notice_description: 'New batch for Data Science is starting from December 1. Limited seats available. Register now.', notice_type: 'course', priority: 'medium', created_at: '2024-10-20' },
-    { id: 'not-4', notice_title: 'Fee Submission Reminder', notice_description: 'Last date for fee submission for November month is November 5. Please clear your dues on time.', notice_type: 'announcement', priority: 'medium', created_at: '2024-10-18' },
-  ];
-
-  var SAMPLE_TESTS = [
-    { id: 'tst-1', test_title: 'Python Basics Test', course_name: 'Python', total_marks: 50, passing_marks: 25, duration_minutes: 30, is_published: true, questions: [
-      { id: 'q1', question_text: 'Which of the following is used to define a function in Python?', option_a: 'func', option_b: 'define', option_c: 'def', option_d: 'function', correct_option: 'C', marks: 2 },
-      { id: 'q2', question_text: 'What is the output of print(type(3.14))?', option_a: "<class 'int'>", option_b: "<class 'str'>", option_c: "<class 'float'>", option_d: "<class 'number'>", correct_option: 'C', marks: 2 },
-      { id: 'q3', question_text: 'Which keyword is used for loops in Python?', option_a: 'loop', option_b: 'for', option_c: 'repeat', option_d: 'iterate', correct_option: 'B', marks: 2 },
-      { id: 'q4', question_text: 'How do you create a list in Python?', option_a: '{}', option_b: '()', option_c: '[]', option_d: '<>', correct_option: 'C', marks: 2 },
-      { id: 'q5', question_text: 'What does len() function return?', option_a: 'Length of string only', option_b: 'Length of list only', option_c: 'Length of any sequence', option_d: 'None', correct_option: 'C', marks: 2 },
-    ]},
-    { id: 'tst-2', test_title: 'MS Office Fundamentals', course_name: 'MS Office', total_marks: 30, passing_marks: 18, duration_minutes: 20, is_published: true, questions: [
-      { id: 'q6', question_text: 'Which shortcut is used to save a file?', option_a: 'Ctrl+S', option_b: 'Ctrl+P', option_c: 'Ctrl+D', option_d: 'Ctrl+F', correct_option: 'A', marks: 2 },
-      { id: 'q7', question_text: 'What is the extension of Word document?', option_a: '.xls', option_b: '.ppt', option_c: '.docx', option_d: '.txt', correct_option: 'C', marks: 2 },
-      { id: 'q8', question_text: 'Which function calculates sum in Excel?', option_a: 'TOTAL()', option_b: 'SUM()', option_c: 'ADD()', option_d: 'PLUS()', correct_option: 'B', marks: 2 },
-    ]},
-  ];
-
-  var SAMPLE_CHAPTERS = [
-    { id: 'ch-1', course_id: 'cat-8', chapter_number: 1, chapter_title: 'Introduction to Python', description: 'Setup, syntax, variables and data types' },
-    { id: 'ch-2', course_id: 'cat-8', chapter_number: 2, chapter_title: 'Control Flow', description: 'If-else, loops and conditionals' },
-    { id: 'ch-3', course_id: 'cat-8', chapter_number: 3, chapter_title: 'Functions & Modules', description: 'Defining functions, imports and libraries' },
-    { id: 'ch-4', course_id: 'cat-8', chapter_number: 4, chapter_title: 'OOP Concepts', description: 'Classes, objects, inheritance and polymorphism' },
-  ];
-
-  var SAMPLE_LESSONS = [
-    { id: 'les-1', chapter_id: 'ch-1', lesson_title: 'What is Python?', lesson_description: 'Introduction and history of Python', lesson_order: 1, video_url: 'https://thunkablecdn.com/example-video/Big_Buck_Bunny_1080_10s_1MB.mp4', pdf_url: '' },
-    { id: 'les-2', chapter_id: 'ch-1', lesson_title: 'Installing Python', lesson_description: 'Setup Python environment on your machine', lesson_order: 2, video_url: '', pdf_url: '' },
-    { id: 'les-3', chapter_id: 'ch-1', lesson_title: 'Variables & Data Types', lesson_description: 'Learn about int, str, float and bool', lesson_order: 3, video_url: '', pdf_url: '' },
-    { id: 'les-4', chapter_id: 'ch-2', lesson_title: 'If-Else Statements', lesson_description: 'Conditional programming in Python', lesson_order: 1, video_url: '', pdf_url: '' },
-    { id: 'les-5', chapter_id: 'ch-2', lesson_title: 'For and While Loops', lesson_description: 'Iterating with loops', lesson_order: 2, video_url: '', pdf_url: '' },
-  ];
-
-  var SAMPLE_ASSIGNMENTS = [
-    { id: 'asgn-1', course_name: 'Python', chapter_title: 'Control Flow', assignment_title: 'Loop Practice Problems', assignment_description: 'Solve 10 problems using for and while loops', due_date: '2024-11-15', max_marks: 20, is_submitted: false },
-    { id: 'asgn-2', course_name: 'Python', chapter_title: 'Functions', assignment_title: 'Function Implementation', assignment_description: 'Create 5 functions for common mathematical operations', due_date: '2024-11-20', max_marks: 30, is_submitted: true, marks_obtained: 25 },
-  ];
-
-  var SAMPLE_FEES = { total_fee: 8500, paid_amount: 5000, remaining_amount: 3500, payment_status: 'partial', next_due_date: '2024-11-30', payments: [
-    { id: 'pay-1', amount_paid: 3000, payment_date: '2024-09-01', payment_method: 'online', transaction_id: 'TXN001' },
-    { id: 'pay-2', amount_paid: 2000, payment_date: '2024-10-01', payment_method: 'cash', transaction_id: '' },
-  ]};
-
-  var ATTENDANCE_DATA = { total_classes: 28, present: 24, absent: 4, percentage: 85.7, monthly: [
-    { month: 'August', present: 22, total: 26, pct: 84.6 },
-    { month: 'September', present: 24, total: 28, pct: 85.7 },
-    { month: 'October', present: 20, total: 24, pct: 83.3 },
-  ]};
-  // @end:static-data
-
-  // @section:ThemeContext @depends:[theme]
-  var ThemeContext = React.createContext({
-    theme: {
-      colors: {
-        primary: primaryColor, accent: accentColor, background: backgroundColor,
-        card: cardColor, textPrimary: textPrimary, textSecondary: textSecondary,
-        border: '#E5E7EB', success: successColor, error: errorColor, warning: warningColor
-      }
-    }
-  });
-  var ThemeProvider = function(props) {
-    var lightTheme = useMemo(function() {
-      return { colors: { primary: primaryColor, accent: accentColor, background: backgroundColor, card: cardColor, textPrimary: textPrimary, textSecondary: textSecondary, border: '#E5E7EB', success: successColor, error: errorColor, warning: warningColor } };
-    }, []);
-    var value = useMemo(function() { return { theme: lightTheme }; }, [lightTheme]);
-    return React.createElement(ThemeContext.Provider, { value: value }, props.children);
-  };
-  var useTheme = function() { return useContext(ThemeContext); };
-  // @end:ThemeContext
-
-  // @section:AppContext @depends:[]
-  var AppContext = React.createContext({ currentRole: null, setCurrentRole: function() {}, currentUser: null, setCurrentUser: function() {} });
-  var AppProvider = function(props) {
-    var roleState = useState(null);
-    var currentRole = roleState[0];
-    var setCurrentRole = roleState[1];
-    var userState = useState({ name: 'Samyak Camputer Classes', studentId: 'SCC001', course: 'Python', email: 'Pravisha@samyak.com' });
-    var currentUser = userState[0];
-    var setCurrentUser = userState[1];
-    var value = useMemo(function() { return { currentRole: currentRole, setCurrentRole: setCurrentRole, currentUser: currentUser, setCurrentUser: setCurrentUser }; }, [currentRole, currentUser]);
-    return React.createElement(AppContext.Provider, { value: value }, props.children);
-  };
-  var useAppContext = function() { return useContext(AppContext); };
-  // @end:AppContext
-
-  // @section:shared-components @depends:[ThemeContext]
-  var StatCard = function(props) {
-    var theme = props.theme;
-    var icon = props.icon;
-    var label = props.label;
-    var value = props.value;
-    var color = props.color || theme.colors.primary;
-    var subtitle = props.subtitle;
-    return React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 16, flex: 1, marginHorizontal: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 3 }, componentId: 'stat-card-' + label },
-      React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 } },
-        React.createElement(View, { style: { width: 36, height: 36, borderRadius: 10, backgroundColor: color + '18', alignItems: 'center', justifyContent: 'center' } },
-          React.createElement(MaterialIcons, { name: icon, size: 20, color: color })
-        )
-      ),
-      React.createElement(Text, { style: { fontSize: 22, fontWeight: '700', color: theme.colors.textPrimary } }, value),
-      React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 2 } }, label),
-      subtitle ? React.createElement(Text, { style: { fontSize: 11, color: color, marginTop: 2, fontWeight: '600' } }, subtitle) : null
-    );
-  };
-
-  var SectionHeader = function(props) {
-    var theme = props.theme;
-    return React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, marginTop: 20 } },
-      React.createElement(Text, { style: { fontSize: 16, fontWeight: '700', color: theme.colors.textPrimary } }, props.title),
-      props.onSeeAll ? React.createElement(TouchableOpacity, { onPress: props.onSeeAll, componentId: 'see-all-' + props.title },
-        React.createElement(Text, { style: { fontSize: 13, color: theme.colors.primary, fontWeight: '600' } }, 'See All')
-      ) : null
-    );
-  };
-
-  var BadgePill = function(props) {
-    var colorMap = { paid: successColor, partial: warningColor, pending: errorColor, present: successColor, absent: errorColor, pass: successColor, fail: errorColor, high: errorColor, medium: warningColor, low: '#6B7280', ongoing: primaryColor, completed: successColor, dropped: errorColor, published: successColor, draft: '#6B7280' };
-    var bg = colorMap[props.status] || '#6B7280';
-    return React.createElement(View, { style: { backgroundColor: bg + '20', borderRadius: 20, paddingHorizontal: 10, paddingVertical: 3 } },
-      React.createElement(Text, { style: { fontSize: 11, fontWeight: '700', color: bg, textTransform: 'uppercase' } }, props.status)
-    );
-  };
-
-  var EmptyState = function(props) {
-    var theme = props.theme;
-    return React.createElement(View, { style: { alignItems: 'center', justifyContent: 'center', padding: 40 }, componentId: 'empty-state' },
-      React.createElement(MaterialIcons, { name: props.icon || 'inbox', size: 56, color: theme.colors.border }),
-      React.createElement(Text, { style: { fontSize: 16, fontWeight: '600', color: theme.colors.textSecondary, marginTop: 16 } }, props.message || 'No data available')
-    );
-  };
-
-  var HeaderBar = function(props) {
-    var theme = props.theme;
-    var insets = props.insets || { top: 0 };
-    return React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 12, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-      React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center' } },
-        props.onBack ? React.createElement(TouchableOpacity, { onPress: props.onBack, style: { marginRight: 12 }, componentId: 'header-back' },
-          React.createElement(Ionicons, { name: 'arrow-back', size: 24, color: '#fff' })
-        ) : null,
-        React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 18, fontWeight: '700', color: '#fff' } }, props.title),
-          props.subtitle ? React.createElement(Text, { style: { fontSize: 12, color: 'rgba(255,255,255,0.8)', marginTop: 1 } }, props.subtitle) : null
-        )
-      ),
-      props.rightIcon ? React.createElement(TouchableOpacity, { onPress: props.onRightPress, componentId: 'header-right-btn' },
-        React.createElement(Ionicons, { name: props.rightIcon, size: 24, color: '#fff' })
-      ) : null
-    );
-  };
-  // @end:shared-components
-
-  // @section:RoleSelector @depends:[ThemeContext,AppContext]
-  var RoleSelector = function(props) {
-    var navigation = props.navigation;
-    var tc = useTheme();
-    var theme = tc.theme;
-    var appCtx = useAppContext();
-    var insets = useSafeAreaInsets();
-    var roles = [
-      { key: 'student', label: 'Student', subtitle: 'Access courses, tests & attendance', icon: 'school', color: '#3B82F6', route: 'StudentApp' },
-      { key: 'teacher', label: 'Teacher', subtitle: 'Manage classes, tests & attendance', icon: 'person', color: '#10B981', route: 'TeacherApp' },
-      { key: 'admin', label: 'Admin', subtitle: 'Full institution management', icon: 'admin-panel-settings', color: '#8B5CF6', route: 'AdminApp' },
-    ];
-    var handleRole = function(role) {
-      appCtx.setCurrentRole(role.key);
-      if (role.key === 'student') { appCtx.setCurrentUser({ name: 'Rahul Sharma', studentId: 'SCC001', course: 'Python', email: 'rahul@samyak.com', role: 'student' }); }
-      else if (role.key === 'teacher') { appCtx.setCurrentUser({ name: 'Prof. Anita Gupta', teacherId: 'TCH001', specialization: 'Python & Data Science', email: 'anita@samyak.com', role: 'teacher' }); }
-      else { appCtx.setCurrentUser({ name: 'Admin User', email: 'admin@samyak.com', role: 'admin' }); }
-      navigation.replace(role.route);
-    };
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.primary }, componentId: 'role-selector-screen' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(ScrollView, { contentContainerStyle: { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.bottom + 20 } },
-        React.createElement(View, { style: { alignItems: 'center', paddingTop: insets.top + 40, paddingBottom: 40 } },
-          React.createElement(View, { style: { width: 90, height: 90, borderRadius: 22, backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center', marginBottom: 20 } },
-            React.createElement(MaterialIcons, { name: 'computer', size: 50, color: '#fff' })
-          ),
-          React.createElement(Text, { style: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: 0.5 } }, 'Samyak Computer'),
-          React.createElement(Text, { style: { fontSize: 18, fontWeight: '600', color: accentColor, letterSpacing: 1 } }, 'Classes'),
-          React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 6, letterSpacing: 0.5 } }, 'Education Management Platform')
-        ),
-        React.createElement(View, { style: { paddingHorizontal: 24 } },
-          React.createElement(Text, { style: { fontSize: 16, fontWeight: '700', color: '#fff', textAlign: 'center', marginBottom: 20 } }, 'Select Your Role'),
-          roles.map(function(role) {
-            return React.createElement(TouchableOpacity, { key: role.key, onPress: function() { handleRole(role); }, style: { backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 14, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 8, elevation: 5 }, componentId: 'role-btn-' + role.key },
-              React.createElement(View, { style: { width: 52, height: 52, borderRadius: 14, backgroundColor: role.color + '18', alignItems: 'center', justifyContent: 'center', marginRight: 16 } },
-                React.createElement(MaterialIcons, { name: role.icon, size: 28, color: role.color })
-              ),
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 17, fontWeight: '700', color: textPrimary } }, role.label),
-                React.createElement(Text, { style: { fontSize: 13, color: textSecondary, marginTop: 2 } }, role.subtitle)
-              ),
-              React.createElement(MaterialIcons, { name: 'chevron-right', size: 22, color: textSecondary })
-            );
-          })
-        ),
-        React.createElement(Text, { style: { textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 30 } }, 'Version 1.0 | Samyak Computer Classes')
-      )
-    );
-  };
-  // @end:RoleSelector
-
-  // @section:StudentDashboard @depends:[ThemeContext,AppContext,shared-components,static-data]
-  var StudentDashboard = function(props) {
-    var navigation = props.navigation;
-    var tc = useTheme();
-    var theme = tc.theme;
-    var appCtx = useAppContext();
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-dashboard' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top, paddingBottom: 28, paddingHorizontal: 20 } },
-        React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 } },
-          React.createElement(View, {},
-            React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Welcome back,'),
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, appCtx.currentUser ? appCtx.currentUser.name : 'Student')
-          ),
-          React.createElement(View, { style: { width: 44, height: 44, borderRadius: 22, backgroundColor: accentColor, alignItems: 'center', justifyContent: 'center' } },
-            React.createElement(Text, { style: { fontSize: 18, fontWeight: '700', color: '#fff' } }, 'S')
-          )
-        ),
-        React.createElement(View, { style: { backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: 12, padding: 14, marginTop: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-          React.createElement(View, {},
-            React.createElement(Text, { style: { color: 'rgba(255,255,255,0.8)', fontSize: 12 } }, 'Current Course'),
-            React.createElement(Text, { style: { color: '#fff', fontSize: 15, fontWeight: '700', marginTop: 2 } }, 'Python Programming'),
-            React.createElement(Text, { style: { color: accentColor, fontSize: 12, marginTop: 4 } }, 'ID: SCC001')
-          ),
-          React.createElement(TouchableOpacity, { onPress: function() { navigation.navigate('StudentLearn'); }, style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 }, componentId: 'continue-learning-btn' },
-            React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13 } }, 'Continue')
-          )
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 8 } },
-          React.createElement(StatCard, { theme: theme, icon: 'check-circle', label: 'Attendance', value: '85.7%', color: successColor, subtitle: '24/28 Classes' }),
-          React.createElement(StatCard, { theme: theme, icon: 'account-balance-wallet', label: 'Fees Due', value: '₹3,500', color: errorColor, subtitle: 'Due: Nov 30' })
-        ),
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 8 } },
-          React.createElement(StatCard, { theme: theme, icon: 'quiz', label: 'Tests', value: '3', color: primaryColor, subtitle: '1 Upcoming' }),
-          React.createElement(StatCard, { theme: theme, icon: 'trending-up', label: 'Progress', value: '65%', color: accentColor, subtitle: 'Ch 3 of 8' })
-        ),
-        React.createElement(SectionHeader, { theme: theme, title: 'Latest Notices', onSeeAll: function() { navigation.navigate('StudentNotices'); } }),
-        SAMPLE_NOTICES.slice(0, 3).map(function(notice) {
-          var priorityColor = notice.priority === 'high' ? errorColor : notice.priority === 'medium' ? warningColor : '#6B7280';
-          return React.createElement(TouchableOpacity, { key: notice.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'flex-start', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }, componentId: 'notice-' + notice.id },
-            React.createElement(View, { style: { width: 8, height: 8, borderRadius: 4, backgroundColor: priorityColor, marginTop: 6, marginRight: 12 } }),
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary } }, notice.notice_title),
-              React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 3 }, numberOfLines: 2 }, notice.notice_description),
-              React.createElement(Text, { style: { fontSize: 11, color: theme.colors.textSecondary, marginTop: 4 } }, notice.created_at)
-            )
-          );
-        }),
-        React.createElement(SectionHeader, { theme: theme, title: 'Upcoming Assignments' }),
-        SAMPLE_ASSIGNMENTS.map(function(asgn) {
-          return React.createElement(View, { key: asgn.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 }, componentId: 'dash-asgn-' + asgn.id },
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary } }, asgn.assignment_title),
-              React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, 'Due: ' + asgn.due_date + ' | Max: ' + asgn.max_marks + ' marks')
-            ),
-            React.createElement(BadgePill, { status: asgn.is_submitted ? 'completed' : 'ongoing' })
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentDashboard
-
-  // @section:StudentCourses @depends:[ThemeContext,shared-components,static-data]
-  var StudentCourses = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var searchState = useState('');
-    var search = searchState[0];
-    var setSearch = searchState[1];
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var filtered = useMemo(function() {
-      if (!search) return COURSES_CATALOG;
-      return COURSES_CATALOG.filter(function(c) { return c.course_name.toLowerCase().indexOf(search.toLowerCase()) !== -1; });
-    }, [search]);
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-courses' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 12 } }, 'Courses'),
-        React.createElement(View, { style: { backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12 } },
-          React.createElement(MaterialIcons, { name: 'search', size: 20, color: 'rgba(255,255,255,0.7)' }),
-          React.createElement(TextInput, { value: search, onChangeText: setSearch, placeholder: 'Search courses...', placeholderTextColor: 'rgba(255,255,255,0.6)', style: { flex: 1, padding: 10, color: '#fff', fontSize: 14 }, componentId: 'course-search-input' })
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { backgroundColor: accentColor + '18', borderRadius: 12, padding: 14, marginBottom: 16, flexDirection: 'row', alignItems: 'center' } },
-          React.createElement(MaterialIcons, { name: 'star', size: 20, color: accentColor }),
-          React.createElement(View, { style: { marginLeft: 10, flex: 1 } },
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '700', color: textPrimary } }, 'Currently Enrolled: Python Programming'),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, '65% Complete | 24/28 Classes')
-          )
-        ),
-        filtered.map(function(course) {
-          var isEnrolled = course.course_name === 'Python';
-          return React.createElement(View, { key: course.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 3 }, componentId: 'course-card-' + course.id },
-            React.createElement(View, { style: { height: 6, backgroundColor: course.color } }),
-            React.createElement(View, { style: { padding: 16 } },
-              React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 } },
-                React.createElement(View, { style: { width: 44, height: 44, borderRadius: 12, backgroundColor: course.color + '18', alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                  React.createElement(MaterialIcons, { name: course.icon, size: 24, color: course.color })
-                ),
-                React.createElement(View, { style: { flex: 1 } },
-                  React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, course.course_name),
-                  React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, course.duration_hours + ' Hours')
-                ),
-                isEnrolled ? React.createElement(View, { style: { backgroundColor: successColor + '18', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 } },
-                  React.createElement(Text, { style: { fontSize: 11, fontWeight: '700', color: successColor } }, 'ENROLLED')
-                ) : null
-              ),
-              React.createElement(Text, { style: { fontSize: 13, color: theme.colors.textSecondary, marginBottom: 12 }, numberOfLines: 2 }, course.description),
-              React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-                React.createElement(Text, { style: { fontSize: 16, fontWeight: '800', color: theme.colors.primary } }, '₹' + course.course_fee.toLocaleString()),
-                React.createElement(TouchableOpacity, { style: { backgroundColor: isEnrolled ? successColor : theme.colors.primary, borderRadius: 8, paddingHorizontal: 16, paddingVertical: 8 }, componentId: 'enroll-btn-' + course.id },
-                  React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13 } }, isEnrolled ? 'View Course' : 'Enroll Now')
-                )
-              )
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentCourses
-
-  // @section:StudentLearn @depends:[ThemeContext,shared-components,static-data]
-  var StudentLearn = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var expandedState = useState('ch-1');
-    var expanded = expandedState[0];
-    var setExpanded = expandedState[1];
-    var completedState = useState({ 'les-1': true, 'les-2': true });
-    var completed = completedState[0];
-    var setCompleted = completedState[1];
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var totalLessons = SAMPLE_LESSONS.length;
-    var doneCount = Object.keys(completed).length;
-    var progressPct = Math.round((doneCount / totalLessons) * 100);
-
-    var handleToggleLesson = function(lesId) {
-      setCompleted(function(prev) {
-        var next = Object.assign({}, prev);
-        if (next[lesId]) { delete next[lesId]; } else { next[lesId] = true; }
-        return next;
-      });
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-learn' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 6 } }, 'Online Learning'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Python Programming'),
-        React.createElement(View, { style: { marginTop: 12 } },
-          React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 } },
-            React.createElement(Text, { style: { fontSize: 12, color: 'rgba(255,255,255,0.8)' } }, 'Course Progress'),
-            React.createElement(Text, { style: { fontSize: 12, color: accentColor, fontWeight: '700' } }, progressPct + '%')
-          ),
-          React.createElement(View, { style: { height: 6, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 3 } },
-            React.createElement(View, { style: { height: 6, backgroundColor: accentColor, borderRadius: 3, width: progressPct + '%' } })
-          )
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        SAMPLE_CHAPTERS.map(function(ch) {
-          var isExpanded = expanded === ch.id;
-          var chLessons = SAMPLE_LESSONS.filter(function(l) { return l.chapter_id === ch.id; });
-          var chDone = chLessons.filter(function(l) { return completed[l.id]; }).length;
-          return React.createElement(View, { key: ch.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 6, elevation: 2 }, componentId: 'chapter-' + ch.id },
-            React.createElement(TouchableOpacity, { onPress: function() { setExpanded(isExpanded ? null : ch.id); }, style: { padding: 16, flexDirection: 'row', alignItems: 'center' }, componentId: 'chapter-toggle-' + ch.id },
-              React.createElement(View, { style: { width: 38, height: 38, borderRadius: 10, backgroundColor: primaryColor + '18', alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '800', color: primaryColor } }, ch.chapter_number)
-              ),
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary } }, ch.chapter_title),
-                React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, chDone + '/' + chLessons.length + ' lessons done')
-              ),
-              React.createElement(Ionicons, { name: isExpanded ? 'chevron-up' : 'chevron-down', size: 20, color: textSecondary })
-            ),
-            isExpanded ? React.createElement(View, { style: { borderTopWidth: 1, borderTopColor: theme.colors.border, paddingHorizontal: 16, paddingBottom: 8 } },
-              chLessons.map(function(lesson) {
-                var isDone = !!completed[lesson.id];
-                return React.createElement(TouchableOpacity, { key: lesson.id, onPress: function() { handleToggleLesson(lesson.id); }, style: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: theme.colors.border + '40' }, componentId: 'lesson-' + lesson.id },
-                  React.createElement(View, { style: { width: 28, height: 28, borderRadius: 14, backgroundColor: isDone ? successColor : theme.colors.border, alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                    React.createElement(Ionicons, { name: isDone ? 'checkmark' : 'play', size: 14, color: isDone ? '#fff' : textSecondary })
-                  ),
-                  React.createElement(View, { style: { flex: 1 } },
-                    React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: isDone ? textSecondary : theme.colors.textPrimary } }, lesson.lesson_title),
-                    React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, lesson.lesson_description)
-                  ),
-                  lesson.video_url ? React.createElement(View, { style: { backgroundColor: primaryColor + '18', borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 } },
-                    React.createElement(Text, { style: { fontSize: 10, color: primaryColor, fontWeight: '600' } }, 'VIDEO')
-                  ) : null
-                );
-              })
-            ) : null
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentLearn
-
-  // @section:StudentTests @depends:[ThemeContext,shared-components,static-data]
-  var StudentTestList = function(props) {
-    var navigation = props.navigation;
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var attemptsQuery = useQuery('test_attempts');
-    var attempts = (attemptsQuery.data && attemptsQuery.data.length > 0) ? attemptsQuery.data : [];
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-tests' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Online Tests'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginTop: 4 } }, 'Available MCQ examinations')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        SAMPLE_TESTS.map(function(test) {
-          var attempted = attempts.find(function(a) { return a.test_id === test.id; });
-          return React.createElement(View, { key: test.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 14, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 3 }, componentId: 'test-card-' + test.id },
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 } },
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, test.test_title),
-                React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary, marginTop: 2 } }, 'Course: ' + test.course_name)
-              ),
-              attempted ? React.createElement(BadgePill, { status: attempted.pass_status }) : React.createElement(BadgePill, { status: 'ongoing' })
-            ),
-            React.createElement(View, { style: { flexDirection: 'row', marginBottom: 14 } },
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: theme.colors.background, borderRadius: 8, padding: 10 } },
-                React.createElement(Text, { style: { fontSize: 16, fontWeight: '800', color: theme.colors.primary } }, test.total_marks),
-                React.createElement(Text, { style: { fontSize: 11, color: theme.colors.textSecondary } }, 'Total Marks')
-              ),
-              React.createElement(View, { style: { width: 8 } }),
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: theme.colors.background, borderRadius: 8, padding: 10 } },
-                React.createElement(Text, { style: { fontSize: 16, fontWeight: '800', color: successColor } }, test.passing_marks),
-                React.createElement(Text, { style: { fontSize: 11, color: theme.colors.textSecondary } }, 'Pass Marks')
-              ),
-              React.createElement(View, { style: { width: 8 } }),
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: theme.colors.background, borderRadius: 8, padding: 10 } },
-                React.createElement(Text, { style: { fontSize: 16, fontWeight: '800', color: accentColor } }, test.duration_minutes + 'm'),
-                React.createElement(Text, { style: { fontSize: 11, color: theme.colors.textSecondary } }, 'Duration')
-              )
-            ),
-            attempted ? React.createElement(View, { style: { backgroundColor: attempted.pass_status === 'pass' ? successColor + '10' : errorColor + '10', borderRadius: 8, padding: 10, flexDirection: 'row', justifyContent: 'space-between' } },
-              React.createElement(Text, { style: { fontSize: 13, color: theme.colors.textPrimary, fontWeight: '600' } }, 'Your Score: ' + (attempted.obtained_marks || 0) + '/' + attempted.total_marks),
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '700', color: attempted.pass_status === 'pass' ? successColor : errorColor } }, (attempted.percentage || 0) + '%')
-            ) : React.createElement(TouchableOpacity, { onPress: function() { navigation.push('TakeTest', { testId: test.id }); }, style: { backgroundColor: theme.colors.primary, borderRadius: 10, padding: 12, alignItems: 'center' }, componentId: 'start-test-' + test.id },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 14 } }, 'Start Test')
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentTests
-
-  // @section:TakeTest @depends:[ThemeContext,shared-components,static-data]
-  var TakeTest = function(props) {
-    var navigation = props.navigation;
-    var route = props.route;
-    var testId = route && route.params ? route.params.testId : 'tst-1';
-    var test = SAMPLE_TESTS.find(function(t) { return t.id === testId; }) || SAMPLE_TESTS[0];
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    useKeepAwake(true);
-    var answersState = useState({});
-    var answers = answersState[0];
-    var setAnswers = answersState[1];
-    var currentQState = useState(0);
-    var currentQ = currentQState[0];
-    var setCurrentQ = currentQState[1];
-    var submittedState = useState(false);
-    var submitted = submittedState[0];
-    var setSubmitted = submittedState[1];
-    var resultState = useState(null);
-    var result = resultState[0];
-    var setResult = resultState[1];
-    var timeState = useState(test.duration_minutes * 60);
-    var timeLeft = timeState[0];
-    var setTimeLeft = timeState[1];
-    var insertAttempt = useMutation('test_attempts', 'insert');
-    var mutateAttempt = insertAttempt.mutate;
-
-    useEffect(function() {
-      if (submitted) return;
-      var interval = setInterval(function() {
-        setTimeLeft(function(prev) {
-          if (prev <= 1) {
-            clearInterval(interval);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return function() { clearInterval(interval); };
-    }, [submitted]);
-
-    var formatTime = function(secs) {
-      var m = Math.floor(secs / 60);
-      var s = secs % 60;
-      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-    };
-
-    var handleAnswer = function(opt) {
-      var qId = test.questions[currentQ].id;
-      setAnswers(function(prev) { return Object.assign({}, prev, { [qId]: opt }); });
-    };
-
-    var handleSubmit = function() {
-      var obtained = 0;
-      test.questions.forEach(function(q) {
-        if (answers[q.id] === q.correct_option) { obtained += q.marks; }
-      });
-      var pct = Math.round((obtained / test.total_marks) * 100);
-      var passStatus = obtained >= test.passing_marks ? 'pass' : 'fail';
-      var res = { obtained: obtained, total: test.total_marks, pct: pct, passStatus: passStatus };
-      setResult(res);
-      setSubmitted(true);
-      mutateAttempt({ test_id: testId, obtained_marks: obtained, total_marks: test.total_marks, percentage: pct, pass_status: passStatus, submission_time: new Date().toISOString() }).catch(function() {});
-    };
-
-    var q = test.questions[currentQ];
-    var options = ['A', 'B', 'C', 'D'];
-    var optionLabels = { A: q ? q.option_a : '', B: q ? q.option_b : '', C: q ? q.option_c : '', D: q ? q.option_d : '' };
-
-    if (submitted && result) {
-      return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'test-result' },
-        React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-        React.createElement(View, { style: { backgroundColor: result.passStatus === 'pass' ? successColor : errorColor, paddingTop: insets.top + 20, paddingBottom: 30, alignItems: 'center' } },
-          React.createElement(View, { style: { width: 80, height: 80, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center', marginBottom: 12 } },
-            React.createElement(MaterialIcons, { name: result.passStatus === 'pass' ? 'check-circle' : 'cancel', size: 48, color: '#fff' })
-          ),
-          React.createElement(Text, { style: { fontSize: 26, fontWeight: '800', color: '#fff' } }, result.passStatus === 'pass' ? 'Congratulations!' : 'Better Luck Next Time'),
-          React.createElement(Text, { style: { fontSize: 14, color: 'rgba(255,255,255,0.85)', marginTop: 6 } }, test.test_title)
-        ),
-        React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 20 } },
-          React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 16, padding: 20, marginBottom: 20, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 48, fontWeight: '800', color: result.passStatus === 'pass' ? successColor : errorColor } }, result.pct + '%'),
-            React.createElement(Text, { style: { fontSize: 18, fontWeight: '600', color: theme.colors.textPrimary, marginTop: 4 } }, result.obtained + ' / ' + result.total + ' marks'),
-            React.createElement(View, { style: { flexDirection: 'row', marginTop: 16 } },
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: theme.colors.background, borderRadius: 10, padding: 12 } },
-                React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: theme.colors.primary } }, test.passing_marks),
-                React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, 'Pass Mark')
-              ),
-              React.createElement(View, { style: { width: 12 } }),
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: result.passStatus === 'pass' ? successColor + '15' : errorColor + '15', borderRadius: 10, padding: 12 } },
-                React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: result.passStatus === 'pass' ? successColor : errorColor } }, result.passStatus.toUpperCase()),
-                React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, 'Status')
-              )
-            )
-          ),
-          React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary, marginBottom: 12 } }, 'Answer Review'),
-          test.questions.map(function(question, idx) {
-            var userAns = answers[question.id];
-            var isCorrect = userAns === question.correct_option;
-            return React.createElement(View, { key: question.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, borderLeftWidth: 4, borderLeftColor: isCorrect ? successColor : (userAns ? errorColor : '#6B7280') }, componentId: 'review-q-' + idx },
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary, marginBottom: 8 } }, (idx + 1) + '. ' + question.question_text),
-              React.createElement(Text, { style: { fontSize: 12, color: isCorrect ? successColor : errorColor } }, 'Your answer: ' + (userAns ? optionLabels[userAns] : 'Not answered')),
-              !isCorrect ? React.createElement(Text, { style: { fontSize: 12, color: successColor, marginTop: 4 } }, 'Correct: ' + optionLabels[question.correct_option]) : null
-            );
-          }),
-          React.createElement(TouchableOpacity, { onPress: function() { navigation.goBack(); }, style: { backgroundColor: theme.colors.primary, borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 10 }, componentId: 'back-to-tests' },
-            React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 15 } }, 'Back to Tests')
-          )
-        )
-      );
-    }
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'take-test' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 10, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: '#fff' } }, test.test_title),
-          React.createElement(Text, { style: { fontSize: 12, color: 'rgba(255,255,255,0.8)' } }, 'Q ' + (currentQ + 1) + ' of ' + test.questions.length)
-        ),
-        React.createElement(View, { style: { backgroundColor: timeLeft < 60 ? errorColor : 'rgba(255,255,255,0.2)', borderRadius: 10, paddingHorizontal: 12, paddingVertical: 6 } },
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 16 } }, formatTime(timeLeft))
-        )
-      ),
-      q ? React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 20, paddingBottom: 100 } },
-        React.createElement(View, { style: { marginBottom: 8 } },
-          React.createElement(View, { style: { height: 4, backgroundColor: theme.colors.border, borderRadius: 2 } },
-            React.createElement(View, { style: { height: 4, backgroundColor: accentColor, borderRadius: 2, width: (((currentQ + 1) / test.questions.length) * 100) + '%' } })
-          )
-        ),
-        React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 16, padding: 20, marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 6, elevation: 2 } },
-          React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 } },
-            React.createElement(View, { style: { backgroundColor: primaryColor, borderRadius: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center', marginRight: 10 } },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 13 } }, currentQ + 1)
-            ),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, q.marks + ' mark' + (q.marks > 1 ? 's' : ''))
-          ),
-          React.createElement(Text, { style: { fontSize: 16, fontWeight: '600', color: theme.colors.textPrimary, lineHeight: 24 } }, q.question_text)
-        ),
-        options.map(function(opt) {
-          var selected = answers[q.id] === opt;
-          return React.createElement(TouchableOpacity, { key: opt, onPress: function() { handleAnswer(opt); }, style: { backgroundColor: selected ? primaryColor : theme.colors.card, borderRadius: 12, padding: 16, marginBottom: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 2, borderColor: selected ? primaryColor : theme.colors.border, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'option-' + opt },
-            React.createElement(View, { style: { width: 30, height: 30, borderRadius: 15, backgroundColor: selected ? 'rgba(255,255,255,0.2)' : theme.colors.background, alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-              React.createElement(Text, { style: { fontWeight: '800', color: selected ? '#fff' : theme.colors.primary } }, opt)
-            ),
-            React.createElement(Text, { style: { flex: 1, fontSize: 14, fontWeight: selected ? '700' : '500', color: selected ? '#fff' : theme.colors.textPrimary } }, optionLabels[opt])
-          );
-        }),
-        React.createElement(View, { style: { flexDirection: 'row', marginTop: 16 } },
-          currentQ > 0 ? React.createElement(TouchableOpacity, { onPress: function() { setCurrentQ(function(p) { return p - 1; }); }, style: { flex: 1, backgroundColor: theme.colors.background, borderRadius: 12, padding: 14, alignItems: 'center', marginRight: 8, borderWidth: 1, borderColor: theme.colors.border }, componentId: 'prev-q' },
-            React.createElement(Text, { style: { fontWeight: '700', color: theme.colors.textPrimary } }, '← Previous')
-          ) : null,
-          currentQ < test.questions.length - 1 ? React.createElement(TouchableOpacity, { onPress: function() { setCurrentQ(function(p) { return p + 1; }); }, style: { flex: 1, backgroundColor: theme.colors.primary, borderRadius: 12, padding: 14, alignItems: 'center' }, componentId: 'next-q' },
-            React.createElement(Text, { style: { fontWeight: '700', color: '#fff' } }, 'Next →')
-          ) : React.createElement(TouchableOpacity, { onPress: handleSubmit, style: { flex: 1, backgroundColor: successColor, borderRadius: 12, padding: 14, alignItems: 'center' }, componentId: 'submit-test' },
-            React.createElement(Text, { style: { fontWeight: '700', color: '#fff' } }, 'Submit Test')
-          )
-        )
-      ) : null
-    );
-  };
-  // @end:TakeTest
-
-  // @section:StudentFees @depends:[ThemeContext,shared-components,static-data]
-  var StudentFees = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var fees = SAMPLE_FEES;
-    var paidPct = Math.round((fees.paid_amount / fees.total_fee) * 100);
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-fees' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Fee Management'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginTop: 4 } }, 'Python Programming - SCC001')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { backgroundColor: theme.colors.primary, borderRadius: 18, padding: 20, marginBottom: 16, shadowColor: primaryColor, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 10, elevation: 5 } },
-          React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 } },
-            React.createElement(View, {},
-              React.createElement(Text, { style: { color: 'rgba(255,255,255,0.7)', fontSize: 12 } }, 'Total Course Fee'),
-              React.createElement(Text, { style: { color: '#fff', fontSize: 24, fontWeight: '800' } }, '₹' + fees.total_fee.toLocaleString())
-            ),
-            React.createElement(BadgePill, { status: fees.payment_status })
-          ),
-          React.createElement(View, { style: { height: 8, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 4, marginBottom: 8 } },
-            React.createElement(View, { style: { height: 8, backgroundColor: accentColor, borderRadius: 4, width: paidPct + '%' } })
-          ),
-          React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between' } },
-            React.createElement(Text, { style: { color: 'rgba(255,255,255,0.7)', fontSize: 12 } }, 'Paid: ₹' + fees.paid_amount.toLocaleString()),
-            React.createElement(Text, { style: { color: accentColor, fontSize: 12, fontWeight: '700' } }, paidPct + '% paid')
-          )
-        ),
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 16 } },
-          React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.card, borderRadius: 12, padding: 16, marginRight: 8, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: successColor } }, '₹' + fees.paid_amount.toLocaleString()),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Amount Paid')
-          ),
-          React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.card, borderRadius: 12, padding: 16, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: errorColor } }, '₹' + fees.remaining_amount.toLocaleString()),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Remaining')
-          )
-        ),
-        React.createElement(View, { style: { backgroundColor: warningColor + '15', borderRadius: 12, padding: 14, flexDirection: 'row', alignItems: 'center', marginBottom: 16 } },
-          React.createElement(MaterialIcons, { name: 'event', size: 20, color: warningColor }),
-          React.createElement(Text, { style: { marginLeft: 10, fontSize: 13, fontWeight: '600', color: textPrimary } }, 'Next Due Date: ' + fees.next_due_date)
-        ),
-        React.createElement(TouchableOpacity, { onPress: function() { Platform.OS === 'web' ? window.alert('Opening payment gateway...') : Alert.alert('Pay Now', 'Redirecting to payment gateway...'); }, style: { backgroundColor: successColor, borderRadius: 14, padding: 16, alignItems: 'center', marginBottom: 24, flexDirection: 'row', justifyContent: 'center' }, componentId: 'pay-now-btn' },
-          React.createElement(MaterialIcons, { name: 'payment', size: 20, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 15, marginLeft: 8 } }, 'Pay Online Now')
-        ),
-        React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary, marginBottom: 12 } }, 'Payment History'),
-        fees.payments.map(function(pay) {
-          return React.createElement(View, { key: pay.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'payment-' + pay.id },
-            React.createElement(View, { style: { width: 42, height: 42, borderRadius: 10, backgroundColor: successColor + '18', alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-              React.createElement(MaterialIcons, { name: pay.payment_method === 'online' ? 'credit-card' : pay.payment_method === 'cash' ? 'money' : 'account-balance', size: 22, color: successColor })
-            ),
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary } }, '₹' + pay.amount_paid.toLocaleString()),
-              React.createElement(Text, { style: { fontSize: 12, color: theme.colors.textSecondary } }, pay.payment_date.split('T')[0] + ' | ' + pay.payment_method.toUpperCase()),
-              pay.transaction_id ? React.createElement(Text, { style: { fontSize: 11, color: primaryColor } }, 'Txn: ' + pay.transaction_id) : null
-            ),
-            React.createElement(BadgePill, { status: 'paid' })
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentFees
-
-  // @section:StudentNotices @depends:[ThemeContext,shared-components,static-data]
-  var StudentNotices = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var noticesQuery = useQuery('notices');
-    var dbNotices = (noticesQuery.data && noticesQuery.data.length > 0) ? noticesQuery.data : [];
-    var allNotices = SAMPLE_NOTICES.concat(dbNotices);
-    var typeIconMap = { announcement: 'campaign', holiday: 'beach-access', exam: 'quiz', course: 'school', general: 'info' };
-    var typeColorMap = { announcement: primaryColor, holiday: successColor, exam: errorColor, course: accentColor, general: textSecondary };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-notices' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Notices & Announcements'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginTop: 4 } }, allNotices.length + ' notices')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        allNotices.map(function(notice) {
-          var typeColor = typeColorMap[notice.notice_type] || textSecondary;
-          var typeIcon = typeIconMap[notice.notice_type] || 'info';
-          return React.createElement(View, { key: notice.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'notice-card-' + notice.id },
-            React.createElement(View, { style: { height: 4, backgroundColor: typeColor } }),
-            React.createElement(View, { style: { padding: 16 } },
-              React.createElement(View, { style: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 } },
-                React.createElement(View, { style: { width: 36, height: 36, borderRadius: 10, backgroundColor: typeColor + '18', alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                  React.createElement(MaterialIcons, { name: typeIcon, size: 20, color: typeColor })
-                ),
-                React.createElement(View, { style: { flex: 1 } },
-                  React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, notice.notice_title),
-                  React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginTop: 4 } },
-                    React.createElement(BadgePill, { status: notice.priority }),
-                    React.createElement(Text, { style: { fontSize: 11, color: textSecondary, marginLeft: 8 } }, notice.created_at || 'Today')
-                  )
-                )
-              ),
-              React.createElement(Text, { style: { fontSize: 13, color: theme.colors.textSecondary, lineHeight: 20 } }, notice.notice_description)
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentNotices
-
-  // @section:StudentProfile @depends:[ThemeContext,AppContext,shared-components]
-  var StudentProfile = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var appCtx = useAppContext();
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var cameraHook = useCamera();
-    var takePhoto = cameraHook.takePhoto;
-    var photo = cameraHook.photo;
-    var biometricsHook = useBiometrics();
-    var isBiometricsAvailable = biometricsHook.isBiometricsAvailable;
-    var biometricsType = biometricsHook.biometricsType;
-    var authenticate = biometricsHook.authenticate;
-    var biometricEnabledState = useState(false);
-    var biometricEnabled = biometricEnabledState[0];
-    var setBiometricEnabled = biometricEnabledState[1];
-    var navigation = props.navigation;
-
-    var handlePhotoChange = function() {
-      takePhoto().then(function(result) {
-        if (result.error) { Platform.OS === 'web' ? window.alert(result.error) : Alert.alert('Error', result.error); }
-      });
-    };
-
-    var handleBiometricToggle = function(val) {
-      if (val && isBiometricsAvailable) {
-        authenticate({ promptMessage: 'Enable biometric login for Samyak App' }).then(function(res) {
-          if (res.success) { setBiometricEnabled(true); }
-        });
-      } else {
-        setBiometricEnabled(false);
-      }
-    };
-
-    var profileItems = [
-      { icon: 'person', label: 'Full Name', value: 'Rahul Sharma' },
-      { icon: 'badge', label: 'Student ID', value: 'SCC001' },
-      { icon: 'email', label: 'Email', value: 'rahul@samyak.com' },
-      { icon: 'phone', label: 'Mobile', value: '+91 98765 43210' },
-      { icon: 'school', label: 'Course', value: 'Python Programming' },
-      { icon: 'event', label: 'Joining Date', value: 'January 15, 2024' },
-    ];
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-profile' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 40, paddingHorizontal: 16, alignItems: 'center' } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', alignSelf: 'flex-start', marginBottom: 16 } }, 'My Profile'),
-        React.createElement(TouchableOpacity, { onPress: handlePhotoChange, style: { position: 'relative' }, componentId: 'change-photo-btn' },
-          photo ? React.createElement(Image, { source: { uri: photo.uri }, style: { width: 90, height: 90, borderRadius: 45, borderWidth: 3, borderColor: '#fff' } }) :
-            React.createElement(View, { style: { width: 90, height: 90, borderRadius: 45, backgroundColor: accentColor, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#fff' } },
-              React.createElement(Text, { style: { fontSize: 32, fontWeight: '800', color: '#fff' } }, 'R')
-            ),
-          React.createElement(View, { style: { position: 'absolute', bottom: 0, right: 0, backgroundColor: accentColor, borderRadius: 12, width: 26, height: 26, alignItems: 'center', justifyContent: 'center' } },
-            React.createElement(MaterialIcons, { name: 'camera-alt', size: 14, color: '#fff' })
-          )
-        ),
-        React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: '#fff', marginTop: 10 } }, 'Rahul Sharm'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Student | SCC001')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1, marginTop: -20 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 16, padding: 16, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 3 } },
-          profileItems.map(function(item, idx) {
-            return React.createElement(View, { key: item.label, style: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, borderBottomWidth: idx < profileItems.length - 1 ? 1 : 0, borderBottomColor: theme.colors.border } },
-              React.createElement(View, { style: { width: 36, height: 36, borderRadius: 10, backgroundColor: primaryColor + '15', alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-                React.createElement(MaterialIcons, { name: item.icon, size: 18, color: primaryColor })
-              ),
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, item.label),
-                React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary } }, item.value)
-              )
-            );
-          })
-        ),
-        isBiometricsAvailable ? React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 16, padding: 16, marginBottom: 16, flexDirection: 'row', alignItems: 'center' } },
-          React.createElement(MaterialIcons, { name: 'fingerprint', size: 24, color: primaryColor }),
-          React.createElement(View, { style: { flex: 1, marginLeft: 14 } },
-            React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary } }, biometricsType === 'faceId' ? 'Face ID Login' : 'Fingerprint Login'),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, 'Secure app access with biometrics')
-          ),
-          React.createElement(Switch, { value: biometricEnabled, onValueChange: handleBiometricToggle, trackColor: { false: '#D1D5DB', true: primaryColor + '60' }, thumbColor: biometricEnabled ? primaryColor : '#9CA3AF' })
-        ) : null,
-        React.createElement(TouchableOpacity, { onPress: function() { appCtx.setCurrentRole(null); navigation.replace('RoleSelector'); }, style: { backgroundColor: errorColor + '15', borderRadius: 14, padding: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }, componentId: 'logout-btn' },
-          React.createElement(MaterialIcons, { name: 'logout', size: 20, color: errorColor }),
-          React.createElement(Text, { style: { color: errorColor, fontWeight: '700', fontSize: 15, marginLeft: 8 } }, 'Logout')
-        )
-      )
-    );
-  };
-  // @end:StudentProfile
-
-  // @section:StudentAttendance @depends:[ThemeContext,shared-components,static-data]
-  var StudentAttendance = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var att = ATTENDANCE_DATA;
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'student-attendance-screen' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 30, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 16 } }, 'My Attendance'),
-        React.createElement(View, { style: { alignItems: 'center' } },
-          React.createElement(View, { style: { width: 110, height: 110, borderRadius: 55, backgroundColor: 'rgba(255,255,255,0.15)', alignItems: 'center', justifyContent: 'center', borderWidth: 5, borderColor: accentColor } },
-            React.createElement(Text, { style: { fontSize: 26, fontWeight: '800', color: '#fff' } }, att.percentage + '%'),
-            React.createElement(Text, { style: { fontSize: 11, color: 'rgba(255,255,255,0.8)' } }, 'Attendance')
-          )
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1, marginTop: -16 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 16 } },
-          React.createElement(View, { style: { flex: 1, backgroundColor: successColor + '18', borderRadius: 12, padding: 16, marginRight: 8, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 28, fontWeight: '800', color: successColor } }, att.present),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Present')
-          ),
-          React.createElement(View, { style: { flex: 1, backgroundColor: errorColor + '18', borderRadius: 12, padding: 16, marginRight: 8, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 28, fontWeight: '800', color: errorColor } }, att.absent),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Absent')
-          ),
-          React.createElement(View, { style: { flex: 1, backgroundColor: primaryColor + '18', borderRadius: 12, padding: 16, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 28, fontWeight: '800', color: primaryColor } }, att.total_classes),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Total')
-          )
-        ),
-        React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary, marginBottom: 12 } }, 'Monthly Summary'),
-        att.monthly.map(function(m) {
-          return React.createElement(View, { key: m.month, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'month-att-' + m.month },
-            React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary, width: 90 } }, m.month),
-            React.createElement(View, { style: { flex: 1, height: 8, backgroundColor: theme.colors.border, borderRadius: 4, marginHorizontal: 12 } },
-              React.createElement(View, { style: { height: 8, backgroundColor: m.pct >= 75 ? successColor : errorColor, borderRadius: 4, width: m.pct + '%' } })
-            ),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '700', color: m.pct >= 75 ? successColor : errorColor, width: 50, textAlign: 'right' } }, m.pct + '%')
-          );
-        })
-      )
-    );
-  };
-  // @end:StudentAttendance
-
-  // @section:StudentTabNavigator @depends:[StudentDashboard,StudentCourses,StudentLearn,StudentTestList,StudentFees,StudentNotices,StudentProfile,StudentAttendance,navigation-setup]
-  var StudentTabNavigator = function(props) {
-    var insets = useSafeAreaInsets();
-    var tc = useTheme();
-    var theme = tc.theme;
-    return React.createElement(View, { style: { flex: 1, width: '100%', height: '100%', overflow: 'hidden' } },
-      React.createElement(Tab.Navigator, { screenOptions: {
-          headerShown: false,
-          tabBarStyle: { position: 'absolute', bottom: 0, height: Platform.OS === 'web' ? TAB_MENU_HEIGHT : TAB_MENU_HEIGHT + insets.bottom, paddingBottom: 0, borderTopWidth: 1, borderTopColor: theme.colors.border, backgroundColor: theme.colors.card },
-          tabBarItemStyle: { padding: 0 },
-          tabBarActiveTintColor: primaryColor,
-          tabBarInactiveTintColor: textSecondary,
-          tabBarLabelStyle: { fontSize: 10, fontWeight: '600' }
-        }
-      },
-        React.createElement(Tab.Screen, { name: 'StudentHome', component: StudentDashboard, options: { tabBarLabel: 'Home', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'home', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentCourses', component: StudentCourses, options: { tabBarLabel: 'Courses', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'menu-book', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentLearn', component: StudentLearn, options: { tabBarLabel: 'Learn', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'play-circle-filled', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentTests', component: StudentTestList, options: { tabBarLabel: 'Tests', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'quiz', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentFees', component: StudentFees, options: { tabBarLabel: 'Fees', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'account-balance-wallet', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentNotices', component: StudentNotices, options: { tabBarLabel: 'Notices', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'notifications', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentProfile', component: StudentProfile, options: { tabBarLabel: 'Profile', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'person', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'StudentAttendance', component: StudentAttendance, options: { tabBarLabel: 'Attendance', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'event-available', size: 24, color: p.color }); } } })
-      )
-    );
-  };
-  // @end:StudentTabNavigator
-
-  // @section:AddNoticeModal @depends:[ThemeContext]
-  var AddNoticeModal = function(props) {
-    var visible = props.visible;
-    var onClose = props.onClose;
-    var theme = props.theme;
-    var insetsTop = props.insetsTop;
-    var insetsBottom = props.insetsBottom;
-    var onSave = props.onSave;
-    var titleState = useState('');
-    var title = titleState[0];
-    var setTitle = titleState[1];
-    var descState = useState('');
-    var desc = descState[0];
-    var setDesc = descState[1];
-    var typeState = useState('announcement');
-    var noticeType = typeState[0];
-    var setNoticeType = typeState[1];
-    var priorityState = useState('medium');
-    var priority = priorityState[0];
-    var setPriority = priorityState[1];
-    var baseHeight = (Platform.OS === 'web' && typeof window !== 'undefined' && window.__thunkablePhoneFrameHeight) || Dimensions.get('window').height;
-    var sheetHeight = Math.round(baseHeight * 0.85);
-
-    var types = ['announcement', 'holiday', 'exam', 'course', 'general'];
-    var priorities = ['low', 'medium', 'high'];
-
-    var handleSave = function() {
-      if (!title.trim() || !desc.trim()) { Platform.OS === 'web' ? window.alert('Fill all required fields') : Alert.alert('Error', 'Fill all required fields'); return; }
-      onSave({ notice_title: title, notice_description: desc, notice_type: noticeType, priority: priority });
-      setTitle(''); setDesc(''); setNoticeType('announcement'); setPriority('medium');
-    };
-
-    return React.createElement(Modal, { visible: visible, animationType: 'slide', transparent: true, onRequestClose: onClose },
-      React.createElement(View, { style: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)', marginTop: insetsTop } },
-        React.createElement(View, { style: { height: sheetHeight, backgroundColor: theme.colors.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingBottom: insetsBottom + 16 } },
-          React.createElement(View, { style: { width: 40, height: 4, backgroundColor: theme.colors.border, borderRadius: 2, alignSelf: 'center', marginTop: 12 } }),
-          React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: theme.colors.border } },
-            React.createElement(Text, { style: { fontSize: 17, fontWeight: '700', color: theme.colors.textPrimary } }, 'Post Notice'),
-            React.createElement(TouchableOpacity, { onPress: onClose, componentId: 'close-notice-modal' }, React.createElement(MaterialIcons, { name: 'close', size: 22, color: textSecondary }))
-          ),
-          React.createElement(ScrollView, { style: { flex: 1, paddingHorizontal: 20 } },
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 16, marginBottom: 6 } }, 'Title *'),
-            React.createElement(TextInput, { value: title, onChangeText: setTitle, placeholder: 'Notice title', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'notice-title-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Description *'),
-            React.createElement(TextInput, { value: desc, onChangeText: setDesc, placeholder: 'Notice description...', multiline: true, numberOfLines: 4, textAlignVertical: 'top', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background, minHeight: 90 }, componentId: 'notice-desc-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 8 } }, 'Type'),
-            React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap' } },
-              types.map(function(t) {
-                return React.createElement(TouchableOpacity, { key: t, onPress: function() { setNoticeType(t); }, style: { backgroundColor: noticeType === t ? primaryColor : theme.colors.background, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, marginRight: 8, marginBottom: 8, borderWidth: 1, borderColor: noticeType === t ? primaryColor : theme.colors.border }, componentId: 'notice-type-' + t },
-                  React.createElement(Text, { style: { fontSize: 12, fontWeight: '600', color: noticeType === t ? '#fff' : textSecondary, textTransform: 'capitalize' } }, t)
-                );
-              })
-            ),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 8 } }, 'Priority'),
-            React.createElement(View, { style: { flexDirection: 'row' } },
-              priorities.map(function(p) {
-                var pColor = p === 'high' ? errorColor : p === 'medium' ? warningColor : textSecondary;
-                return React.createElement(TouchableOpacity, { key: p, onPress: function() { setPriority(p); }, style: { flex: 1, backgroundColor: priority === p ? pColor : theme.colors.background, borderRadius: 8, padding: 10, alignItems: 'center', marginRight: p !== 'low' ? 8 : 0, borderWidth: 1, borderColor: priority === p ? pColor : theme.colors.border }, componentId: 'priority-' + p },
-                  React.createElement(Text, { style: { fontSize: 12, fontWeight: '600', color: priority === p ? '#fff' : textSecondary, textTransform: 'uppercase' } }, p)
-                );
-              })
-            ),
-            React.createElement(TouchableOpacity, { onPress: handleSave, style: { backgroundColor: primaryColor, borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 20, marginBottom: 20 }, componentId: 'save-notice-btn' },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 15 } }, 'Post Notice')
-            )
-          )
-        )
-      )
-    );
-  };
-  // @end:AddNoticeModal
-
-  // @section:TeacherDashboard @depends:[ThemeContext,AppContext,shared-components,static-data]
-  var TeacherDashboard = function(props) {
-    var navigation = props.navigation;
-    var tc = useTheme();
-    var theme = tc.theme;
-    var appCtx = useAppContext();
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var attQuery = useQuery('attendance');
-    var attCount = attQuery.data ? attQuery.data.length : 0;
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'teacher-dashboard' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top, paddingBottom: 20, paddingHorizontal: 20 } },
-        React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 } },
-          React.createElement(View, {},
-            React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Teacher Panel'),
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, appCtx.currentUser ? appCtx.currentUser.name : 'Teacher')
-          ),
-          React.createElement(View, { style: { width: 44, height: 44, borderRadius: 22, backgroundColor: successColor, alignItems: 'center', justifyContent: 'center' } },
-            React.createElement(Text, { style: { fontSize: 18, fontWeight: '700', color: '#fff' } }, 'A')
-          )
-        ),
-        React.createElement(Text, { style: { color: 'rgba(255,255,255,0.7)', fontSize: 12, marginTop: 4 } }, 'Specialization: Python & Data Science')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 8 } },
-          React.createElement(StatCard, { theme: theme, icon: 'groups', label: 'My Students', value: '42', color: primaryColor }),
-          React.createElement(StatCard, { theme: theme, icon: 'menu-book', label: 'Courses', value: '3', color: accentColor })
-        ),
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 16 } },
-          React.createElement(StatCard, { theme: theme, icon: 'quiz', label: 'Tests Created', value: '8', color: successColor }),
-          React.createElement(StatCard, { theme: theme, icon: 'event-available', label: 'Attendance Marked', value: String(attCount), color: '#8B5CF6' })
-        ),
-        React.createElement(SectionHeader, { theme: theme, title: 'Quick Actions' }),
-        React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap' } },
-          [
-            { icon: 'event-available', label: 'Mark Attendance', color: successColor, route: 'TeacherAttendance' },
-            { icon: 'quiz', label: 'Create Test', color: primaryColor, route: 'TeacherTests' },
-            { icon: 'upload-file', label: 'Upload Content', color: '#8B5CF6', route: 'TeacherContent' },
-            { icon: 'campaign', label: 'Post Notice', color: accentColor, route: 'TeacherNotices' },
-          ].map(function(action) {
-            return React.createElement(TouchableOpacity, { key: action.label, onPress: function() { navigation.navigate(action.route); }, style: { width: '48%', backgroundColor: theme.colors.card, borderRadius: 14, padding: 16, marginBottom: 10, marginRight: '2%', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 }, componentId: 'teacher-quick-' + action.label },
-              React.createElement(View, { style: { width: 48, height: 48, borderRadius: 14, backgroundColor: action.color + '18', alignItems: 'center', justifyContent: 'center', marginBottom: 10 } },
-                React.createElement(MaterialIcons, { name: action.icon, size: 26, color: action.color })
-              ),
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary, textAlign: 'center' } }, action.label)
-            );
-          })
-        ),
-        React.createElement(SectionHeader, { theme: theme, title: 'Recent Notices', onSeeAll: function() { navigation.navigate('TeacherNotices'); } }),
-        SAMPLE_NOTICES.slice(0, 2).map(function(notice) {
-          return React.createElement(View, { key: notice.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'teacher-notice-' + notice.id },
-            React.createElement(MaterialIcons, { name: 'notifications', size: 20, color: primaryColor }),
-            React.createElement(View, { style: { flex: 1, marginLeft: 12 } },
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary } }, notice.notice_title),
-              React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, notice.created_at)
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:TeacherDashboard
-
-  // @section:TeacherAttendance @depends:[ThemeContext,shared-components,static-data]
-  var TeacherAttendance = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var selectedDateState = useState(new Date().toISOString().split('T')[0]);
-    var selectedDate = selectedDateState[0];
-    var setSelectedDate = selectedDateState[1];
-    var selectedCourseState = useState('Python Programming');
-    var selectedCourse = selectedCourseState[0];
-    var setSelectedCourse = selectedCourseState[1];
-    var attendanceState = useState(
-      SAMPLE_STUDENTS.reduce(function(acc, s) { acc[s.id] = 'present'; return acc; }, {})
-    );
-    var attendanceMap = attendanceState[0];
-    var setAttendanceMap = attendanceState[1];
-    var submittedState = useState(false);
-    var submitted = submittedState[0];
-    var setSubmitted = submittedState[1];
-    var insertAtt = useMutation('attendance', 'insert');
-    var mutateAtt = insertAtt.mutate;
-
-    var handleToggle = function(studentId) {
-      setAttendanceMap(function(prev) {
-        var next = Object.assign({}, prev);
-        next[studentId] = next[studentId] === 'present' ? 'absent' : 'present';
-        return next;
-      });
-    };
-
-    var handleSubmit = function() {
-      var promises = SAMPLE_STUDENTS.map(function(s) {
-        return mutateAtt({ student_id: s.id, course_id: 'cat-8', attendance_date: selectedDate, attendance_status: attendanceMap[s.id] || 'absent', marked_by: 'tch-1' });
-      });
-      Promise.all(promises).then(function() {
-        setSubmitted(true);
-        Platform.OS === 'web' ? window.alert('Attendance saved successfully!') : Alert.alert('Success', 'Attendance saved!');
-      }).catch(function() {
-        Platform.OS === 'web' ? window.alert('Attendance saved (demo mode)') : Alert.alert('Saved', 'Attendance recorded');
-        setSubmitted(true);
-      });
-    };
-
-    var presentCount = Object.values(attendanceMap).filter(function(v) { return v === 'present'; }).length;
-    var absentCount = SAMPLE_STUDENTS.length - presentCount;
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'teacher-attendance' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 4 } }, 'Mark Attendance'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, selectedDate)
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 14, padding: 14, marginBottom: 14, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 } },
-          React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginBottom: 8 } }, 'Select Date'),
-          Platform.OS === 'web' ? React.createElement('input', { type: 'date', value: selectedDate, onChange: function(e) { setSelectedDate(e.target.value); }, style: { padding: 10, border: '1px solid #E5E7EB', borderRadius: 8, fontSize: 14, width: '100%', boxSizing: 'border-box' } }) :
-            React.createElement(TextInput, { value: selectedDate, onChangeText: setSelectedDate, placeholder: 'YYYY-MM-DD', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 8, padding: 10, fontSize: 14, color: theme.colors.textPrimary }, componentId: 'att-date-input' }),
-          React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 12, marginBottom: 8 } }, 'Course'),
-          React.createElement(TextInput, { value: selectedCourse, onChangeText: setSelectedCourse, style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 8, padding: 10, fontSize: 14, color: theme.colors.textPrimary }, componentId: 'att-course-input' })
-        ),
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 14 } },
-          React.createElement(View, { style: { flex: 1, backgroundColor: successColor + '18', borderRadius: 10, padding: 12, alignItems: 'center', marginRight: 8 } },
-            React.createElement(Text, { style: { fontSize: 22, fontWeight: '800', color: successColor } }, presentCount),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, 'Present')
-          ),
-          React.createElement(View, { style: { flex: 1, backgroundColor: errorColor + '18', borderRadius: 10, padding: 12, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 22, fontWeight: '800', color: errorColor } }, absentCount),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, 'Absent')
-          )
-        ),
-        SAMPLE_STUDENTS.map(function(student) {
-          var isPresent = attendanceMap[student.id] === 'present';
-          return React.createElement(View, { key: student.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'att-student-' + student.id },
-            React.createElement(View, { style: { width: 40, height: 40, borderRadius: 20, backgroundColor: isPresent ? successColor : errorColor, alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 15 } }, student.full_name.charAt(0))
-            ),
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '600', color: theme.colors.textPrimary } }, student.full_name),
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, student.student_id + ' | ' + student.course_name)
-            ),
-            React.createElement(TouchableOpacity, { onPress: function() { handleToggle(student.id); }, style: { backgroundColor: isPresent ? successColor : errorColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 }, componentId: 'toggle-att-' + student.id },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13 } }, isPresent ? 'Present' : 'Absent')
-            )
-          );
-        }),
-        React.createElement(TouchableOpacity, { onPress: handleSubmit, style: { backgroundColor: submitted ? successColor : primaryColor, borderRadius: 14, padding: 16, alignItems: 'center', marginTop: 8 }, componentId: 'save-attendance-btn' },
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 15 } }, submitted ? '✓ Attendance Saved' : 'Save Attendance')
-        )
-      )
-    );
-  };
-  // @end:TeacherAttendance
-
-  // @section:TeacherTests @depends:[ThemeContext,shared-components,static-data]
-  var TeacherTests = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var showModalState = useState(false);
-    var showModal = showModalState[0];
-    var setShowModal = showModalState[1];
-    var testTitleState = useState('');
-    var testTitle = testTitleState[0];
-    var setTestTitle = testTitleState[1];
-    var courseNameState = useState('Python');
-    var courseName = courseNameState[0];
-    var setCourseName = courseNameState[1];
-    var totalMarksState = useState('');
-    var totalMarks = totalMarksState[0];
-    var setTotalMarks = totalMarksState[1];
-    var passingMarksState = useState('');
-    var passingMarks = passingMarksState[0];
-    var setPassingMarks = passingMarksState[1];
-    var durationState = useState('');
-    var duration = durationState[0];
-    var setDuration = durationState[1];
-    var localTestsState = useState(SAMPLE_TESTS);
-    var localTests = localTestsState[0];
-    var setLocalTests = localTestsState[1];
-
-    var baseHeight = (Platform.OS === 'web' && typeof window !== 'undefined' && window.__thunkablePhoneFrameHeight) || Dimensions.get('window').height;
-    var sheetHeight = Math.round(baseHeight * 0.85);
-
-    var handleCreate = function() {
-      if (!testTitle.trim() || !totalMarks || !passingMarks || !duration) {
-        Platform.OS === 'web' ? window.alert('Fill all required fields') : Alert.alert('Error', 'Fill all required fields');
-        return;
-      }
-      var newTest = { id: 'tst-new-' + Date.now(), test_title: testTitle, course_name: courseName, total_marks: parseInt(totalMarks), passing_marks: parseInt(passingMarks), duration_minutes: parseInt(duration), is_published: false, questions: [] };
-      setLocalTests(function(prev) { return [newTest].concat(prev); });
-      setShowModal(false);
-      setTestTitle(''); setTotalMarks(''); setPassingMarks(''); setDuration('');
-      Platform.OS === 'web' ? window.alert('Test created successfully!') : Alert.alert('Success', 'Test created!');
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'teacher-tests' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Test Management'),
-          React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, localTests.length + ' tests')
-        ),
-        React.createElement(TouchableOpacity, { onPress: function() { setShowModal(true); }, style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'create-test-btn' },
-          React.createElement(MaterialIcons, { name: 'add', size: 18, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, 'New Test')
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        localTests.map(function(test) {
-          return React.createElement(View, { key: test.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 14, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'teacher-test-' + test.id },
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 } },
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, test.test_title),
-                React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, test.course_name)
-              ),
-              React.createElement(View, { style: { backgroundColor: test.is_published ? successColor + '18' : warningColor + '18', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 } },
-                React.createElement(Text, { style: { fontSize: 11, fontWeight: '700', color: test.is_published ? successColor : warningColor } }, test.is_published ? 'PUBLISHED' : 'DRAFT')
-              )
-            ),
-            React.createElement(View, { style: { flexDirection: 'row', marginBottom: 12 } },
-              React.createElement(Text, { style: { fontSize: 13, color: textSecondary } }, 'Marks: ' + test.passing_marks + '/' + test.total_marks + ' | ' + test.duration_minutes + ' min | ' + test.questions.length + ' questions')
-            ),
-            React.createElement(View, { style: { flexDirection: 'row' } },
-              React.createElement(TouchableOpacity, { style: { flex: 1, backgroundColor: primaryColor + '15', borderRadius: 8, padding: 10, alignItems: 'center', marginRight: 8 }, componentId: 'add-qs-' + test.id },
-                React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: primaryColor } }, '+ Questions')
-              ),
-              React.createElement(TouchableOpacity, { style: { flex: 1, backgroundColor: test.is_published ? warningColor + '15' : successColor + '15', borderRadius: 8, padding: 10, alignItems: 'center' }, componentId: 'publish-' + test.id },
-                React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: test.is_published ? warningColor : successColor } }, test.is_published ? 'Unpublish' : 'Publish')
-              )
-            )
-          );
-        })
-      ),
-      React.createElement(Modal, { visible: showModal, animationType: 'slide', transparent: true, onRequestClose: function() { setShowModal(false); } },
-        React.createElement(View, { style: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' } },
-          React.createElement(View, { style: { height: sheetHeight, backgroundColor: theme.colors.card, borderTopLeftRadius: 20, borderTopRightRadius: 20 } },
-            React.createElement(View, { style: { width: 40, height: 4, backgroundColor: theme.colors.border, borderRadius: 2, alignSelf: 'center', marginTop: 12 } }),
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: theme.colors.border } },
-              React.createElement(Text, { style: { fontSize: 17, fontWeight: '700', color: theme.colors.textPrimary } }, 'Create New Test'),
-              React.createElement(TouchableOpacity, { onPress: function() { setShowModal(false); }, componentId: 'close-test-modal' }, React.createElement(MaterialIcons, { name: 'close', size: 22, color: textSecondary }))
-            ),
-            React.createElement(ScrollView, { style: { flex: 1, paddingHorizontal: 20 } },
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 16, marginBottom: 6 } }, 'Test Title *'),
-              React.createElement(TextInput, { value: testTitle, onChangeText: setTestTitle, placeholder: 'Enter test title', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'test-title-input' }),
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Course Name'),
-              React.createElement(TextInput, { value: courseName, onChangeText: setCourseName, placeholder: 'Course name', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'test-course-input' }),
-              React.createElement(View, { style: { flexDirection: 'row' } },
-                React.createElement(View, { style: { flex: 1, marginRight: 8 } },
-                  React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Total Marks *'),
-                  React.createElement(TextInput, { value: totalMarks, onChangeText: function(t) { setTotalMarks(t.replace(/[^0-9]/g, '')); }, placeholder: '50', keyboardType: 'numeric', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'total-marks-input' })
-                ),
-                React.createElement(View, { style: { flex: 1 } },
-                  React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Passing Marks *'),
-                  React.createElement(TextInput, { value: passingMarks, onChangeText: function(t) { setPassingMarks(t.replace(/[^0-9]/g, '')); }, placeholder: '25', keyboardType: 'numeric', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'passing-marks-input' })
-                )
-              ),
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Duration (minutes) *'),
-              React.createElement(TextInput, { value: duration, onChangeText: function(t) { setDuration(t.replace(/[^0-9]/g, '')); }, placeholder: '30', keyboardType: 'numeric', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'duration-input' }),
-              React.createElement(TouchableOpacity, { onPress: handleCreate, style: { backgroundColor: primaryColor, borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 20, marginBottom: 20 }, componentId: 'create-test-submit' },
-                React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 15 } }, 'Create Test')
-              )
-            )
-          )
-        )
-      )
-    );
-  };
-  // @end:TeacherTests
-
-  // @section:TeacherContent @depends:[ThemeContext,shared-components]
-  var TeacherContent = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var filePickerHook = useFilePicker();
-    var pickDocument = filePickerHook.pickDocument;
-    var lastFile = filePickerHook.lastFile;
-    var isPickerLoading = filePickerHook.isLoading;
-    var filePickerError = filePickerHook.error;
-    var insertMaterial = useMutation('study_materials', 'insert');
-    var mutateInsert = insertMaterial.mutate;
-    var materialsQuery = useQuery('study_materials');
-    var materials = (materialsQuery.data && materialsQuery.data.length > 0) ? materialsQuery.data : [];
-
-    var handleUpload = function() {
-      pickDocument({ type: ['application/pdf', 'video/*', 'image/*'] }).then(function(result) {
-        if (result.cancelled || result.error) return;
-        if (result.file) {
-          mutateInsert({ course_id: 'cat-8', material_title: result.file.name, file_url: result.file.uri, file_type: 'pdf', uploaded_by: 'tch-1' }).then(function() {
-            materialsQuery.refetch();
-          }).catch(function() {});
-        }
-      });
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'teacher-content' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Study Materials'),
-          React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Upload videos, PDFs & notes')
-        ),
-        React.createElement(TouchableOpacity, { onPress: handleUpload, disabled: isPickerLoading, style: { backgroundColor: isPickerLoading ? textSecondary : accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'upload-material-btn' },
-          React.createElement(MaterialIcons, { name: 'upload', size: 18, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, isPickerLoading ? 'Opening...' : 'Upload')
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        filePickerError ? React.createElement(View, { style: { backgroundColor: errorColor + '15', borderRadius: 10, padding: 12, marginBottom: 14, flexDirection: 'row', alignItems: 'center' } },
-          React.createElement(MaterialIcons, { name: 'error', size: 18, color: errorColor }),
-          React.createElement(Text, { style: { color: errorColor, marginLeft: 8, fontSize: 13 } }, filePickerError)
-        ) : null,
-        lastFile ? React.createElement(View, { style: { backgroundColor: successColor + '15', borderRadius: 12, padding: 14, marginBottom: 14, flexDirection: 'row', alignItems: 'center' } },
-          React.createElement(MaterialIcons, { name: 'check-circle', size: 20, color: successColor }),
-          React.createElement(View, { style: { flex: 1, marginLeft: 10 } },
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textPrimary } }, 'Last uploaded: ' + (lastFile.name || 'File')),
-            React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, lastFile.mimeType || '')
-          )
-        ) : null,
-        React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 } },
-          [{ icon: 'picture-as-pdf', label: 'PDF Notes', color: errorColor, count: '12' }, { icon: 'videocam', label: 'Video Lectures', color: primaryColor, count: '8' }, { icon: 'image', label: 'Images', color: successColor, count: '5' }].map(function(item) {
-            return React.createElement(View, { key: item.label, style: { width: '31%', backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, alignItems: 'center', marginRight: '2%', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'material-type-' + item.label },
-              React.createElement(MaterialIcons, { name: item.icon, size: 28, color: item.color }),
-              React.createElement(Text, { style: { fontSize: 18, fontWeight: '800', color: theme.colors.textPrimary, marginTop: 6 } }, item.count),
-              React.createElement(Text, { style: { fontSize: 11, color: textSecondary, textAlign: 'center', marginTop: 2 } }, item.label)
-            );
-          })
-        ),
-        materials.length > 0 ? React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary, marginBottom: 12 } }, 'Recent Uploads'),
-          materials.map(function(mat) {
-            return React.createElement(View, { key: mat.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center' }, componentId: 'material-' + mat.id },
-              React.createElement(MaterialIcons, { name: 'insert-drive-file', size: 24, color: primaryColor }),
-              React.createElement(View, { style: { flex: 1, marginLeft: 12 } },
-                React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary } }, mat.material_title),
-                React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, mat.file_type)
-              )
-            );
-          })
-        ) : React.createElement(View, { style: { backgroundColor: theme.colors.card, borderRadius: 14, padding: 30, alignItems: 'center' } },
-          React.createElement(MaterialIcons, { name: 'cloud-upload', size: 48, color: primaryColor + '50' }),
-          React.createElement(Text, { style: { fontSize: 15, fontWeight: '600', color: textSecondary, marginTop: 12 } }, 'No materials uploaded yet'),
-          React.createElement(Text, { style: { fontSize: 13, color: textSecondary, textAlign: 'center', marginTop: 6 } }, 'Tap Upload to add study materials for your students')
-        )
-      )
-    );
-  };
-  // @end:TeacherContent
-
-  // @section:TeacherNotices @depends:[ThemeContext,shared-components,AddNoticeModal]
-  var TeacherNotices = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var showModalState = useState(false);
-    var showModal = showModalState[0];
-    var setShowModal = showModalState[1];
-    var insertNotice = useMutation('notices', 'insert');
-    var mutateNotice = insertNotice.mutate;
-    var noticesQuery = useQuery('notices');
-    var dbNotices = (noticesQuery.data && noticesQuery.data.length > 0) ? noticesQuery.data : [];
-    var allNotices = SAMPLE_NOTICES.concat(dbNotices);
-
-    var handleSave = function(data) {
-      mutateNotice(Object.assign({}, data, { posted_by: 'tch-1', is_published: true })).then(function() {
-        noticesQuery.refetch();
-        setShowModal(false);
-      }).catch(function() { setShowModal(false); });
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'teacher-notices' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Notices'),
-        React.createElement(TouchableOpacity, { onPress: function() { setShowModal(true); }, style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'add-notice-btn' },
-          React.createElement(MaterialIcons, { name: 'add', size: 18, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, 'Post')
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        allNotices.map(function(notice) {
-          return React.createElement(View, { key: notice.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'teacher-notice-item-' + notice.id },
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary, flex: 1 } }, notice.notice_title),
-              React.createElement(BadgePill, { status: notice.priority })
-            ),
-            React.createElement(Text, { style: { fontSize: 13, color: textSecondary }, numberOfLines: 2 }, notice.notice_description)
-          );
-        })
-      ),
-      React.createElement(AddNoticeModal, { visible: showModal, onClose: function() { setShowModal(false); }, theme: theme, insetsTop: insets.top, insetsBottom: insets.bottom, onSave: handleSave })
-    );
-  };
-  // @end:TeacherNotices
-
-  // @section:TeacherTabNavigator @depends:[TeacherDashboard,TeacherAttendance,TeacherTests,TeacherContent,TeacherNotices,navigation-setup]
-  var TeacherTabNavigator = function(props) {
-    var insets = useSafeAreaInsets();
-    var tc = useTheme();
-    var theme = tc.theme;
-    return React.createElement(View, { style: { flex: 1, width: '100%', height: '100%', overflow: 'hidden' } },
-      React.createElement(Tab.Navigator, { screenOptions: {
-          headerShown: false,
-          tabBarStyle: { position: 'absolute', bottom: 0, height: Platform.OS === 'web' ? TAB_MENU_HEIGHT : TAB_MENU_HEIGHT + insets.bottom, paddingBottom: 0, borderTopWidth: 1, borderTopColor: theme.colors.border, backgroundColor: theme.colors.card },
-          tabBarItemStyle: { padding: 0 },
-          tabBarActiveTintColor: successColor,
-          tabBarInactiveTintColor: textSecondary,
-          tabBarLabelStyle: { fontSize: 10, fontWeight: '600' }
-        }
-      },
-        React.createElement(Tab.Screen, { name: 'TeacherDashboard', component: TeacherDashboard, options: { tabBarLabel: 'Dashboard', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'dashboard', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'TeacherAttendance', component: TeacherAttendance, options: { tabBarLabel: 'Attendance', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'event-available', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'TeacherTests', component: TeacherTests, options: { tabBarLabel: 'Tests', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'quiz', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'TeacherContent', component: TeacherContent, options: { tabBarLabel: 'Content', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'video-library', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'TeacherNotices', component: TeacherNotices, options: { tabBarLabel: 'Notices', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'campaign', size: 24, color: p.color }); } } })
-      )
-    );
-  };
-  // @end:TeacherTabNavigator
-
-  // @section:AdminDashboard @depends:[ThemeContext,AppContext,shared-components,static-data]
-  var AdminDashboard = function(props) {
-    var navigation = props.navigation;
-    var tc = useTheme();
-    var theme = tc.theme;
-    var appCtx = useAppContext();
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var attQuery = useQuery('attendance');
-    var todayAtt = attQuery.data ? attQuery.data.filter(function(a) { return a.attendance_date === new Date().toISOString().split('T')[0]; }).length : 0;
-    var feesQuery = useQuery('fees');
-    var pendingFees = feesQuery.data ? feesQuery.data.filter(function(f) { return f.payment_status !== 'paid'; }).length : 0;
-
-    var stats = [
-      { icon: 'groups', label: 'Total Students', value: '127', subtitle: '12 new this month', color: primaryColor },
-      { icon: 'person', label: 'Teachers', value: '8', subtitle: '3 active today', color: successColor },
-      { icon: 'menu-book', label: 'Courses', value: String(COURSES_CATALOG.length), subtitle: '4 active batches', color: '#8B5CF6' },
-      { icon: 'account-balance-wallet', label: 'Fee Collection', value: '₹2.4L', subtitle: 'This month', color: accentColor },
-      { icon: 'event-available', label: "Today's Attendance", value: String(todayAtt || 98), subtitle: '82% present', color: '#EC4899' },
-      { icon: 'warning', label: 'Pending Fees', value: String(pendingFees || 23), subtitle: 'Need follow-up', color: errorColor },
-    ];
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-dashboard' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top, paddingBottom: 20, paddingHorizontal: 20 } },
-        React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 } },
-          React.createElement(View, {},
-            React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, 'Admin Dashboard'),
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Samyak Admin'),
-            React.createElement(Text, { style: { fontSize: 12, color: 'rgba(255,255,255,0.7)' } }, new Date().toDateString())
-          ),
-          React.createElement(View, { style: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#8B5CF6', alignItems: 'center', justifyContent: 'center' } },
-            React.createElement(MaterialIcons, { name: 'admin-panel-settings', size: 24, color: '#fff' })
-          )
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap' } },
-          stats.map(function(stat, idx) {
-            return React.createElement(View, { key: stat.label, style: { width: '48%', backgroundColor: theme.colors.card, borderRadius: 14, padding: 16, marginBottom: 10, marginRight: idx % 2 === 0 ? '4%' : 0, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'admin-stat-' + idx },
-              React.createElement(View, { style: { width: 38, height: 38, borderRadius: 10, backgroundColor: stat.color + '18', alignItems: 'center', justifyContent: 'center', marginBottom: 10 } },
-                React.createElement(MaterialIcons, { name: stat.icon, size: 22, color: stat.color })
-              ),
-              React.createElement(Text, { style: { fontSize: 22, fontWeight: '800', color: theme.colors.textPrimary } }, stat.value),
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 2 } }, stat.label),
-              React.createElement(Text, { style: { fontSize: 11, color: stat.color, marginTop: 4, fontWeight: '600' } }, stat.subtitle)
-            );
-          })
-        ),
-        React.createElement(SectionHeader, { theme: theme, title: 'Quick Management' }),
-        React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap' } },
-          [
-            { icon: 'person-add', label: 'Add Student', color: primaryColor, route: 'AdminStudents' },
-            { icon: 'school', label: 'Manage Courses', color: '#8B5CF6', route: 'AdminCourses' },
-            { icon: 'receipt', label: 'Fee Records', color: accentColor, route: 'AdminFees' },
-            { icon: 'campaign', label: 'Post Notice', color: successColor, route: 'AdminNotices' },
-            { icon: 'bar-chart', label: 'Reports', color: '#EC4899', route: 'AdminReports' },
-            { icon: 'settings', label: 'Settings', color: textSecondary, route: 'AdminStudents' },
-          ].map(function(action) {
-            return React.createElement(TouchableOpacity, { key: action.label, onPress: function() { navigation.navigate(action.route); }, style: { width: '31%', backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, alignItems: 'center', marginRight: '2.33%', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 1 }, componentId: 'admin-quick-' + action.label },
-              React.createElement(View, { style: { width: 42, height: 42, borderRadius: 12, backgroundColor: action.color + '18', alignItems: 'center', justifyContent: 'center', marginBottom: 8 } },
-                React.createElement(MaterialIcons, { name: action.icon, size: 22, color: action.color })
-              ),
-              React.createElement(Text, { style: { fontSize: 11, fontWeight: '600', color: theme.colors.textPrimary, textAlign: 'center' } }, action.label)
-            );
-          })
-        ),
-        React.createElement(SectionHeader, { theme: theme, title: 'Recent Registrations' }),
-        SAMPLE_STUDENTS.slice(0, 4).map(function(student) {
-          var feeColor = student.fee_status === 'paid' ? successColor : student.fee_status === 'partial' ? warningColor : errorColor;
-          return React.createElement(View, { key: student.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 3, elevation: 1 }, componentId: 'admin-student-' + student.id },
-            React.createElement(View, { style: { width: 40, height: 40, borderRadius: 20, backgroundColor: primaryColor, alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 15 } }, student.full_name.charAt(0))
-            ),
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary } }, student.full_name),
-              React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, student.student_id + ' | ' + student.course_name)
-            ),
-            React.createElement(View, { style: { backgroundColor: feeColor + '18', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 } },
-              React.createElement(Text, { style: { fontSize: 11, fontWeight: '700', color: feeColor, textTransform: 'uppercase' } }, student.fee_status)
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:AdminDashboard
-
-  // @section:AddStudentModal @depends:[ThemeContext]
-  var AddStudentModal = function(props) {
-    var visible = props.visible;
-    var onClose = props.onClose;
-    var theme = props.theme;
-    var insetsTop = props.insetsTop;
-    var insetsBottom = props.insetsBottom;
-    var onSave = props.onSave;
-    var nameState = useState('');
-    var name = nameState[0];
-    var setName = nameState[1];
-    var emailState = useState('');
-    var email = emailState[0];
-    var setEmail = emailState[1];
-    var mobileState = useState('');
-    var mobile = mobileState[0];
-    var setMobile = mobileState[1];
-    var courseState = useState('Python');
-    var course = courseState[0];
-    var setCourse = courseState[1];
-    var studentIdState = useState('');
-    var studentIdVal = studentIdState[0];
-    var setStudentId = studentIdState[1];
-    var baseHeight = (Platform.OS === 'web' && typeof window !== 'undefined' && window.__thunkablePhoneFrameHeight) || Dimensions.get('window').height;
-    var sheetHeight = Math.round(baseHeight * 0.85);
-
-    var handleSave = function() {
-      if (!name.trim() || !email.trim()) {
-        Platform.OS === 'web' ? window.alert('Name and email are required') : Alert.alert('Error', 'Name and email are required');
-        return;
-      }
-      onSave({ full_name: name, email: email, mobile: mobile, course_name: course, student_id: studentIdVal || 'SCC' + Math.floor(Math.random() * 900 + 100) });
-      setName(''); setEmail(''); setMobile(''); setCourse('Python'); setStudentId('');
-    };
-
-    return React.createElement(Modal, { visible: visible, animationType: 'slide', transparent: true, onRequestClose: onClose },
-      React.createElement(View, { style: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)', marginTop: insetsTop } },
-        React.createElement(View, { style: { height: sheetHeight, backgroundColor: theme.colors.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingBottom: insetsBottom + 16 } },
-          React.createElement(View, { style: { width: 40, height: 4, backgroundColor: theme.colors.border, borderRadius: 2, alignSelf: 'center', marginTop: 12 } }),
-          React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: theme.colors.border } },
-            React.createElement(Text, { style: { fontSize: 17, fontWeight: '700', color: theme.colors.textPrimary } }, 'Add New Student'),
-            React.createElement(TouchableOpacity, { onPress: onClose, componentId: 'close-student-modal' }, React.createElement(MaterialIcons, { name: 'close', size: 22, color: textSecondary }))
-          ),
-          React.createElement(ScrollView, { style: { flex: 1, paddingHorizontal: 20 } },
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 16, marginBottom: 6 } }, 'Full Name *'),
-            React.createElement(TextInput, { value: name, onChangeText: setName, placeholder: 'Student full name', autoCapitalize: 'words', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'student-name-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Student ID'),
-            React.createElement(TextInput, { value: studentIdVal, onChangeText: setStudentId, placeholder: 'e.g. SCC006', autoCapitalize: 'characters', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'student-id-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Email *'),
-            React.createElement(TextInput, { value: email, onChangeText: setEmail, placeholder: 'student@email.com', keyboardType: 'email-address', autoCapitalize: 'none', autoCorrect: false, style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'student-email-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 6 } }, 'Mobile'),
-            React.createElement(TextInput, { value: mobile, onChangeText: function(t) { setMobile(t.replace(/[^0-9+\-() ]/g, '')); }, placeholder: '+91 98765 43210', keyboardType: 'phone-pad', autoCapitalize: 'none', style: { borderWidth: 1, borderColor: theme.colors.border, borderRadius: 10, padding: 12, fontSize: 14, color: theme.colors.textPrimary, backgroundColor: theme.colors.background }, componentId: 'student-mobile-input' }),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: textSecondary, marginTop: 14, marginBottom: 8 } }, 'Course'),
-            React.createElement(View, { style: { flexDirection: 'row', flexWrap: 'wrap' } },
-              COURSES_CATALOG.slice(0, 6).map(function(c) {
-                return React.createElement(TouchableOpacity, { key: c.id, onPress: function() { setCourse(c.course_name); }, style: { backgroundColor: course === c.course_name ? primaryColor : theme.colors.background, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6, marginRight: 8, marginBottom: 8, borderWidth: 1, borderColor: course === c.course_name ? primaryColor : theme.colors.border }, componentId: 'course-select-' + c.id },
-                  React.createElement(Text, { style: { fontSize: 12, fontWeight: '600', color: course === c.course_name ? '#fff' : textSecondary } }, c.course_name)
-                );
-              })
-            ),
-            React.createElement(TouchableOpacity, { onPress: handleSave, style: { backgroundColor: primaryColor, borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 20, marginBottom: 20 }, componentId: 'save-student-btn' },
-              React.createElement(Text, { style: { color: '#fff', fontWeight: '800', fontSize: 15 } }, 'Add Student')
-            )
-          )
-        )
-      )
-    );
-  };
-  // @end:AddStudentModal
-
-  // @section:AdminStudents @depends:[ThemeContext,shared-components,AddStudentModal]
-  var AdminStudents = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var showModalState = useState(false);
-    var showModal = showModalState[0];
-    var setShowModal = showModalState[1];
-    var searchState = useState('');
-    var search = searchState[0];
-    var setSearch = searchState[1];
-    var localStudentsState = useState(SAMPLE_STUDENTS);
-    var localStudents = localStudentsState[0];
-    var setLocalStudents = localStudentsState[1];
-
-    var filtered = useMemo(function() {
-      if (!search) return localStudents;
-      return localStudents.filter(function(s) {
-        return s.full_name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || s.student_id.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-      });
-    }, [search, localStudents]);
-
-    var handleSave = function(data) {
-      var newStudent = Object.assign({}, data, { id: 'stu-new-' + Date.now(), attendance_percentage: 0, fee_status: 'pending', joining_date: new Date().toISOString().split('T')[0] });
-      setLocalStudents(function(prev) { return [newStudent].concat(prev); });
-      setShowModal(false);
-      Platform.OS === 'web' ? window.alert('Student added successfully!') : Alert.alert('Success', 'Student added!');
-    };
-
-    var handleDelete = function(studentId, name) {
-      if (Platform.OS === 'web') {
-        if (window.confirm('Delete student ' + name + '?')) {
-          setLocalStudents(function(prev) { return prev.filter(function(s) { return s.id !== studentId; }); });
-        }
-      } else {
-        Alert.alert('Delete Student', 'Remove ' + name + ' from the system?', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: function() { setLocalStudents(function(prev) { return prev.filter(function(s) { return s.id !== studentId; }); }); } }]);
-      }
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-students' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 16, paddingHorizontal: 16 } },
-        React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 } },
-          React.createElement(View, {},
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Students'),
-            React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, filtered.length + ' students')
-          ),
-          React.createElement(TouchableOpacity, { onPress: function() { setShowModal(true); }, style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'add-student-header-btn' },
-            React.createElement(MaterialIcons, { name: 'person-add', size: 18, color: '#fff' }),
-            React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, 'Add')
-          )
-        ),
-        React.createElement(View, { style: { backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12 } },
-          React.createElement(MaterialIcons, { name: 'search', size: 18, color: 'rgba(255,255,255,0.7)' }),
-          React.createElement(TextInput, { value: search, onChangeText: setSearch, placeholder: 'Search by name or ID...', placeholderTextColor: 'rgba(255,255,255,0.6)', style: { flex: 1, padding: 10, color: '#fff', fontSize: 14 }, componentId: 'student-search-input' })
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        filtered.length === 0 ? React.createElement(EmptyState, { theme: theme, icon: 'person-search', message: 'No students found' }) :
-        filtered.map(function(student) {
-          var feeColor = student.fee_status === 'paid' ? successColor : student.fee_status === 'partial' ? warningColor : errorColor;
-          var attColor = student.attendance_percentage >= 75 ? successColor : errorColor;
-          return React.createElement(View, { key: student.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'admin-student-card-' + student.id },
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 } },
-              React.createElement(View, { style: { width: 44, height: 44, borderRadius: 22, backgroundColor: primaryColor, alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-                React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 17 } }, student.full_name.charAt(0))
-              ),
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, student.full_name),
-                React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, student.student_id + ' | ' + student.course_name)
-              )
-            ),
-            React.createElement(View, { style: { flexDirection: 'row', marginBottom: 12 } },
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: attColor + '10', borderRadius: 8, paddingVertical: 8 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '800', color: attColor } }, student.attendance_percentage + '%'),
-                React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, 'Attendance')
-              ),
-              React.createElement(View, { style: { width: 10 } }),
-              React.createElement(View, { style: { flex: 1, alignItems: 'center', backgroundColor: feeColor + '10', borderRadius: 8, paddingVertical: 8 } },
-                React.createElement(Text, { style: { fontSize: 15, fontWeight: '800', color: feeColor, textTransform: 'capitalize' } }, student.fee_status),
-                React.createElement(Text, { style: { fontSize: 11, color: textSecondary } }, 'Fee Status')
-              )
-            ),
-            React.createElement(View, { style: { flexDirection: 'row' } },
-              React.createElement(TouchableOpacity, { style: { flex: 1, backgroundColor: primaryColor + '15', borderRadius: 8, padding: 10, alignItems: 'center', marginRight: 8, flexDirection: 'row', justifyContent: 'center' }, componentId: 'edit-student-' + student.id },
-                React.createElement(MaterialIcons, { name: 'edit', size: 16, color: primaryColor }),
-                React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: primaryColor, marginLeft: 4 } }, 'Edit')
-              ),
-              React.createElement(TouchableOpacity, { onPress: function() { handleDelete(student.id, student.full_name); }, style: { flex: 1, backgroundColor: errorColor + '15', borderRadius: 8, padding: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }, componentId: 'delete-student-' + student.id },
-                React.createElement(MaterialIcons, { name: 'delete', size: 16, color: errorColor }),
-                React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: errorColor, marginLeft: 4 } }, 'Remove')
-              )
-            )
-          );
-        })
-      ),
-      React.createElement(AddStudentModal, { visible: showModal, onClose: function() { setShowModal(false); }, theme: theme, insetsTop: insets.top, insetsBottom: insets.bottom, onSave: handleSave })
-    );
-  };
-  // @end:AdminStudents
-
-  // @section:AdminCourses @depends:[ThemeContext,shared-components,static-data]
-  var AdminCourses = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var localCoursesState = useState(COURSES_CATALOG);
-    var localCourses = localCoursesState[0];
-    var setLocalCourses = localCoursesState[1];
-
-    var handleDelete = function(courseId, courseName) {
-      if (Platform.OS === 'web') {
-        if (window.confirm('Delete course: ' + courseName + '?')) {
-          setLocalCourses(function(prev) { return prev.filter(function(c) { return c.id !== courseId; }); });
-        }
-      } else {
-        Alert.alert('Delete Course', 'Remove ' + courseName + '?', [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: function() { setLocalCourses(function(prev) { return prev.filter(function(c) { return c.id !== courseId; }); }); } }]);
-      }
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-courses' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(View, {},
-          React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Course Management'),
-          React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)' } }, localCourses.length + ' courses')
-        ),
-        React.createElement(TouchableOpacity, { style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'add-course-btn' },
-          React.createElement(MaterialIcons, { name: 'add', size: 18, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, 'Add Course')
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        localCourses.map(function(course) {
-          return React.createElement(View, { key: course.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'admin-course-' + course.id },
-            React.createElement(View, { style: { height: 5, backgroundColor: course.color } }),
-            React.createElement(View, { style: { padding: 14 } },
-              React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 } },
-                React.createElement(View, { style: { width: 40, height: 40, borderRadius: 10, backgroundColor: course.color + '18', alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                  React.createElement(MaterialIcons, { name: course.icon, size: 22, color: course.color })
-                ),
-                React.createElement(View, { style: { flex: 1 } },
-                  React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary } }, course.course_name),
-                  React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, course.duration_hours + ' hours | ₹' + course.course_fee.toLocaleString())
-                )
-              ),
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginBottom: 10 }, numberOfLines: 1 }, course.description),
-              React.createElement(View, { style: { flexDirection: 'row' } },
-                React.createElement(TouchableOpacity, { style: { flex: 1, backgroundColor: primaryColor + '15', borderRadius: 8, padding: 8, alignItems: 'center', marginRight: 6, flexDirection: 'row', justifyContent: 'center' }, componentId: 'edit-course-' + course.id },
-                  React.createElement(MaterialIcons, { name: 'edit', size: 16, color: primaryColor }),
-                  React.createElement(Text, { style: { fontSize: 12, fontWeight: '600', color: primaryColor, marginLeft: 4 } }, 'Edit')
-                ),
-                React.createElement(TouchableOpacity, { style: { flex: 1, backgroundColor: '#8B5CF6' + '15', borderRadius: 8, padding: 8, alignItems: 'center', marginRight: 6, flexDirection: 'row', justifyContent: 'center' }, componentId: 'content-course-' + course.id },
-                  React.createElement(MaterialIcons, { name: 'video-library', size: 16, color: '#8B5CF6' }),
-                  React.createElement(Text, { style: { fontSize: 12, fontWeight: '600', color: '#8B5CF6', marginLeft: 4 } }, 'Content')
-                ),
-                React.createElement(TouchableOpacity, { onPress: function() { handleDelete(course.id, course.course_name); }, style: { backgroundColor: errorColor + '15', borderRadius: 8, padding: 8, alignItems: 'center', paddingHorizontal: 12 }, componentId: 'delete-course-' + course.id },
-                  React.createElement(MaterialIcons, { name: 'delete', size: 16, color: errorColor })
-                )
-              )
-            )
-          );
-        })
-      )
-    );
-  };
-  // @end:AdminCourses
-
-  // @section:AdminFees @depends:[ThemeContext,shared-components,static-data]
-  var AdminFees = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var filterState = useState('all');
-    var filter = filterState[0];
-    var setFilter = filterState[1];
-
-    var studentFeeData = SAMPLE_STUDENTS.map(function(s, i) {
-      var statuses = ['paid', 'partial', 'pending', 'paid', 'partial'];
-      var fees = [8500, 12000, 6000, 7500, 8000];
-      var paid = [8500, 6000, 0, 7500, 4000];
-      return Object.assign({}, s, { total_fee: fees[i], paid_amount: paid[i], remaining: fees[i] - paid[i], payment_status: statuses[i] });
-    });
-
-    var filtered = useMemo(function() {
-      if (filter === 'all') return studentFeeData;
-      return studentFeeData.filter(function(s) { return s.payment_status === filter; });
-    }, [filter]);
-
-    var totalCollection = studentFeeData.reduce(function(acc, s) { return acc + s.paid_amount; }, 0);
-    var totalPending = studentFeeData.reduce(function(acc, s) { return acc + s.remaining; }, 0);
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-fees' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 12 } }, 'Fee Management'),
-        React.createElement(View, { style: { flexDirection: 'row' } },
-          ['all', 'paid', 'partial', 'pending'].map(function(f) {
-            return React.createElement(TouchableOpacity, { key: f, onPress: function() { setFilter(f); }, style: { backgroundColor: filter === f ? accentColor : 'rgba(255,255,255,0.15)', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, marginRight: 8 }, componentId: 'fee-filter-' + f },
-              React.createElement(Text, { style: { fontSize: 12, fontWeight: '700', color: '#fff', textTransform: 'capitalize' } }, f)
-            );
-          })
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        React.createElement(View, { style: { flexDirection: 'row', marginBottom: 16 } },
-          React.createElement(View, { style: { flex: 1, backgroundColor: successColor + '15', borderRadius: 14, padding: 16, marginRight: 8, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: successColor } }, '₹' + totalCollection.toLocaleString()),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Total Collected')
-          ),
-          React.createElement(View, { style: { flex: 1, backgroundColor: errorColor + '15', borderRadius: 14, padding: 16, alignItems: 'center' } },
-            React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: errorColor } }, '₹' + totalPending.toLocaleString()),
-            React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 4 } }, 'Pending Amount')
-          )
-        ),
-        filtered.map(function(student) {
-          var feeColor = student.payment_status === 'paid' ? successColor : student.payment_status === 'partial' ? warningColor : errorColor;
-          var paidPct = Math.round((student.paid_amount / student.total_fee) * 100);
-          return React.createElement(View, { key: student.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, padding: 14, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'fee-record-' + student.id },
-            React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 } },
-              React.createElement(View, { style: { width: 38, height: 38, borderRadius: 19, backgroundColor: primaryColor, alignItems: 'center', justifyContent: 'center', marginRight: 12 } },
-                React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 14 } }, student.full_name.charAt(0))
-              ),
-              React.createElement(View, { style: { flex: 1 } },
-                React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary } }, student.full_name),
-                React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, student.student_id + ' | ' + student.course_name)
-              ),
-              React.createElement(BadgePill, { status: student.payment_status })
-            ),
-            React.createElement(View, { style: { height: 6, backgroundColor: theme.colors.border, borderRadius: 3, marginBottom: 6 } },
-              React.createElement(View, { style: { height: 6, backgroundColor: feeColor, borderRadius: 3, width: paidPct + '%' } })
-            ),
-            React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between' } },
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, 'Paid: ₹' + student.paid_amount.toLocaleString()),
-              React.createElement(Text, { style: { fontSize: 12, color: feeColor, fontWeight: '600' } }, 'Due: ₹' + student.remaining.toLocaleString()),
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary } }, 'Total: ₹' + student.total_fee.toLocaleString())
-            ),
-            student.payment_status !== 'paid' ? React.createElement(TouchableOpacity, { style: { backgroundColor: successColor + '15', borderRadius: 8, padding: 10, alignItems: 'center', marginTop: 10 }, componentId: 'update-fee-' + student.id },
-              React.createElement(Text, { style: { fontSize: 13, fontWeight: '600', color: successColor } }, 'Update Payment')
-            ) : null
-          );
-        })
-      )
-    );
-  };
-  // @end:AdminFees
-
-  // @section:AdminNotices @depends:[ThemeContext,shared-components,static-data,AddNoticeModal]
-  var AdminNotices = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var showModalState = useState(false);
-    var showModal = showModalState[0];
-    var setShowModal = showModalState[1];
-    var insertNotice = useMutation('notices', 'insert');
-    var mutateNotice = insertNotice.mutate;
-    var noticesQuery = useQuery('notices');
-    var dbNotices = (noticesQuery.data && noticesQuery.data.length > 0) ? noticesQuery.data : [];
-    var allNotices = SAMPLE_NOTICES.concat(dbNotices);
-    var typeColorMap = { announcement: primaryColor, holiday: successColor, exam: errorColor, course: accentColor, general: textSecondary };
-
-    var handleSave = function(data) {
-      mutateNotice(Object.assign({}, data, { posted_by: 'admin-1', is_published: true })).then(function() {
-        noticesQuery.refetch();
-        setShowModal(false);
-      }).catch(function() { setShowModal(false); });
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-notices' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Notices & Announcements'),
-        React.createElement(TouchableOpacity, { onPress: function() { setShowModal(true); }, style: { backgroundColor: accentColor, borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, flexDirection: 'row', alignItems: 'center' }, componentId: 'admin-add-notice-btn' },
-          React.createElement(MaterialIcons, { name: 'add', size: 18, color: '#fff' }),
-          React.createElement(Text, { style: { color: '#fff', fontWeight: '700', fontSize: 13, marginLeft: 4 } }, 'Post')
-        )
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        allNotices.map(function(notice) {
-          var typeColor = typeColorMap[notice.notice_type] || textSecondary;
-          return React.createElement(View, { key: notice.id, style: { backgroundColor: theme.colors.card, borderRadius: 14, marginBottom: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'admin-notice-' + notice.id },
-            React.createElement(View, { style: { height: 4, backgroundColor: typeColor } }),
-            React.createElement(View, { style: { padding: 14 } },
-              React.createElement(View, { style: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 } },
-                React.createElement(View, { style: { flex: 1 } },
-                  React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary } }, notice.notice_title),
-                  React.createElement(View, { style: { flexDirection: 'row', alignItems: 'center', marginTop: 4 } },
-                    React.createElement(BadgePill, { status: notice.priority }),
-                    React.createElement(Text, { style: { fontSize: 11, color: textSecondary, marginLeft: 8, textTransform: 'capitalize' } }, notice.notice_type)
-                  )
-                ),
-                React.createElement(TouchableOpacity, { style: { marginLeft: 10 }, componentId: 'delete-notice-' + notice.id },
-                  React.createElement(MaterialIcons, { name: 'delete-outline', size: 20, color: errorColor })
-                )
-              ),
-              React.createElement(Text, { style: { fontSize: 13, color: textSecondary }, numberOfLines: 2 }, notice.notice_description)
-            )
-          );
-        })
-      ),
-      React.createElement(AddNoticeModal, { visible: showModal, onClose: function() { setShowModal(false); }, theme: theme, insetsTop: insets.top, insetsBottom: insets.bottom, onSave: handleSave })
-    );
-  };
-  // @end:AdminNotices
-
-  // @section:AdminReports @depends:[ThemeContext,shared-components,static-data]
-  var AdminReports = function(props) {
-    var tc = useTheme();
-    var theme = tc.theme;
-    var insets = useSafeAreaInsets();
-    var scrollPadding = Platform.OS === 'web' ? WEB_TAB_MENU_PADDING : (TAB_MENU_HEIGHT + insets.bottom + SCROLL_EXTRA_PADDING);
-    var shareHook = useShare();
-    var share = shareHook.share;
-
-    var reportItems = [
-      { icon: 'people', label: 'Student Report', subtitle: '127 total students, 12 new this month', color: primaryColor },
-      { icon: 'event-available', label: 'Attendance Report', subtitle: 'Average 82% attendance across all courses', color: successColor },
-      { icon: 'account-balance-wallet', label: 'Fee Collection Report', subtitle: '₹2.4L collected, ₹68K pending', color: accentColor },
-      { icon: 'quiz', label: 'Test Performance Report', subtitle: '78% average pass rate across all tests', color: '#8B5CF6' },
-      { icon: 'assignment', label: 'Assignment Report', subtitle: '234 submitted, 18 pending review', color: '#EC4899' },
-    ];
-
-    var courseEnrollment = COURSES_CATALOG.slice(0, 5).map(function(c, i) {
-      var counts = [42, 38, 25, 19, 31];
-      return Object.assign({}, c, { enrolled: counts[i] });
-    });
-
-    var handleShare = function(reportName) {
-      share({ message: 'Samyak Computer Classes - ' + reportName + ' exported on ' + new Date().toDateString() }).catch(function() {});
-    };
-
-    return React.createElement(View, { style: { flex: 1, backgroundColor: theme.colors.background }, componentId: 'admin-reports' },
-      React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-      React.createElement(View, { style: { backgroundColor: theme.colors.primary, paddingTop: insets.top + 14, paddingBottom: 14, paddingHorizontal: 16 } },
-        React.createElement(Text, { style: { fontSize: 20, fontWeight: '800', color: '#fff' } }, 'Reports & Analytics'),
-        React.createElement(Text, { style: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginTop: 4 } }, 'Institution performance overview')
-      ),
-      React.createElement(ScrollView, { style: { flex: 1 }, contentContainerStyle: { padding: 16, paddingBottom: scrollPadding } },
-        reportItems.map(function(item) {
-          return React.createElement(View, { key: item.label, style: { backgroundColor: theme.colors.card, borderRadius: 14, padding: 14, marginBottom: 12, flexDirection: 'row', alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 }, componentId: 'report-' + item.label },
-            React.createElement(View, { style: { width: 48, height: 48, borderRadius: 14, backgroundColor: item.color + '18', alignItems: 'center', justifyContent: 'center', marginRight: 14 } },
-              React.createElement(MaterialIcons, { name: item.icon, size: 26, color: item.color })
-            ),
-            React.createElement(View, { style: { flex: 1 } },
-              React.createElement(Text, { style: { fontSize: 14, fontWeight: '700', color: theme.colors.textPrimary } }, item.label),
-              React.createElement(Text, { style: { fontSize: 12, color: textSecondary, marginTop: 2 } }, item.subtitle)
-            ),
-            React.createElement(TouchableOpacity, { onPress: function() { handleShare(item.label); }, style: { backgroundColor: item.color + '18', borderRadius: 8, padding: 8 }, componentId: 'share-report-' + item.label },
-              React.createElement(MaterialIcons, { name: 'share', size: 18, color: item.color })
-            )
-          );
-        }),
-        React.createElement(Text, { style: { fontSize: 15, fontWeight: '700', color: theme.colors.textPrimary, marginTop: 8, marginBottom: 12 } }, 'Course Enrollment'),
-        courseEnrollment.map(function(course) {
-          return React.createElement(View, { key: course.id, style: { backgroundColor: theme.colors.card, borderRadius: 12, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center' }, componentId: 'course-enroll-' + course.id },
-            React.createElement(View, { style: { width: 8, height: 8, borderRadius: 4, backgroundColor: course.color, marginRight: 12 } }),
-            React.createElement(Text, { style: { flex: 1, fontSize: 13, fontWeight: '600', color: theme.colors.textPrimary } }, course.course_name),
-            React.createElement(View, { style: { width: 100, height: 8, backgroundColor: theme.colors.border, borderRadius: 4, marginHorizontal: 12 } },
-              React.createElement(View, { style: { height: 8, backgroundColor: course.color, borderRadius: 4, width: (course.enrolled / 50 * 100) + '%' } })
-            ),
-            React.createElement(Text, { style: { fontSize: 13, fontWeight: '700', color: theme.colors.textPrimary, width: 30, textAlign: 'right' } }, course.enrolled)
-          );
-        })
-      )
-    );
-  };
-  // @end:AdminReports
-
-  // @section:AdminTabNavigator @depends:[AdminDashboard,AdminStudents,AdminCourses,AdminFees,AdminNotices,AdminReports,navigation-setup]
-  var AdminTabNavigator = function(props) {
-    var insets = useSafeAreaInsets();
-    var tc = useTheme();
-    var theme = tc.theme;
-    return React.createElement(View, { style: { flex: 1, width: '100%', height: '100%', overflow: 'hidden' } },
-      React.createElement(Tab.Navigator, { screenOptions: {
-          headerShown: false,
-          tabBarStyle: { position: 'absolute', bottom: 0, height: Platform.OS === 'web' ? TAB_MENU_HEIGHT : TAB_MENU_HEIGHT + insets.bottom, paddingBottom: 0, borderTopWidth: 1, borderTopColor: theme.colors.border, backgroundColor: theme.colors.card },
-          tabBarItemStyle: { padding: 0 },
-          tabBarActiveTintColor: '#8B5CF6',
-          tabBarInactiveTintColor: textSecondary,
-          tabBarLabelStyle: { fontSize: 10, fontWeight: '600' }
-        }
-      },
-        React.createElement(Tab.Screen, { name: 'AdminDashboard', component: AdminDashboard, options: { tabBarLabel: 'Dashboard', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'dashboard', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'AdminStudents', component: AdminStudents, options: { tabBarLabel: 'Students', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'groups', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'AdminCourses', component: AdminCourses, options: { tabBarLabel: 'Courses', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'menu-book', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'AdminFees', component: AdminFees, options: { tabBarLabel: 'Fees', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'account-balance-wallet', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'AdminNotices', component: AdminNotices, options: { tabBarLabel: 'Notices', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'campaign', size: 24, color: p.color }); } } }),
-        React.createElement(Tab.Screen, { name: 'AdminReports', component: AdminReports, options: { tabBarLabel: 'Reports', tabBarIcon: function(p) { return React.createElement(MaterialIcons, { name: 'bar-chart', size: 24, color: p.color }); } } })
-      )
-    );
-  };
-  // @end:AdminTabNavigator
-
-  // @section:StudentApp @depends:[StudentTabNavigator,TakeTest]
-  var StudentApp = function() {
-    var StudentStack = createStackNavigator();
-    return React.createElement(StudentStack.Navigator, { screenOptions: { headerShown: false }, initialRouteName: 'StudentTabs' },
-      React.createElement(StudentStack.Screen, { name: 'StudentTabs', component: StudentTabNavigator }),
-      React.createElement(StudentStack.Screen, { name: 'TakeTest', component: TakeTest })
-    );
-  };
-  // @end:StudentApp
-
-  // @section:styles @depends:[theme]
-  var styles = StyleSheet.create({
-    flex1: { flex: 1 },
-    row: { flexDirection: 'row', alignItems: 'center' },
-    center: { alignItems: 'center', justifyContent: 'center' },
-    card: { backgroundColor: cardColor, borderRadius: 14, padding: 16, marginBottom: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 2 },
-    primaryBtn: { backgroundColor: primaryColor, borderRadius: 12, padding: 16, alignItems: 'center' },
-    primaryBtnText: { color: '#fff', fontWeight: '800', fontSize: 15 },
-    sectionTitle: { fontSize: 16, fontWeight: '700', color: textPrimary, marginBottom: 12, marginTop: 20 },
-    inputLabel: { fontSize: 13, fontWeight: '600', color: textSecondary, marginBottom: 6 },
-    input: { borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 10, padding: 12, fontSize: 14, color: textPrimary, backgroundColor: backgroundColor },
-    headerText: { fontSize: 20, fontWeight: '800', color: '#fff' },
-    subHeaderText: { fontSize: 13, color: 'rgba(255,255,255,0.8)' },
-    fab: { position: 'absolute', right: 20, width: 56, height: 56, borderRadius: 28, backgroundColor: primaryColor, alignItems: 'center', justifyContent: 'center', shadowColor: primaryColor, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.35, shadowRadius: 8, elevation: 6 }
-  });
-  // @end:styles
-
-  // @section:MainNavigator @depends:[RoleSelector,StudentApp,TeacherTabNavigator,AdminTabNavigator]
-  var MainNavigator = function() {
-    return React.createElement(Stack.Navigator, { screenOptions: { headerShown: false }, initialRouteName: 'RoleSelector' },
-      React.createElement(Stack.Screen, { name: 'RoleSelector', component: RoleSelector }),
-      React.createElement(Stack.Screen, { name: 'StudentApp', component: StudentApp }),
-      React.createElement(Stack.Screen, { name: 'TeacherApp', component: TeacherTabNavigator }),
-      React.createElement(Stack.Screen, { name: 'AdminApp', component: AdminTabNavigator })
-    );
-  };
-  // @end:MainNavigator
-
-  // @section:return @depends:[ThemeProvider,AppProvider,MainNavigator]
-  return React.createElement(ThemeProvider, {},
-    React.createElement(AppProvider, {},
-      React.createElement(View, { style: { flex: 1, width: '100%', height: '100%' } },
-        React.createElement(StatusBar, { barStyle: 'light-content', backgroundColor: primaryColor }),
-        React.createElement(MainNavigator)
-      )
-    )
-  );
-  // @end:return
-};
-return ComponentFunction;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Samyak Computer Classes | Bhawarkua, Indore</title>
+
+    <meta name="description"
+        content="Samyak Computer Classes, Bhawarkua Indore - Learn Computer, MS Office, Advanced Excel, Tally GST, Python, Digital Marketing and more.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            background: #071952;
+            color: white;
+            padding: 15px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #00d9ff;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        nav ul li a:hover {
+            color: #00d9ff;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 90vh;
+            padding: 80px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            background: linear-gradient(135deg, #071952, #0b4f9c);
+            color: white;
+        }
+
+        .hero-text {
+            max-width: 650px;
+        }
+
+        .hero-text h1 {
+            font-size: 52px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #00e5ff;
+        }
+
+        .hero-text p {
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #e5edff;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #00d9ff;
+            color: #001b44;
+        }
+
+        .secondary {
+            border: 2px solid white;
+            color: white;
+        }
+
+        .hero-card {
+            width: 350px;
+            padding: 35px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .hero-card h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .hero-card p {
+            line-height: 1.6;
+        }
+
+        /* COMMON */
+
+        section {
+            padding: 75px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #071952;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        /* COURSES */
+
+        .courses {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .course {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .course:hover {
+            transform: translateY(-7px);
+        }
+
+        .course-icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .course h3 {
+            color: #071952;
+            margin-bottom: 10px;
+        }
+
+        .course p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* WHY US */
+
+        .why {
+            background: #eef4ff;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .why-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .why-box .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .why-box h3 {
+            color: #071952;
+            margin-bottom: 10px;
+        }
+
+        .why-box p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ABOUT */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 38px;
+            color: #071952;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-box {
+            background: linear-gradient(135deg, #071952, #0b4f9c);
+            color: white;
+            padding: 45px;
+            border-radius: 20px;
+        }
+
+        .about-box h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .about-box p {
+            line-height: 1.7;
+        }
+
+        /* CONTACT */
+
+        .contact {
+            background: #071952;
+            color: white;
+        }
+
+        .contact .section-title h2 {
+            color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .contact-box {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .contact-box h3 {
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+        .contact-box p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #03102f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer p {
+            color: #ccd6ee;
+        }
+
+        /* WHATSAPP */
+
+        .whatsapp {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 900px) {
+
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 60px;
+            }
+
+            .hero-text h1 {
+                font-size: 38px;
+            }
+
+            .hero-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .courses {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 550px) {
+
+            section {
+                padding: 55px 5%;
+            }
+
+            .courses {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 55px 5%;
+            }
+
+            .hero-text h1 {
+                font-size: 32px;
+            }
+
+            .hero-text p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+        <div class="logo">
+            Samyak <span>Computer Classes</span>
+        </div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-text">
+
+            <h1>
+                Learn Today.
+                <span>Lead Tomorrow.</span>
+            </h1>
+
+            <p>
+                Samyak Computer Classes, Bhawarkua Indore
+                में computer और professional skills सीखें
+                और अपने career को नई दिशा दें।
+            </p>
+
+            <div class="buttons">
+
+                <a href="#courses" class="btn primary">
+                    View Courses
+                </a>
+
+                <a href="#contact" class="btn secondary">
+                    Contact Us
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+
+            <h2>🎓 Samyak</h2>
+
+            <p>
+                Professional Computer Education
+            </p>
+
+            <br>
+
+            <p>
+                MS Office • Excel • Tally • Python
+                • Digital Marketing • Graphic Designing
+                and more.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- COURSES -->
+
+    <section id="courses">
+
+        <div class="section-title">
+
+            <h2>Our Courses</h2>
+
+            <p>
+                अपने career के लिए सही computer course चुनें
+            </p>
+
+        </div>
+
+
+        <div class="courses">
+
+            <div class="course">
+                <div class="course-icon">💻</div>
+                <h3>Basic Computer</h3>
+                <p>
+                    Computer की basic जानकारी और practical skills सीखें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">📊</div>
+                <h3>MS Office</h3>
+                <p>
+                    MS Word, Excel और PowerPoint की practical training।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">📈</div>
+                <h3>Advanced Excel</h3>
+                <p>
+                    Advanced formulas, functions, reports और data handling।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🧾</div>
+                <h3>Tally with GST</h3>
+                <p>
+                    Tally और GST की practical training।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🎨</div>
+                <h3>Graphic Designing</h3>
+                <p>
+                    Professional graphic designing skills सीखें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">📱</div>
+                <h3>Digital Marketing</h3>
+                <p>
+                    Digital marketing और online promotion की जानकारी।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🐍</div>
+                <h3>Python</h3>
+                <p>
+                    Python programming को basic से advanced level तक सीखें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🔐</div>
+                <h3>Ethical Hacking</h3>
+                <p>
+                    Cyber security और ethical hacking fundamentals सीखें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">📊</div>
+                <h3>Data Science</h3>
+                <p>
+                    Data और technology से related modern skills सीखें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🏦</div>
+                <h3>Banking Diploma</h3>
+                <p>
+                    Banking sector के लिए useful professional skills।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🗣️</div>
+                <h3>Spoken English</h3>
+                <p>
+                    Communication और spoken English skills improve करें।
+                </p>
+            </div>
+
+
+            <div class="course">
+                <div class="course-icon">🎯</div>
+                <h3>Career Skills</h3>
+                <p>
+                    Job और professional career के लिए practical skills।
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHY CHOOSE US -->
+
+    <section class="why">
+
+        <div class="section-title">
+
+            <h2>Why Choose Samyak?</h2>
+
+            <p>
+                आपके बेहतर career के लिए
+            </p>
+
+        </div>
+
+
+        <div class="why-grid">
+
+            <div class="why-box">
+
+                <div class="icon">👨‍🏫</div>
+
+                <h3>Experienced Trainers</h3>
+
+                <p>
+                    Experienced trainers के साथ practical learning।
+                </p>
+
+            </div>
+
+
+            <div class="why-box">
+
+                <div class="icon">💻</div>
+
+                <h3>Practical Training</h3>
+
+                <p>
+                    सिर्फ theory नहीं, बल्कि practical computer training।
+                </p>
+
+            </div>
+
+
+            <div class="why-box">
+
+                <div class="icon">🎓</div>
+
+                <h3>Career Focused</h3>
+
+                <p>
+                    Job और career के लिए useful skills पर focus।
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section id="about">
+
+        <div class="about">
+
+            <div class="about-text">
+
+                <h2>About Samyak Computer Classes</h2>
+
+                <p>
+                    Samyak Computer Classes Bhawarkua, Indore में
+                    students को computer और professional skills
+                    सीखने का अवसर प्रदान करता है।
+                </p>
+
+                <p>
+                    हमारा focus practical learning और career-oriented
+                    computer education पर है।
+                </p>
+
+            </div>
+
+
+            <div class="about-box">
+
+                <h3>🚀 Start Your Learning Journey</h3>
+
+                <p>
+                    आज ही अपने पसंदीदा course के बारे में जानकारी लें
+                    और अपने career को बेहतर बनाने की शुरुआत करें।
+                </p>
+
+                <br>
+
+                <a href="#contact" class="btn primary">
+                    Enquire Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section class="contact" id="contact">
+
+        <div class="section-title">
+
+            <h2>Contact Samyak</h2>
+
+            <p>
+                Course और admission की जानकारी के लिए contact करें।
+            </p>
+
+        </div>
+
+
+        <div class="contact-grid">
+
+            <div class="contact-box">
+
+                <h3>📍 Visit Us</h3>
+
+                <p>
+                    <strong>Samyak Computer Classes</strong>
+                </p>
+
+                <p>
+                    Bhawarkua, Indore, Madhya Pradesh
+                </p>
+
+                <p>
+                    📞 Call us for course details
+                </p>
+
+            </div>
+
+
+            <div class="contact-box">
+
+                <h3>📲 Enquiry</h3>
+
+                <p>
+                    Admission और course details के लिए
+                    WhatsApp पर message करें।
+                </p>
+
+                <br>
+
+                <!-- अपना WhatsApp number नीचे डालें -->
+
+                <a
+                    href="https://wa.me/91XXXXXXXXXX"
+                    class="btn primary">
+                    WhatsApp Enquiry
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 Samyak Computer Classes. All Rights Reserved.
+        </p>
+
+        <p>
+            Bhawarkua, Indore
+        </p>
+
+    </footer>
+
+
+    <!-- FLOATING WHATSAPP -->
+
+    <a
+        href="https://wa.me/916232487747"
+        class="whatsapp"
+        title="WhatsApp">
+        💬
+    </a>
+
+</body>
+</html>
