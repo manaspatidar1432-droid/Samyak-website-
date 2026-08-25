@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enquiry | Samyak Computer Classes</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .header {
+            background: #071952;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #dce7ff;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+        }
+
+        .form-box h2 {
+            text-align: center;
+            color: #071952;
+            margin-bottom: 10px;
+        }
+
+        .form-box .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+
+            border: 1px solid #d5d9e2;
+            border-radius: 8px;
+
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0b4f9c;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #071952;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #0b4f9c;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+
+            color: #071952;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+
+            background: #eef4ff;
+            border-radius: 8px;
+
+            color: #555;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #03102f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer p {
+            color: #c9d3e8;
+            font-size: 14px;
+        }
+
+        @media(max-width: 700px) {
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .form-box {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>Samyak Computer Classes</h1>
+
+        <p>
+            Bhawarkua, Indore
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="form-box">
+
+            <h2>📝 Course Enquiry</h2>
+
+            <p class="subtitle">
+                Course की जानकारी के लिए नीचे form भरें।
+            </p>
+
+
+            <form
+                action="https://formsubmit.co/YOUR_EMAIL_HERE"
+                method="POST">
+
+                <input
+                    type="hidden"
+                    name="_subject"
+                    value="New Enquiry - Samyak Computer Classes">
+
+                <input
+                    type="hidden"
+                    name="_captcha"
+                    value="false">
+
+
+                <label>
+                    Student Name
+                </label>
+
+                <input
+                    type="text"
+                    name="Student Name"
+                    placeholder="अपना नाम लिखें"
+                    required>
+
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    name="Mobile Number"
+                    placeholder="10 digit mobile number"
+                    pattern="[0-9]{10}"
+                    required>
+
+
+                <label>
+                    Select Course
+                </label>
+
+                <select
+                    name="Course"
+                    required>
+
+                    <option value="">
+                        -- Course Select करें --
+                    </option>
+
+                    <option>
+                        Basic Computer
+                    </option>
+
+                    <option>
+                        MS Office
+                    </option>
+
+                    <option>
+                        Advanced Excel
+                    </option>
+
+                    <option>
+                        Tally with GST
+                    </option>
+
+                    <option>
+                        Graphic Designing
+                    </option>
+
+                    <option>
+                        Digital Marketing
+                    </option>
+
+                    <option>
+                        Python
+                    </option>
+
+                    <option>
+                        Data Science
+                    </option>
+
+                    <option>
+                        Ethical Hacking
+                    </option>
+
+                    <option>
+                        Banking Diploma
+                    </option>
+
+                    <option>
+                        Spoken English
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Message
+                </label>
+
+                <textarea
+                    name="Message"
+                    placeholder="आप क्या जानना चाहते हैं?"></textarea>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+
+                    Submit Enquiry
+
+                </button>
+
+            </form>
+
+
+            <div class="note">
+
+                📞 हमारी team आपकी enquiry देखने के बाद
+                आपसे contact करेगी।
+
+            </div>
+
+
+            <a
+                href="index.html"
+                class="back">
+
+                ← वापस Home Page पर जाएँ
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+
+        <p>
+            © 2026 Samyak Computer Classes
+        </p>
+
+        <p>
+            Bhawarkua, Indore
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
