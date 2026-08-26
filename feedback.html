@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Feedback | Samyak Computer Classes</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #071952;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #dce7ff;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 650px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        /* FORM BOX */
+
+        .form-box {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .form-box h2 {
+            text-align: center;
+            color: #071952;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* LABEL */
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        /* INPUT */
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #d5d9e2;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #0b4f9c;
+        }
+
+        textarea {
+
+            min-height: 120px;
+
+            resize: vertical;
+        }
+
+        /* RATING */
+
+        .rating-title {
+            margin-bottom: 10px;
+        }
+
+        .rating {
+
+            display: flex;
+
+            flex-direction: row-reverse;
+
+            justify-content: flex-end;
+
+            gap: 5px;
+
+            margin-bottom: 25px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+
+            font-size: 38px;
+
+            color: #ccc;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .rating label:hover,
+        .rating label:hover ~ label {
+
+            color: #ffc107;
+        }
+
+        .rating input:checked ~ label {
+
+            color: #ffc107;
+        }
+
+        /* BUTTON */
+
+        .submit-btn {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #071952;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+
+            background: #0b4f9c;
+        }
+
+        /* BACK BUTTON */
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #071952;
+
+            font-weight: bold;
+
+            text-decoration: none;
+        }
+
+        /* NOTE */
+
+        .note {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #eef4ff;
+
+            border-radius: 8px;
+
+            color: #555;
+
+            font-size: 14px;
+
+            text-align: center;
+        }
+
+        /* FOOTER */
+
+        footer {
+
+            margin-top: 50px;
+
+            background: #03102f;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        footer p {
+
+            color: #c9d3e8;
+
+            font-size: 14px;
+
+            margin-top: 5px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 700px) {
+
+            .container {
+
+                margin: 25px auto;
+            }
+
+            .form-box {
+
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Samyak Computer Classes
+        </h1>
+
+        <p>
+            Bhawarkua, Indore
+        </p>
+
+    </div>
+
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+        <div class="form-box">
+
+            <h2>
+                ⭐ Give Your Feedback
+            </h2>
+
+            <p class="subtitle">
+                हमें अपना experience बताएं।
+            </p>
+
+
+
+            <!-- FORM -->
+
+            <form
+                action="https://formsubmit.co/indoresamyak@gmail.com"
+                method="POST">
+
+
+                <!-- EMAIL SUBJECT -->
+
+                <input
+                    type="hidden"
+                    name="_subject"
+                    value="New Feedback - Samyak Computer Classes">
+
+
+                <!-- CAPTCHA OFF -->
+
+                <input
+                    type="hidden"
+                    name="_captcha"
+                    value="false">
+
+
+                <!-- NAME -->
+
+                <label>
+                    आपका नाम
+                </label>
+
+                <input
+                    type="text"
+                    name="Student Name"
+                    placeholder="अपना नाम लिखें"
+                    required>
+
+
+
+                <!-- COURSE -->
+
+                <label>
+                    आपने कौन सा Course किया?
+                </label>
+
+                <select
+                    name="Course"
+                    required>
+
+                    <option value="">
+                        -- Course Select करें --
+                    </option>
+
+                    <option>
+                        Basic Computer
+                    </option>
+
+                    <option>
+                        MS Office
+                    </option>
+
+                    <option>
+                        Advanced Excel
+                    </option>
+
+                    <option>
+                        Tally with GST
+                    </option>
+
+                    <option>
+                        Graphic Designing
+                    </option>
+
+                    <option>
+                        Digital Marketing
+                    </option>
+
+                    <option>
+                        Python
+                    </option>
+
+                    <option>
+                        Data Science
+                    </option>
+
+                    <option>
+                        Ethical Hacking
+                    </option>
+
+                    <option>
+                        Banking Diploma
+                    </option>
+
+                    <option>
+                        Spoken English
+                    </option>
+
+                </select>
+
+
+
+                <!-- RATING -->
+
+                <div class="rating-title">
+                    <label>
+                        आपकी Rating
+                    </label>
+                </div>
+
+
+                <div class="rating">
+
+                    <input
+                        type="radio"
+                        id="star5"
+                        name="Rating"
+                        value="5 Stars"
+                        required>
+
+                    <label for="star5">
+                        ★
+                    </label>
+
+
+                    <input
+                        type="radio"
+                        id="star4"
+                        name="Rating"
+                        value="4 Stars">
+
+                    <label for="star4">
+                        ★
+                    </label>
+
+
+                    <input
+                        type="radio"
+                        id="star3"
+                        name="Rating"
+                        value="3 Stars">
+
+                    <label for="star3">
+                        ★
+                    </label>
+
+
+                    <input
+                        type="radio"
+                        id="star2"
+                        name="Rating"
+                        value="2 Stars">
+
+                    <label for="star2">
+                        ★
+                    </label>
+
+
+                    <input
+                        type="radio"
+                        id="star1"
+                        name="Rating"
+                        value="1 Star">
+
+                    <label for="star1">
+                        ★
+                    </label>
+
+                </div>
+
+
+
+                <!-- FEEDBACK -->
+
+                <label>
+                    आपका Feedback
+                </label>
+
+                <textarea
+                    name="Feedback"
+                    placeholder="Samyak Computer Classes के बारे में अपना experience लिखें..."
+                    required></textarea>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+
+                    ⭐ Submit Feedback
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- NOTE -->
+
+            <div class="note">
+
+                🙏 आपके feedback से हमें अपनी services
+                और बेहतर बनाने में मदद मिलेगी।
+
+            </div>
+
+
+
+            <!-- BACK -->
+
+            <a
+                href="index.html"
+                class="back">
+
+                ← वापस Home Page पर जाएँ
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 Samyak Computer Classes
+        </p>
+
+        <p>
+            Bhawarkua, Indore
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
