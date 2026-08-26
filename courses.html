@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>All Courses | Samyak Computer Classes</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#222;
+}
+
+.header{
+    background:linear-gradient(135deg,#071952,#0b4f9c);
+    color:white;
+    text-align:center;
+    padding:45px 20px;
+}
+
+.header h1{
+    font-size:38px;
+    margin-bottom:8px;
+}
+
+.header p{
+    color:#dce7ff;
+}
+
+.nav{
+    background:#03102f;
+    padding:14px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 12px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.nav a:hover{
+    color:#00d9ff;
+}
+
+.search-area{
+    max-width:850px;
+    margin:30px auto 10px;
+    padding:0 20px;
+}
+
+.search-area input{
+    width:100%;
+    padding:16px 20px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.search-area input:focus{
+    border-color:#0b4f9c;
+}
+
+.course-count{
+    max-width:1200px;
+    margin:20px auto;
+    padding:0 20px;
+    color:#666;
+    font-weight:bold;
+}
+
+.courses-container{
+    max-width:1200px;
+    margin:auto;
+    padding:10px 20px 50px;
+}
+
+.courses-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.course-card{
+    background:white;
+    border-radius:16px;
+    padding:24px;
+    border:1px solid #e3e7ee;
+    box-shadow:0 6px 22px rgba(0,0,0,.07);
+    transition:.25s;
+}
+
+.course-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.course-number{
+    color:#0b4f9c;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.course-card h2{
+    color:#071952;
+    font-size:21px;
+    margin-bottom:15px;
+    line-height:1.3;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.info-box{
+    background:#eef4ff;
+    border-radius:8px;
+    padding:10px;
+    text-align:center;
+}
+
+.info-box strong{
+    display:block;
+    color:#071952;
+    font-size:12px;
+}
+
+.info-box span{
+    color:#555;
+    font-size:14px;
+}
+
+.course-card h3{
+    color:#071952;
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.syllabus{
+    padding-left:20px;
+    color:#555;
+    font-size:14px;
+    min-height:78px;
+}
+
+.syllabus li{
+    margin-bottom:5px;
+}
+
+.enquiry-btn{
+    display:block;
+    text-align:center;
+    background:#071952;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.enquiry-btn:hover{
+    background:#0b4f9c;
+}
+
+.no-result{
+    display:none;
+    text-align:center;
+    padding:50px;
+    color:#777;
+    font-size:18px;
+}
+
+.cta{
+    background:linear-gradient(135deg,#071952,#0b4f9c);
+    color:white;
+    text-align:center;
+    padding:50px 20px;
+}
+
+.cta h2{
+    margin-bottom:10px;
+}
+
+.cta p{
+    color:#dce7ff;
+    margin-bottom:20px;
+}
+
+.cta a{
+    display:inline-block;
+    background:#00d9ff;
+    color:#001b44;
+    padding:13px 25px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+footer{
+    background:#03102f;
+    color:white;
+    text-align:center;
+    padding:28px 20px;
+}
+
+footer p{
+    color:#c9d3e8;
+    font-size:14px;
+    margin-top:5px;
+}
+
+@media(max-width:1000px){
+    .courses-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+    .header h1{
+        font-size:30px;
+    }
+
+    .courses-grid{
+        grid-template-columns:1fr;
+    }
+
+    .nav a{
+        display:inline-block;
+        margin:5px 7px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <h1>📚 All Courses</h1>
+    <p>Samyak Computer Classes | Bhawarkua, Indore</p>
+</header>
+
+<nav class="nav">
+    <a href="index.html">🏠 Home</a>
+    <a href="courses.html">📚 Courses</a>
+    <a href="enquiry.html">📝 Enquiry</a>
+    <a href="feedback.html">⭐ Feedback</a>
+</nav>
+
+<div class="search-area">
+    <input
+        type="text"
+        id="search"
+        placeholder="🔎 Course search करें... जैसे Python, Excel, Java"
+        onkeyup="searchCourses()"
+    >
+</div>
+
+<div class="course-count" id="courseCount">
+    कुल 142 Courses
+</div>
+
+<main class="courses-container">
+
+    <div class="courses-grid" id="coursesGrid"></div>
+
+    <div class="no-result" id="noResult">
+        😔 कोई course नहीं मिला।
+    </div>
+
+</main>
+
+<section class="cta">
+    <h2>🎯 अपना Course आज ही चुनें</h2>
+    <p>Fees और admission की जानकारी के लिए enquiry करें।</p>
+    <a href="enquiry.html">📝 Enquiry Now</a>
+</section>
+
+<footer>
+    <h3>Samyak Computer Classes</h3>
+    <p>Bhawarkua, Indore, Madhya Pradesh</p>
+    <p>© 2026 Samyak Computer Classes. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+const courses = [
+
+["Personality Development","3 Weeks"],
+["Spoken English","2.5 Months"],
+["Interview Skills","3 Weeks"],
+["IELTS","2 Months"],
+["French","2 Months"],
+["German","2 Months"],
+["Computer Basic","1.5 Months"],
+["RS-CIT","66 Hours"],
+["Basic Excel","1 Month"],
+["Advanced Excel","1 Month"],
+["VBA Excel","1 Month"],
+["Certified Microsoft Office","2 Months"],
+["Tally + GST","2.5 Months"],
+["CAP (Certified Accounts Professional)","4 Months"],
+["CIA (Certified Industrial Accountant)","6 Months"],
+["SAP-FICO","2 Months"],
+["SAP-MM","2 Months"],
+["Banking Diploma","6 Months"],
+["MIS","4 Months"],
+["SQL","1.5 Months"],
+["Data Analytics Diploma","Not specified"],
+["Tableau","1.5 Months"],
+["Microsoft Power BI","1.5 Months"],
+["Stock Market (Trading Advanced)","4 Months"],
+["Graphic Design Diploma","6 Months"],
+["DTP-Basic Graphic Designing","3 Months"],
+["CorelDraw","1 Month"],
+["Photoshop","1 Month"],
+["Adobe Illustrator","1.5 Months"],
+["Adobe InDesign","1 Month"],
+["Fashion Designing","4 Months"],
+["3D Animation Blender","1.5 Months"],
+["2D & 3D Animation","3 Months"],
+["Zbrush","2 Months"],
+["3D Animation Maya","2 Months"],
+["Diploma In Animation","6 Months"],
+["Filmora Video Editing","1 Month"],
+["Video Editing Premiere Pro","2 Months"],
+["Adobe After Effects (Visual)","2 Months"],
+["Jewellery Designing Rhino 3D","2 Months"],
+["3D CAD Matrix (Jewellery Design)","2.5 Months"],
+["DOAP","6 Months"],
+["DCA (Diploma in Computer Application)","6 Months"],
+["PGDCA by University","1 Year"],
+["O-LEVEL by NIELIT","1 Year"],
+["CCC by NIELIT","3 Months"],
+["Web Designing","3 Months"],
+["Core PHP Web Development","2 Months"],
+["Diploma In Website Designing","6 Months"],
+["Cake PHP-Advance PHP","1.5 Months"],
+["Blockchain Web Development","1.5 Months"],
+["Digital Marketing","4 Months"],
+["E-Commerce","1.5 Months"],
+["Affiliate Marketing","2 Months"],
+["WordPress CMS","1.5 Months"],
+["Shopify eCommerce Platform (Web Development)","1.5 Months"],
+["Magento E-Commerce Web Development","1.5 Months"],
+["Laravel PHP Framework","1.5 Months"],
+["Full Stack Courses Options","Not specified"],
+["HTML Programming","1 Month"],
+["CSS Programming","1 Month"],
+["JavaScript","1 Month"],
+["Angular JS - JavaScript Framework","1.5 Months"],
+["React JS","1.5 Months"],
+["Node JS","1.5 Months"],
+["Mongo DB","1.5 Months"],
+["MEAN / MERN Stack","6 Months"],
+["UI/UX Designing","6 Months"],
+["Networking","1.5 Months"],
+["Hardware","1.5 Months"],
+["Mobile Repairing","Not specified"],
+["CHNE (Certified Hardware Networking Engineer)","6 Months"],
+["Ethical Hacking","2.5 Months"],
+["Linux Administration","1.5 Months"],
+["CCNA (Advanced Networking)","2 Months"],
+["Cloud Computing Open Stack","1.5 Months"],
+["DevOps","2 Months"],
+["AWS Cloud","1.5 Months"],
+["Salesforce Cloud Admin","1.5 Months"],
+["Salesforce Cloud Development","2 Months"],
+["OCA Oracle Certified Associate","2.5 Months"],
+["OCP Oracle Certified Professional","3.5 Months"],
+["Electrical CAD (AutoCAD)","1.5 Months"],
+["Embedded System","1.5 Months"],
+["Advance Robotics","1.5 Months"],
+["Arduino Programming","1.5 Months"],
+["Raspberry Pi","1.5 Months"],
+["Industrial Automation PLC & SCADA","3 Modules"],
+["VHDL & VLSI","1.5 Months"],
+["MATLAB","1 Month"],
+["PCB Design","1 Month"],
+["Solar System & Integration","1.5 Months"],
+["Data Science","4 Months"],
+["Artificial Intelligence","1.5 Months"],
+["Machine Learning","1.5 Months"],
+["Python","1.5 Months"],
+["Django - Python Framework","1.5 Months"],
+["IoT","1.5 Months"],
+["R Programming","1.5 Months"],
+["Big Data Admin & Development","3 Months"],
+["DCS - Diploma In Computer Science","6 Months"],
+["C Programming","1.5 Months"],
+["C++ Programming","1.5 Months"],
+["Data Structure","1.5 Months"],
+["Core JAVA","1.5 Months"],
+["Advanced JAVA","1.5 Months"],
+["Android App Development","2 Months"],
+["iPhone App Development","1.5 Months"],
+["Dart & Flutter App Development","2 Months"],
+["React Native App Development","1.5 Months"],
+["C# Programming","1.5 Months"],
+["ASP.NET","2 Months"],
+["ASP.NET MVC","1.5 Months"],
+["ISQTB Testing","4 Months"],
+["Selenium Automation Testing","2 Months"],
+["Diploma Course In Civil","Not specified"],
+["AutoCAD","1.5 Months"],
+["Civil 3D","1.5 Months"],
+["Revit Architecture","1.5 Months"],
+["STAAD Pro","1.5 Months"],
+["MX Road","1.5 Months"],
+["Etabs","1.5 Months"],
+["PRIMAVERA (Project Management)","1 Month"],
+["Interior Designing Diploma Course","Not specified"],
+["3DS Max Interior Design","1.5 Months"],
+["V-Ray","1 Month"],
+["Google SketchUp","1 Month"],
+["LUMION","1.5 Months"],
+["ENSCAPE","1.5 Months"],
+["D5 Render","1.5 Months"],
+["CORONA","1.5 Months"],
+["CATIA","2 Months"],
+["CNC Programming","1.5 Months"],
+["SolidWorks","2 Months"],
+["CREO (Pro-E)","2 Months"],
+["ANSYS","1 Month"],
+["FUSION 360","1.5 Months"],
+["ArtCAM","1.5 Months"],
+["HVAC","2 Months"],
+["Kids Programme - Abacus / English For Kids","Not specified"]
+
+];
+
+const syllabusTopics = {
+    "Excel":"Excel Basics, Formulas, Functions, Data Handling, Projects",
+    "Python":"Python Basics, Variables, Conditions, Loops, Functions, Projects",
+    "Java":"Java Basics, OOP, Classes, Methods, Projects",
+    "Web":"HTML, CSS, JavaScript, Web Projects",
+    "Programming":"Programming Basics, Logic Building, Functions, Projects",
+    "Marketing":"Marketing Basics, Digital Strategy, Social Media, Projects",
+    "Design":"Design Basics, Tools, Practical Projects, Portfolio",
+    "Animation":"Animation Basics, 2D/3D Tools, Projects",
+    "Accounting":"Accounting Basics, Practical Entries, Reports, GST",
+    "Networking":"Networking Basics, TCP/IP, Devices, Practical Labs",
+    "Cloud":"Cloud Basics, Services, Deployment, Practical Work",
+    "Security":"Cyber Security Basics, Networking, Security Concepts, Practical Labs",
+    "CAD":"CAD Basics, Drawing, Design Tools, Practical Projects",
+    "Data":"Data Basics, Analysis, Visualization, Projects",
+    "default":"Course Fundamentals, Practical Training, Tools & Techniques, Assignments, Project"
+};
+
+function getSyllabus(name){
+
+    const n = name.toLowerCase();
+
+    if(n.includes("excel")) return syllabusTopics.Excel;
+    if(n.includes("python")) return syllabusTopics.Python;
+    if(n.includes("java")) return syllabusTopics.Java;
+    if(n.includes("web") || n.includes("html") || n.includes("css") || n.includes("react") || n.includes("angular") || n.includes("node") || n.includes("php"))
+        return syllabusTopics.Web;
+    if(n.includes("programming") || n.includes("programming"))
+        return syllabusTopics.Programming;
+    if(n.includes("marketing") || n.includes("e-commerce") || n.includes("affiliate"))
+        return syllabusTopics.Marketing;
+    if(n.includes("design") || n.includes("photoshop") || n.includes("illustrator") || n.includes("coreldraw") || n.includes("autocad"))
+        return syllabusTopics.Design;
+    if(n.includes("animation") || n.includes("blender") || n.includes("maya"))
+        return syllabusTopics.Animation;
+    if(n.includes("tally") || n.includes("accounts") || n.includes("banking") || n.includes("sap"))
+        return syllabusTopics.Accounting;
+    if(n.includes("network") || n.includes("ccna") || n.includes("hardware"))
+        return syllabusTopics.Networking;
+    if(n.includes("cloud") || n.includes("aws") || n.includes("devops"))
+        return syllabusTopics.Cloud;
+    if(n.includes("hacking") || n.includes("security") || n.includes("linux"))
+        return syllabusTopics.Security;
+    if(n.includes("cad") || n.includes("solidworks") || n.includes("catia") || n.includes("creo"))
+        return syllabusTopics.CAD;
+    if(n.includes("data") || n.includes("analytics") || n.includes("tableau") || n.includes("power bi") || n.includes("machine learning"))
+        return syllabusTopics.Data;
+
+    return syllabusTopics.default;
+}
+
+function displayCourses(list){
+
+    const grid = document.getElementById("coursesGrid");
+    const noResult = document.getElementById("noResult");
+    const count = document.getElementById("courseCount");
+
+    grid.innerHTML = "";
+
+    count.textContent = "Showing " + list.length + " Courses";
+
+    if(list.length === 0){
+        noResult.style.display = "block";
+        return;
+    }
+
+    noResult.style.display = "none";
+
+    list.forEach((course,index)=>{
+
+        const name = course[0];
+        const duration = course[1];
+
+        const card = document.createElement("div");
+        card.className = "course-card";
+
+        card.innerHTML = `
+            <div class="course-number">
+                COURSE ${courses.indexOf(course)+1}
+            </div>
+
+            <h2>${name}</h2>
+
+            <div class="info">
+
+                <div class="info-box">
+                    <strong>⏱️ Duration</strong>
+                    <span>${duration}</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>💰 Fees</strong>
+                    <span>Contact for Fees</span>
+                </div>
+
+            </div>
+
+            <h3>📋 Syllabus</h3>
+
+            <ul class="syllabus">
+                ${getSyllabus(name)
+                    .split(", ")
+                    .map(item => `<li>${item}</li>`)
+                    .join("")
+                }
+            </ul>
+
+            <a href="enquiry.html" class="enquiry-btn">
+                📝 Enquiry Now
+            </a>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+function searchCourses(){
+
+    const search = document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filtered = courses.filter(course =>
+        course[0].toLowerCase().includes(search)
+    );
+
+    displayCourses(filtered);
+}
+
+displayCourses(courses);
+
+</script>
+
+</body>
+</html>
