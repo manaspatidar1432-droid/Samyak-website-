@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="hi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-<title>Samyak Computer Classes | Bhawarkua Indore</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="description"
 content="Samyak Computer Classes Bhawarkua Indore - 142+ Computer, IT, Programming, Designing and Professional Courses">
 
+<title>Samyak Computer Classes | Bhawarkua Indore</title>
+
+
 <style>
+
+/* ================= BASIC ================= */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 html{
@@ -24,461 +31,894 @@ html{
 body{
     background:#f5f7fb;
     color:#222;
+    line-height:1.6;
 }
+
+a{
+    text-decoration:none;
+}
+
+
+/* ================= NAVBAR ================= */
 
 .navbar{
+
     background:#071952;
+
     padding:16px 6%;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     position:sticky;
+
     top:0;
+
     z-index:1000;
-    box-shadow:0 3px 15px rgba(0,0,0,.15);
+
+    box-shadow:0 3px 15px rgba(0,0,0,0.15);
 }
 
+
 .logo{
+
     color:white;
-    text-decoration:none;
+
     font-size:20px;
+
     font-weight:bold;
 }
 
+
 .logo span{
+
     color:#00d9ff;
 }
 
+
 .nav-links{
+
     display:flex;
+
     gap:24px;
+
     list-style:none;
 }
 
+
 .nav-links a{
+
     color:white;
-    text-decoration:none;
+
     font-size:14px;
+
     font-weight:bold;
+
+    transition:0.2s;
 }
 
+
 .nav-links a:hover{
+
     color:#00d9ff;
 }
 
+
+/* ================= HERO ================= */
+
 .hero{
+
     min-height:600px;
+
     display:flex;
+
     align-items:center;
+
     padding:70px 7%;
+
     color:white;
-    background:linear-gradient(135deg,#071952,#0b4f9c);
+
+    background:
+    linear-gradient(
+        135deg,
+        #071952,
+        #0b4f9c
+    );
 }
 
+
 .hero-content{
+
     max-width:800px;
 }
 
+
 .badge{
+
     display:inline-block;
-    background:rgba(255,255,255,.13);
-    border:1px solid rgba(255,255,255,.25);
-    padding:8px 15px;
+
+    padding:8px 16px;
+
     border-radius:30px;
+
+    background:rgba(255,255,255,0.13);
+
+    border:1px solid rgba(255,255,255,0.25);
+
     font-size:14px;
+
     margin-bottom:20px;
 }
+
 
 .hero h1{
+
     font-size:52px;
+
     line-height:1.15;
+
     margin-bottom:20px;
 }
 
+
 .hero h1 span{
+
     color:#00d9ff;
 }
 
+
 .hero p{
-    font-size:18px;
+
     color:#dce7ff;
+
+    font-size:18px;
+
     max-width:700px;
+
     margin-bottom:30px;
 }
 
+
 .hero-buttons{
+
     display:flex;
+
     gap:15px;
+
     flex-wrap:wrap;
 }
 
+
 .btn{
+
     display:inline-block;
+
     padding:14px 23px;
+
     border-radius:9px;
-    text-decoration:none;
+
     font-weight:bold;
-    transition:.25s;
+
+    transition:0.25s;
 }
 
+
 .btn-primary{
+
     background:#00d9ff;
+
     color:#001b44;
 }
 
+
 .btn-primary:hover{
-    transform:translateY(-2px);
+
     background:white;
+
+    transform:translateY(-2px);
 }
+
 
 .btn-secondary{
-    border:1px solid white;
+
     color:white;
+
+    border:1px solid white;
+
+    background:transparent;
 }
 
+
 .btn-secondary:hover{
+
     background:white;
+
     color:#071952;
 }
 
+
+/* ================= STATS ================= */
+
 .stats{
+
     max-width:1150px;
+
     margin:-55px auto 0;
-    position:relative;
-    z-index:10;
+
     padding:0 20px;
+
+    position:relative;
+
+    z-index:5;
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+    repeat(4,1fr);
+
     gap:15px;
 }
 
+
 .stat{
+
     background:white;
-    padding:25px 15px;
+
     text-align:center;
+
+    padding:25px 15px;
+
     border-radius:13px;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,0.08);
 }
+
 
 .stat h3{
+
     color:#071952;
-    font-size:28px;
+
+    font-size:29px;
 }
 
+
 .stat p{
+
     color:#777;
+
     font-size:13px;
 }
 
+
+/* ================= SECTION ================= */
+
 .section{
+
     max-width:1150px;
+
     margin:auto;
+
     padding:90px 20px;
 }
 
-.about-grid{
-    display:grid;
-    grid-template-columns:1.1fr .9fr;
-    gap:45px;
-    align-items:center;
-}
-
-.about-text h2{
-    color:#071952;
-    font-size:34px;
-    margin-bottom:20px;
-}
-
-.about-text p{
-    color:#666;
-    margin-bottom:15px;
-}
-
-.about-box{
-    background:linear-gradient(135deg,#071952,#0b4f9c);
-    color:white;
-    padding:35px;
-    border-radius:18px;
-}
-
-.about-box h3{
-    font-size:24px;
-    margin-bottom:12px;
-}
-
-.about-box p{
-    color:#dce7ff;
-    margin-bottom:20px;
-}
 
 .section-title{
+
     text-align:center;
+
     margin-bottom:45px;
 }
 
+
 .section-title h2{
+
     color:#071952;
+
     font-size:36px;
+
     margin-bottom:10px;
 }
 
+
 .section-title p{
+
     color:#666;
 }
 
-.category-grid{
+
+/* ================= ABOUT ================= */
+
+.about-grid{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+    1.1fr
+    0.9fr;
+
+    gap:45px;
+
+    align-items:center;
+}
+
+
+.about-text h2{
+
+    color:#071952;
+
+    font-size:34px;
+
+    margin-bottom:20px;
+}
+
+
+.about-text p{
+
+    color:#666;
+
+    margin-bottom:15px;
+}
+
+
+.about-box{
+
+    background:
+    linear-gradient(
+        135deg,
+        #071952,
+        #0b4f9c
+    );
+
+    color:white;
+
+    padding:35px;
+
+    border-radius:18px;
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,0.15);
+}
+
+
+.about-box h3{
+
+    font-size:24px;
+
+    margin-bottom:12px;
+}
+
+
+.about-box p{
+
+    color:#dce7ff;
+
+    margin-bottom:20px;
+}
+
+
+/* ================= COURSE CATEGORIES ================= */
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
     gap:18px;
 }
 
+
 .category{
+
     background:white;
+
     padding:25px 18px;
+
     text-align:center;
+
     border-radius:14px;
+
     border:1px solid #e5e8ef;
-    transition:.25s;
+
+    transition:0.25s;
 }
+
 
 .category:hover{
+
     transform:translateY(-5px);
-    box-shadow:0 10px 28px rgba(0,0,0,.1);
+
+    box-shadow:
+    0 10px 28px rgba(0,0,0,0.1);
 }
 
+
 .category-icon{
+
     font-size:35px;
+
     margin-bottom:10px;
 }
 
+
 .category h3{
+
     color:#071952;
+
     font-size:17px;
+
+    margin-bottom:5px;
 }
 
+
 .category p{
+
     color:#777;
+
     font-size:13px;
 }
 
+
+/* ================= WHY US ================= */
+
 .why-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+    repeat(3,1fr);
+
     gap:22px;
 }
 
+
 .why-card{
+
     background:white;
+
     padding:30px;
+
     border-radius:15px;
+
     border:1px solid #e5e8ef;
+
+    transition:0.25s;
 }
 
+
+.why-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+    0 10px 28px rgba(0,0,0,0.1);
+}
+
+
 .why-icon{
+
     font-size:36px;
+
     margin-bottom:12px;
 }
 
+
 .why-card h3{
+
     color:#071952;
+
     margin-bottom:8px;
 }
 
+
 .why-card p{
+
     color:#666;
+
     font-size:14px;
 }
 
+
+/* ================= CTA ================= */
+
 .cta{
-    background:linear-gradient(135deg,#071952,#0b4f9c);
+
+    background:
+    linear-gradient(
+        135deg,
+        #071952,
+        #0b4f9c
+    );
+
     color:white;
+
     text-align:center;
+
     padding:75px 20px;
 }
 
+
 .cta h2{
+
     font-size:38px;
+
     margin-bottom:12px;
 }
 
+
 .cta p{
+
     color:#dce7ff;
+
     margin-bottom:25px;
 }
 
+
+/* ================= CONTACT ================= */
+
 .contact-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+    repeat(3,1fr);
+
     gap:20px;
 }
 
+
 .contact-card{
+
     background:white;
+
     text-align:center;
+
     padding:30px;
+
     border-radius:15px;
+
     border:1px solid #e5e8ef;
+
+    box-shadow:
+    0 6px 20px rgba(0,0,0,0.05);
 }
+
 
 .contact-card .icon{
-    font-size:35px;
+
+    font-size:38px;
+
+    margin-bottom:10px;
 }
+
 
 .contact-card h3{
+
     color:#071952;
-    margin:8px 0;
+
+    margin-bottom:8px;
 }
+
 
 .contact-card p{
+
     color:#666;
+
     font-size:14px;
+
+    margin-bottom:12px;
 }
 
+
+/* ================= PHONE NUMBER ================= */
+
+.phone-number{
+
+    color:#071952;
+
+    font-size:21px;
+
+    font-weight:bold;
+
+    display:block;
+
+    margin:10px 0 18px;
+}
+
+
+/* ================= FOOTER ================= */
+
 footer{
+
     background:#03102f;
+
     color:white;
+
     text-align:center;
+
     padding:35px 20px;
 }
 
+
+footer h3{
+
+    margin-bottom:8px;
+}
+
+
 footer p{
+
     color:#c9d3e8;
+
     font-size:14px;
+
     margin-top:7px;
 }
 
+
 .footer-links{
+
     margin:15px 0;
 }
 
+
 .footer-links a{
+
     color:#dce7ff;
-    text-decoration:none;
+
     margin:0 8px;
+
+    font-size:13px;
 }
+
+
+.footer-links a:hover{
+
+    color:#00d9ff;
+}
+
+
+/* ================= MOBILE ================= */
 
 @media(max-width:900px){
 
     .stats{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+        repeat(2,1fr);
     }
+
 
     .category-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+        repeat(2,1fr);
     }
 
+
     .about-grid{
+
         grid-template-columns:1fr;
     }
 
+
     .why-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+        repeat(2,1fr);
     }
 
+
     .contact-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+        repeat(2,1fr);
     }
 
 }
+
 
 @media(max-width:600px){
 
     .navbar{
+
         flex-direction:column;
+
         gap:12px;
     }
 
+
     .nav-links{
+
         gap:12px;
+
         flex-wrap:wrap;
+
         justify-content:center;
     }
 
+
     .hero{
-        padding:60px 20px 90px;
+
+        padding:
+        60px 20px 90px;
     }
 
+
     .hero h1{
+
         font-size:35px;
     }
 
+
     .hero p{
+
         font-size:16px;
     }
 
+
     .stats{
-        grid-template-columns:1fr 1fr;
+
+        grid-template-columns:
+        1fr 1fr;
     }
+
 
     .category-grid{
-        grid-template-columns:1fr 1fr;
+
+        grid-template-columns:
+        1fr 1fr;
     }
 
-    .why-grid,
-    .contact-grid{
+
+    .why-grid{
+
         grid-template-columns:1fr;
     }
 
+
+    .contact-grid{
+
+        grid-template-columns:1fr;
+    }
+
+
     .section-title h2{
+
         font-size:29px;
     }
 
+
     .cta h2{
+
         font-size:30px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- ================= NAVBAR ================= -->
+
 <nav class="navbar">
 
-<a href="index.html" class="logo">
+
+<a href="index.html"
+class="logo">
+
 Samyak <span>Computer Classes</span>
+
 </a>
 
+
 <ul class="nav-links">
-<li><a href="index.html">Home</a></li>
-<li><a href="courses.html">Courses</a></li>
-<li><a href="#about">About</a></li>
-<li><a href="#why-us">Why Us</a></li>
-<li><a href="#contact">Contact</a></li>
+
+<li>
+<a href="index.html">
+Home
+</a>
+</li>
+
+
+<li>
+<a href="courses.html">
+Courses
+</a>
+</li>
+
+
+<li>
+<a href="#about">
+About
+</a>
+</li>
+
+
+<li>
+<a href="#why-us">
+Why Us
+</a>
+</li>
+
+
+<li>
+<a href="#contact">
+Contact
+</a>
+</li>
+
 </ul>
 
 </nav>
 
 
+
+<!-- ================= HERO ================= -->
+
 <section class="hero">
+
 
 <div class="hero-content">
 
+
 <div class="badge">
+
 🎓 Professional Computer Training
+
 </div>
 
+
 <h1>
+
 Learn Today.
+
 <br>
-<span>Build Your Career Tomorrow.</span>
+
+<span>
+Build Your Career Tomorrow.
+</span>
+
 </h1>
 
+
 <p>
+
 Samyak Computer Classes, Bhawarkua Indore में
 Computer, IT, Designing, Programming और
 Professional Courses सीखें।
+
 </p>
+
 
 <div class="hero-buttons">
 
-<a href="courses.html" class="btn btn-primary">
+
+<a href="courses.html"
+class="btn btn-primary">
+
 📚 Explore 142+ Courses
+
 </a>
+
 
 <a href="https://samyakindore.github.io/enquiry/"
 class="btn btn-secondary">
+
 📝 Enquiry Now
+
 </a>
+
 
 </div>
 
@@ -486,76 +926,150 @@ class="btn btn-secondary">
 
 </section>
 
+
+
+<!-- ================= STATS ================= -->
 
 <section class="stats">
 
-<div class="stat">
-<h3>142+</h3>
-<p>Courses</p>
-</div>
 
 <div class="stat">
-<h3>100%</h3>
-<p>Practical Focus</p>
+
+<h3>
+142+
+</h3>
+
+<p>
+Courses
+</p>
+
 </div>
 
-<div class="stat">
-<h3>🎓</h3>
-<p>Career Learning</p>
-</div>
 
 <div class="stat">
-<h3>📍</h3>
-<p>Bhawarkua, Indore</p>
+
+<h3>
+100%
+</h3>
+
+<p>
+Practical Focus
+</p>
+
+</div>
+
+
+<div class="stat">
+
+<h3>
+🎓
+</h3>
+
+<p>
+Career Learning
+</p>
+
+</div>
+
+
+<div class="stat">
+
+<h3>
+📍
+</h3>
+
+<p>
+Bhawarkua, Indore
+</p>
+
 </div>
 
 </section>
 
 
-<section class="section" id="about">
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section"
+id="about">
+
 
 <div class="about-grid">
 
+
 <div class="about-text">
 
-<h2>About Samyak Computer Classes</h2>
+
+<h2>
+
+About Samyak Computer Classes
+
+</h2>
+
 
 <p>
-Samyak Computer Classes Bhawarkua, Indore में
-students को computer और professional skills
-सीखने का अवसर देता है।
+
+Samyak Computer Classes Bhawarkua,
+Indore में students को computer और
+professional skills सीखने का अवसर देता है।
+
 </p>
+
 
 <p>
-हमारा focus practical learning, computer education
-और career-oriented skills पर है।
+
+हमारा focus practical learning,
+computer education और career-oriented
+skills पर है।
+
 </p>
+
 
 <p>
-Beginners से लेकर advanced learners तक के लिए
-अलग-अलग courses उपलब्ध हैं।
+
+Beginners से लेकर advanced learners तक
+के लिए अलग-अलग courses उपलब्ध हैं।
+
 </p>
 
-<a href="courses.html" class="btn btn-primary">
+
+<a href="courses.html"
+class="btn btn-primary">
+
 📚 View All Courses
+
 </a>
 
+
 </div>
+
 
 
 <div class="about-box">
 
-<h3>🚀 Start Your Learning Journey</h3>
+
+<h3>
+
+🚀 Start Your Learning Journey
+
+</h3>
+
 
 <p>
-आज ही अपने पसंदीदा course के बारे में जानकारी लें
-और अपने career की शुरुआत करें।
+
+आज ही अपने पसंदीदा course के बारे में
+जानकारी लें और अपने career की शुरुआत करें।
+
 </p>
+
 
 <a href="https://samyakindore.github.io/enquiry/"
 class="btn btn-primary">
+
 📝 Enquiry Now
+
 </a>
+
 
 </div>
 
@@ -564,145 +1078,341 @@ class="btn btn-primary">
 </section>
 
 
+
+<!-- ================= COURSES ================= -->
+
 <section class="section">
+
 
 <div class="section-title">
 
-<h2>📚 Explore Our Courses</h2>
+
+<h2>
+
+📚 Explore Our Courses
+
+</h2>
+
 
 <p>
-Computer और professional skills की अलग-अलग
-categories में 142+ courses।
+
+Computer और professional skills की
+अलग-अलग categories में 142+ courses।
+
 </p>
 
+
 </div>
+
 
 
 <div class="category-grid">
 
-<div class="category">
-<div class="category-icon">💻</div>
-<h3>Computer & Office</h3>
-<p>Basic Computer, Excel, MS Office</p>
-</div>
 
 <div class="category">
-<div class="category-icon">🎨</div>
-<h3>Designing & Animation</h3>
-<p>Graphic Design, Photoshop, 3D</p>
+
+<div class="category-icon">
+💻
 </div>
+
+<h3>
+Computer & Office
+</h3>
+
+<p>
+Basic Computer, Excel, MS Office
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">👨‍💻</div>
-<h3>Programming</h3>
-<p>Python, Java, C, C++, Web Development</p>
+
+<div class="category-icon">
+🎨
 </div>
+
+<h3>
+Designing & Animation
+</h3>
+
+<p>
+Graphic Design, Photoshop, 3D
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">📊</div>
-<h3>Data & AI</h3>
-<p>Data Science, AI, ML, Power BI</p>
+
+<div class="category-icon">
+👨‍💻
 </div>
+
+<h3>
+Programming
+</h3>
+
+<p>
+Python, Java, C, C++, Web Development
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">🔐</div>
-<h3>Cyber Security</h3>
-<p>Ethical Hacking, Linux, Networking</p>
+
+<div class="category-icon">
+📊
 </div>
+
+<h3>
+Data & AI
+</h3>
+
+<p>
+Data Science, AI, ML, Power BI
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">📱</div>
-<h3>Digital Marketing</h3>
-<p>Marketing, E-Commerce, WordPress</p>
+
+<div class="category-icon">
+🔐
 </div>
+
+<h3>
+Cyber Security
+</h3>
+
+<p>
+Ethical Hacking, Linux, Networking
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">🏗️</div>
-<h3>Civil & Architecture</h3>
-<p>AutoCAD, Revit, STAAD, 3D</p>
+
+<div class="category-icon">
+📱
 </div>
+
+<h3>
+Digital Marketing
+</h3>
+
+<p>
+Marketing, SEO, E-Commerce
+</p>
+
+</div>
+
+
 
 <div class="category">
-<div class="category-icon">⚙️</div>
-<h3>Engineering</h3>
-<p>CAD, CNC, SolidWorks, ANSYS</p>
+
+<div class="category-icon">
+🏗️
+</div>
+
+<h3>
+Civil & Architecture
+</h3>
+
+<p>
+AutoCAD, Revit, STAAD, 3D
+</p>
+
+</div>
+
+
+
+<div class="category">
+
+<div class="category-icon">
+⚙️
+</div>
+
+<h3>
+Engineering
+</h3>
+
+<p>
+CAD, CNC, SolidWorks, ANSYS
+</p>
+
 </div>
 
 </div>
+
 
 
 <div style="text-align:center;margin-top:35px;">
 
-<a href="courses.html" class="btn btn-primary">
+
+<a href="courses.html"
+class="btn btn-primary">
+
 🔎 See All 142+ Courses
+
 </a>
+
 
 </div>
 
 </section>
 
 
-<section class="section" id="why-us">
+
+<!-- ================= WHY US ================= -->
+
+<section class="section"
+id="why-us">
+
 
 <div class="section-title">
 
-<h2>⭐ Why Choose Samyak?</h2>
+
+<h2>
+
+⭐ Why Choose Samyak?
+
+</h2>
+
 
 <p>
-Skills सीखने के लिए practical और career-focused approach।
+
+Skills सीखने के लिए practical और
+career-focused approach।
+
 </p>
 
+
 </div>
+
 
 
 <div class="why-grid">
 
-<div class="why-card">
-<div class="why-icon">🎯</div>
-<h3>Practical Learning</h3>
-<p>
-Theory के साथ practical projects और hands-on learning।
-</p>
-</div>
 
 <div class="why-card">
-<div class="why-icon">📚</div>
-<h3>142+ Courses</h3>
-<p>
-Computer, IT, Designing, Programming और Professional Courses।
-</p>
+
+<div class="why-icon">
+🎯
 </div>
 
-<div class="why-card">
-<div class="why-icon">🚀</div>
-<h3>Career Focus</h3>
+<h3>
+Practical Learning
+</h3>
+
 <p>
-Career और job requirements के अनुसार skills सीखें।
+Theory के साथ practical projects और
+hands-on learning।
 </p>
+
 </div>
 
-<div class="why-card">
-<div class="why-icon">👨‍💻</div>
-<h3>Beginner Friendly</h3>
-<p>
-Beginners से advanced students तक learning options।
-</p>
-</div>
+
 
 <div class="why-card">
-<div class="why-icon">💡</div>
-<h3>Modern Skills</h3>
-<p>
-Python, AI, Data Science, Web Development आदि।
-</p>
+
+<div class="why-icon">
+📚
 </div>
 
-<div class="why-card">
-<div class="why-icon">📍</div>
-<h3>Bhawarkua, Indore</h3>
+<h3>
+142+ Courses
+</h3>
+
 <p>
-Bhawarkua area में convenient learning location।
+Computer, IT, Designing, Programming
+और Professional Courses।
 </p>
+
+</div>
+
+
+
+<div class="why-card">
+
+<div class="why-icon">
+🚀
+</div>
+
+<h3>
+Career Focus
+</h3>
+
+<p>
+Career और job requirements के अनुसार
+skills सीखें।
+</p>
+
+</div>
+
+
+
+<div class="why-card">
+
+<div class="why-icon">
+👨‍💻
+</div>
+
+<h3>
+Beginner Friendly
+</h3>
+
+<p>
+Beginners से advanced students तक
+learning options।
+</p>
+
+</div>
+
+
+
+<div class="why-card">
+
+<div class="why-icon">
+💡
+</div>
+
+<h3>
+Modern Skills
+</h3>
+
+<p>
+Python, AI, Data Science और
+Web Development आदि।
+</p>
+
+</div>
+
+
+
+<div class="why-card">
+
+<div class="why-icon">
+📍
+</div>
+
+<h3>
+Bhawarkua, Indore
+</h3>
+
+<p>
+Bhawarkua area में convenient
+learning location।
+</p>
+
 </div>
 
 </div>
@@ -710,65 +1420,181 @@ Bhawarkua area में convenient learning location।
 </section>
 
 
+
+<!-- ================= CTA ================= -->
+
 <section class="cta">
 
-<h2>Ready to Start Learning? 🚀</h2>
+
+<h2>
+
+Ready to Start Learning? 🚀
+
+</h2>
+
 
 <p>
-अपने पसंदीदा course के लिए आज ही enquiry करें।
+
+अपने पसंदीदा course के लिए
+आज ही enquiry करें।
+
 </p>
 
-<a href="courses.html" class="btn btn-primary">
+
+<a href="courses.html"
+class="btn btn-primary">
+
 📚 Explore 142+ Courses
+
 </a>
+
 
 <a href="https://samyakindore.github.io/enquiry/"
 class="btn btn-secondary"
 style="margin-left:10px;">
+
 📝 Enquiry Now
+
 </a>
+
 
 </section>
 
 
-<section class="section" id="contact">
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section"
+id="contact">
+
 
 <div class="section-title">
 
-<h2>📞 Contact Us</h2>
+
+<h2>
+
+📞 Contact Us
+
+</h2>
+
 
 <p>
-Course की जानकारी के लिए enquiry करें।
+
+Course की जानकारी के लिए
+हमसे संपर्क करें।
+
 </p>
 
+
 </div>
+
 
 
 <div class="contact-grid">
 
+
+<!-- CALL -->
+
 <div class="contact-card">
-<div class="icon">📍</div>
-<h3>Location</h3>
-<p>Bhawarkua, Indore, Madhya Pradesh</p>
+
+
+<div class="icon">
+📞
 </div>
 
-<div class="contact-card">
-<div class="icon">📚</div>
-<h3>Courses</h3>
-<p>142+ Computer & Professional Courses</p>
+
+<h3>
+Contact Number
+</h3>
+
+
+<a href="tel:6232487747"
+class="phone-number">
+
+6232487747
+
+</a>
+
+
+<a href="tel:6232487747"
+class="btn btn-primary">
+
+📞 Call Now
+
+</a>
+
+
 </div>
 
-<div class="contact-card">
-<div class="icon">📝</div>
-<h3>Enquiry</h3>
-<p>Course information के लिए enquiry करें।</p>
 
-<br>
+
+<!-- WHATSAPP -->
+
+<div class="contact-card">
+
+
+<div class="icon">
+💬
+</div>
+
+
+<h3>
+WhatsApp
+</h3>
+
+
+<a href="https://wa.me/916232487747"
+target="_blank"
+class="phone-number">
+
+6232487747
+
+</a>
+
+
+<a href="https://wa.me/916232487747"
+target="_blank"
+class="btn btn-primary">
+
+💬 WhatsApp Now
+
+</a>
+
+
+</div>
+
+
+
+<!-- ENQUIRY -->
+
+<div class="contact-card">
+
+
+<div class="icon">
+📝
+</div>
+
+
+<h3>
+Student Enquiry
+</h3>
+
+
+<p>
+
+Course information और admission
+के लिए enquiry करें।
+
+</p>
+
 
 <a href="https://samyakindore.github.io/enquiry/"
 class="btn btn-primary">
-Enquiry Now
+
+📝 Enquiry Now
+
 </a>
+
 
 </div>
 
@@ -777,31 +1603,73 @@ Enquiry Now
 </section>
 
 
+
+<!-- ================= FOOTER ================= -->
+
 <footer>
 
-<h3>Samyak Computer Classes</h3>
+
+<h3>
+
+Samyak Computer Classes
+
+</h3>
+
 
 <p>
-Bhawarkua, Indore, Madhya Pradesh
+
+📍 Bhawarkua, Indore, Madhya Pradesh
+
 </p>
+
+
+<p>
+
+📞 6232487747
+
+</p>
+
 
 <div class="footer-links">
 
-<a href="index.html">Home</a>
+
+<a href="index.html">
+Home
+</a>
+
 |
-<a href="courses.html">Courses</a>
+
+<a href="courses.html">
+Courses
+</a>
+
 |
-<a href="https://samyakindore.github.io/enquiry/">Enquiry</a>
+
+<a href="https://samyakindore.github.io/enquiry/">
+Enquiry
+</a>
+
 |
-<a href="feedback.html">Feedback</a>
+
+<a href="feedback.html">
+Feedback
+</a>
+
 
 </div>
 
+
 <p>
-© 2026 Samyak Computer Classes. All Rights Reserved.
+
+© 2026 Samyak Computer Classes.
+All Rights Reserved.
+
 </p>
+
 
 </footer>
 
+
 </body>
+
 </html>
