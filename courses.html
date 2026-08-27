@@ -1,307 +1,389 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="hi">
 
-<title>All Courses | Samyak Computer Classes</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>142+ Courses | Samyak Computer Classes</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    background:#f4f7fb;
-    color:#222;
+background:#f4f7fb;
+color:#222;
+}
+
+.navbar{
+background:#071952;
+padding:16px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+color:white;
+text-decoration:none;
+font-size:20px;
+font-weight:bold;
+}
+
+.logo span{
+color:#00d9ff;
+}
+
+.nav-links{
+display:flex;
+gap:22px;
+list-style:none;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+font-size:14px;
 }
 
 .header{
-    background:linear-gradient(135deg,#071952,#0b4f9c);
-    color:white;
-    text-align:center;
-    padding:45px 20px;
+background:linear-gradient(135deg,#071952,#0b4f9c);
+color:white;
+text-align:center;
+padding:55px 20px;
 }
 
 .header h1{
-    font-size:38px;
-    margin-bottom:8px;
+font-size:40px;
+margin-bottom:10px;
 }
 
 .header p{
-    color:#dce7ff;
+color:#dce7ff;
 }
 
-.nav{
-    background:#03102f;
-    padding:14px;
-    text-align:center;
-    position:sticky;
-    top:0;
-    z-index:100;
+.search{
+max-width:900px;
+margin:30px auto;
+padding:0 20px;
 }
 
-.nav a{
-    color:white;
-    text-decoration:none;
-    margin:0 12px;
-    font-weight:bold;
-    font-size:14px;
+.search input{
+width:100%;
+padding:16px 20px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+outline:none;
+box-shadow:0 4px 15px rgba(0,0,0,.06);
 }
 
-.nav a:hover{
-    color:#00d9ff;
+.count{
+max-width:1200px;
+margin:10px auto 20px;
+padding:0 20px;
+font-weight:bold;
+color:#555;
 }
 
-.search-area{
-    max-width:850px;
-    margin:30px auto 10px;
-    padding:0 20px;
+.container{
+max-width:1200px;
+margin:auto;
+padding:10px 20px 60px;
 }
 
-.search-area input{
-    width:100%;
-    padding:16px 20px;
-    border:1px solid #ddd;
-    border-radius:12px;
-    font-size:16px;
-    outline:none;
-    box-shadow:0 4px 15px rgba(0,0,0,.06);
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
 }
 
-.search-area input:focus{
-    border-color:#0b4f9c;
+.card{
+background:white;
+padding:23px;
+border-radius:15px;
+border:1px solid #e3e7ee;
+box-shadow:0 6px 20px rgba(0,0,0,.07);
+transition:.25s;
 }
 
-.course-count{
-    max-width:1200px;
-    margin:20px auto;
-    padding:0 20px;
-    color:#666;
-    font-weight:bold;
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 12px 30px rgba(0,0,0,.12);
 }
 
-.courses-container{
-    max-width:1200px;
-    margin:auto;
-    padding:10px 20px 50px;
+.number{
+font-size:13px;
+font-weight:bold;
+color:#0b4f9c;
+margin-bottom:7px;
 }
 
-.courses-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:22px;
-}
-
-.course-card{
-    background:white;
-    border-radius:16px;
-    padding:24px;
-    border:1px solid #e3e7ee;
-    box-shadow:0 6px 22px rgba(0,0,0,.07);
-    transition:.25s;
-}
-
-.course-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 12px 30px rgba(0,0,0,.12);
-}
-
-.course-number{
-    color:#0b4f9c;
-    font-size:13px;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-
-.course-card h2{
-    color:#071952;
-    font-size:21px;
-    margin-bottom:15px;
-    line-height:1.3;
+.card h2{
+color:#071952;
+font-size:19px;
+line-height:1.35;
+margin-bottom:15px;
 }
 
 .info{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-bottom:18px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
 .info-box{
-    background:#eef4ff;
-    border-radius:8px;
-    padding:10px;
-    text-align:center;
+background:#eef4ff;
+padding:10px;
+border-radius:8px;
+text-align:center;
 }
 
 .info-box strong{
-    display:block;
-    color:#071952;
-    font-size:12px;
+display:block;
+font-size:12px;
+color:#071952;
 }
 
 .info-box span{
-    color:#555;
-    font-size:14px;
+font-size:13px;
+color:#555;
 }
 
-.course-card h3{
-    color:#071952;
-    font-size:15px;
-    margin-bottom:8px;
+.syllabus-title{
+font-weight:bold;
+color:#071952;
+margin-top:17px;
+margin-bottom:7px;
 }
 
 .syllabus{
-    padding-left:20px;
-    color:#555;
-    font-size:14px;
-    min-height:78px;
+font-size:13px;
+color:#666;
+line-height:1.5;
+min-height:60px;
 }
 
-.syllabus li{
-    margin-bottom:5px;
+.enquiry{
+display:block;
+text-align:center;
+margin-top:18px;
+padding:12px;
+background:#071952;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
 }
 
-.enquiry-btn{
-    display:block;
-    text-align:center;
-    background:#071952;
-    color:white;
-    text-decoration:none;
-    padding:12px;
-    border-radius:8px;
-    font-weight:bold;
-    margin-top:20px;
-}
-
-.enquiry-btn:hover{
-    background:#0b4f9c;
+.enquiry:hover{
+background:#0b4f9c;
 }
 
 .no-result{
-    display:none;
-    text-align:center;
-    padding:50px;
-    color:#777;
-    font-size:18px;
+display:none;
+text-align:center;
+padding:50px;
+font-size:18px;
+color:#777;
 }
 
 .cta{
-    background:linear-gradient(135deg,#071952,#0b4f9c);
-    color:white;
-    text-align:center;
-    padding:50px 20px;
+background:linear-gradient(135deg,#071952,#0b4f9c);
+color:white;
+text-align:center;
+padding:60px 20px;
 }
 
 .cta h2{
-    margin-bottom:10px;
+font-size:32px;
+margin-bottom:10px;
 }
 
 .cta p{
-    color:#dce7ff;
-    margin-bottom:20px;
+color:#dce7ff;
+margin-bottom:20px;
 }
 
 .cta a{
-    display:inline-block;
-    background:#00d9ff;
-    color:#001b44;
-    padding:13px 25px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:bold;
+display:inline-block;
+padding:13px 25px;
+background:#00d9ff;
+color:#001b44;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
 }
 
 footer{
-    background:#03102f;
-    color:white;
-    text-align:center;
-    padding:28px 20px;
+background:#03102f;
+color:white;
+text-align:center;
+padding:30px;
 }
 
 footer p{
-    color:#c9d3e8;
-    font-size:14px;
-    margin-top:5px;
+color:#c9d3e8;
+font-size:14px;
+margin-top:6px;
 }
 
-@media(max-width:1000px){
-    .courses-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+@media(max-width:950px){
+
+.grid{
+grid-template-columns:repeat(2,1fr);
 }
 
-@media(max-width:650px){
-    .header h1{
-        font-size:30px;
-    }
-
-    .courses-grid{
-        grid-template-columns:1fr;
-    }
-
-    .nav a{
-        display:inline-block;
-        margin:5px 7px;
-    }
 }
+
+@media(max-width:600px){
+
+.navbar{
+flex-direction:column;
+gap:12px;
+}
+
+.nav-links{
+gap:12px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.header h1{
+font-size:30px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
-<header class="header">
-    <h1>📚 All Courses</h1>
-    <p>Samyak Computer Classes | Bhawarkua, Indore</p>
-</header>
 
-<nav class="nav">
-    <a href="index.html">🏠 Home</a>
-    <a href="courses.html">📚 Courses</a>
-    <a href="enquiry.html">📝 Enquiry</a>
-    <a href="feedback.html">⭐ Feedback</a>
+<nav class="navbar">
+
+<a href="index.html" class="logo">
+Samyak <span>Computer Classes</span>
+</a>
+
+<ul class="nav-links">
+
+<li>
+<a href="index.html">Home</a>
+</li>
+
+<li>
+<a href="courses.html">Courses</a>
+</li>
+
+<li>
+<a href="https://samyakindore.github.io/enquiry/">
+Enquiry
+</a>
+</li>
+
+<li>
+<a href="feedback.html">Feedback</a>
+</li>
+
+</ul>
+
 </nav>
 
-<div class="search-area">
-    <input
-        type="text"
-        id="search"
-        placeholder="🔎 Course search करें... जैसे Python, Excel, Java"
-        onkeyup="searchCourses()"
-    >
+
+<header class="header">
+
+<h1>📚 142+ Courses</h1>
+
+<p>
+Samyak Computer Classes | Bhawarkua, Indore
+</p>
+
+</header>
+
+
+<div class="search">
+
+<input
+type="text"
+id="search"
+placeholder="🔎 Course search करें..."
+onkeyup="searchCourses()">
+
 </div>
 
-<div class="course-count" id="courseCount">
-    कुल 142 Courses
+
+<div class="count" id="count">
+Total 142 Courses
 </div>
 
-<main class="courses-container">
 
-    <div class="courses-grid" id="coursesGrid"></div>
+<main class="container">
 
-    <div class="no-result" id="noResult">
-        😔 कोई course नहीं मिला।
-    </div>
+<div class="grid" id="grid"></div>
+
+<div class="no-result" id="noResult">
+😔 कोई course नहीं मिला।
+</div>
 
 </main>
 
+
 <section class="cta">
-    <h2>🎯 अपना Course आज ही चुनें</h2>
-    <p>Fees और admission की जानकारी के लिए enquiry करें।</p>
-    <a href="enquiry.html">📝 Enquiry Now</a>
+
+<h2>🎯 Course में Admission लेना है?</h2>
+
+<p>
+Course की fees और admission information के लिए enquiry करें।
+</p>
+
+<a href="https://samyakindore.github.io/enquiry/">
+📝 Enquiry Now
+</a>
+
 </section>
 
+
 <footer>
-    <h3>Samyak Computer Classes</h3>
-    <p>Bhawarkua, Indore, Madhya Pradesh</p>
-    <p>© 2026 Samyak Computer Classes. All Rights Reserved.</p>
+
+<h3>Samyak Computer Classes</h3>
+
+<p>
+Bhawarkua, Indore, Madhya Pradesh
+</p>
+
+<p>
+© 2026 Samyak Computer Classes. All Rights Reserved.
+</p>
+
 </footer>
 
+
 <script>
+
+const enquiryLink =
+"https://samyakindore.github.io/enquiry/";
+
 
 const courses = [
 
@@ -448,140 +530,208 @@ const courses = [
 
 ];
 
-const syllabusTopics = {
-    "Excel":"Excel Basics, Formulas, Functions, Data Handling, Projects",
-    "Python":"Python Basics, Variables, Conditions, Loops, Functions, Projects",
-    "Java":"Java Basics, OOP, Classes, Methods, Projects",
-    "Web":"HTML, CSS, JavaScript, Web Projects",
-    "Programming":"Programming Basics, Logic Building, Functions, Projects",
-    "Marketing":"Marketing Basics, Digital Strategy, Social Media, Projects",
-    "Design":"Design Basics, Tools, Practical Projects, Portfolio",
-    "Animation":"Animation Basics, 2D/3D Tools, Projects",
-    "Accounting":"Accounting Basics, Practical Entries, Reports, GST",
-    "Networking":"Networking Basics, TCP/IP, Devices, Practical Labs",
-    "Cloud":"Cloud Basics, Services, Deployment, Practical Work",
-    "Security":"Cyber Security Basics, Networking, Security Concepts, Practical Labs",
-    "CAD":"CAD Basics, Drawing, Design Tools, Practical Projects",
-    "Data":"Data Basics, Analysis, Visualization, Projects",
-    "default":"Course Fundamentals, Practical Training, Tools & Techniques, Assignments, Project"
-};
 
-function getSyllabus(name){
+function syllabus(name){
 
-    const n = name.toLowerCase();
+let n=name.toLowerCase();
 
-    if(n.includes("excel")) return syllabusTopics.Excel;
-    if(n.includes("python")) return syllabusTopics.Python;
-    if(n.includes("java")) return syllabusTopics.Java;
-    if(n.includes("web") || n.includes("html") || n.includes("css") || n.includes("react") || n.includes("angular") || n.includes("node") || n.includes("php"))
-        return syllabusTopics.Web;
-    if(n.includes("programming") || n.includes("programming"))
-        return syllabusTopics.Programming;
-    if(n.includes("marketing") || n.includes("e-commerce") || n.includes("affiliate"))
-        return syllabusTopics.Marketing;
-    if(n.includes("design") || n.includes("photoshop") || n.includes("illustrator") || n.includes("coreldraw") || n.includes("autocad"))
-        return syllabusTopics.Design;
-    if(n.includes("animation") || n.includes("blender") || n.includes("maya"))
-        return syllabusTopics.Animation;
-    if(n.includes("tally") || n.includes("accounts") || n.includes("banking") || n.includes("sap"))
-        return syllabusTopics.Accounting;
-    if(n.includes("network") || n.includes("ccna") || n.includes("hardware"))
-        return syllabusTopics.Networking;
-    if(n.includes("cloud") || n.includes("aws") || n.includes("devops"))
-        return syllabusTopics.Cloud;
-    if(n.includes("hacking") || n.includes("security") || n.includes("linux"))
-        return syllabusTopics.Security;
-    if(n.includes("cad") || n.includes("solidworks") || n.includes("catia") || n.includes("creo"))
-        return syllabusTopics.CAD;
-    if(n.includes("data") || n.includes("analytics") || n.includes("tableau") || n.includes("power bi") || n.includes("machine learning"))
-        return syllabusTopics.Data;
+if(n.includes("excel"))
+return "Excel Basics, Formulas, Functions, Data Handling, Practical Projects";
 
-    return syllabusTopics.default;
+if(n.includes("python"))
+return "Python Basics, Variables, Loops, Functions, Projects";
+
+if(n.includes("java"))
+return "Java Basics, OOP, Classes, Methods, Practical Projects";
+
+if(
+n.includes("web") ||
+n.includes("html") ||
+n.includes("css") ||
+n.includes("react") ||
+n.includes("angular") ||
+n.includes("node") ||
+n.includes("php")
+)
+return "HTML, CSS, JavaScript, Development Tools, Web Projects";
+
+if(
+n.includes("programming")
+)
+return "Programming Basics, Logic Building, Functions, Practical Projects";
+
+if(
+n.includes("marketing") ||
+n.includes("e-commerce") ||
+n.includes("affiliate")
+)
+return "Marketing Basics, Digital Strategy, Social Media, Practical Projects";
+
+if(
+n.includes("design") ||
+n.includes("photoshop") ||
+n.includes("illustrator") ||
+n.includes("coreldraw")
+)
+return "Design Basics, Professional Tools, Practical Work, Portfolio";
+
+if(
+n.includes("animation") ||
+n.includes("blender") ||
+n.includes("maya")
+)
+return "Animation Basics, Tools, 2D/3D Practice, Projects";
+
+if(
+n.includes("tally") ||
+n.includes("accounts") ||
+n.includes("banking") ||
+n.includes("sap")
+)
+return "Accounting Basics, Practical Entries, Reports, GST";
+
+if(
+n.includes("network") ||
+n.includes("ccna") ||
+n.includes("hardware")
+)
+return "Networking Basics, Devices, TCP/IP, Practical Labs";
+
+if(
+n.includes("cloud") ||
+n.includes("aws") ||
+n.includes("devops")
+)
+return "Cloud Basics, Services, Deployment, Practical Work";
+
+if(
+n.includes("hacking") ||
+n.includes("security") ||
+n.includes("linux")
+)
+return "Cyber Security Basics, Networking, Security Concepts, Practical Labs";
+
+if(
+n.includes("cad") ||
+n.includes("solidworks") ||
+n.includes("catia") ||
+n.includes("creo")
+)
+return "CAD Basics, Drawing, Design Tools, Practical Projects";
+
+if(
+n.includes("data") ||
+n.includes("analytics") ||
+n.includes("tableau") ||
+n.includes("power bi") ||
+n.includes("machine learning")
+)
+return "Data Basics, Analysis, Visualization, Practical Projects";
+
+return "Course Fundamentals, Practical Training, Tools & Techniques, Assignments, Project";
+
 }
 
-function displayCourses(list){
 
-    const grid = document.getElementById("coursesGrid");
-    const noResult = document.getElementById("noResult");
-    const count = document.getElementById("courseCount");
+function display(list){
 
-    grid.innerHTML = "";
+const grid=document.getElementById("grid");
 
-    count.textContent = "Showing " + list.length + " Courses";
+const noResult=document.getElementById("noResult");
 
-    if(list.length === 0){
-        noResult.style.display = "block";
-        return;
-    }
+const count=document.getElementById("count");
 
-    noResult.style.display = "none";
+grid.innerHTML="";
 
-    list.forEach((course,index)=>{
+count.innerHTML="Showing "+list.length+" Courses";
 
-        const name = course[0];
-        const duration = course[1];
+if(list.length===0){
 
-        const card = document.createElement("div");
-        card.className = "course-card";
+noResult.style.display="block";
 
-        card.innerHTML = `
-            <div class="course-number">
-                COURSE ${courses.indexOf(course)+1}
-            </div>
+return;
 
-            <h2>${name}</h2>
-
-            <div class="info">
-
-                <div class="info-box">
-                    <strong>⏱️ Duration</strong>
-                    <span>${duration}</span>
-                </div>
-
-                <div class="info-box">
-                    <strong>💰 Fees</strong>
-                    <span>Contact for Fees</span>
-                </div>
-
-            </div>
-
-            <h3>📋 Syllabus</h3>
-
-            <ul class="syllabus">
-                ${getSyllabus(name)
-                    .split(", ")
-                    .map(item => `<li>${item}</li>`)
-                    .join("")
-                }
-            </ul>
-
-            <a href="enquiry.html" class="enquiry-btn">
-                📝 Enquiry Now
-            </a>
-        `;
-
-        grid.appendChild(card);
-    });
 }
+
+noResult.style.display="none";
+
+
+list.forEach(course=>{
+
+const number=courses.indexOf(course)+1;
+
+const card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<div class="number">
+COURSE ${number}
+</div>
+
+<h2>
+${course[0]}
+</h2>
+
+<div class="info">
+
+<div class="info-box">
+<strong>⏱️ Duration</strong>
+<span>${course[1]}</span>
+</div>
+
+<div class="info-box">
+<strong>💰 Fees</strong>
+<span>Contact for Fees</span>
+</div>
+
+</div>
+
+<div class="syllabus-title">
+📋 Syllabus
+</div>
+
+<div class="syllabus">
+${syllabus(course[0])}
+</div>
+
+<a
+href="${enquiryLink}"
+class="enquiry">
+📝 Enquiry Now
+</a>
+
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
 
 function searchCourses(){
 
-    const search = document
-        .getElementById("search")
-        .value
-        .toLowerCase()
-        .trim();
+const text=document
+.getElementById("search")
+.value
+.toLowerCase()
+.trim();
 
-    const filtered = courses.filter(course =>
-        course[0].toLowerCase().includes(search)
-    );
+const filtered=courses.filter(course=>
+course[0].toLowerCase().includes(text)
+);
 
-    displayCourses(filtered);
+display(filtered);
+
 }
 
-displayCourses(courses);
+
+display(courses);
 
 </script>
+
 
 </body>
 </html>
