@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Scholarship Test | Samyak Computer Classes</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1d2433;
+}
+
+a{
+    text-decoration:none;
+}
+
+
+/* NAVBAR */
+
+nav{
+    background:#071952;
+    padding:16px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    color:white;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#00d9ff;
+}
+
+.menu{
+    display:flex;
+    list-style:none;
+    gap:22px;
+}
+
+.menu a{
+    color:white;
+    font-size:14px;
+}
+
+
+/* HEADER */
+
+.hero{
+    background:linear-gradient(135deg,#071952,#0b4f9c);
+    color:white;
+    text-align:center;
+    padding:55px 20px;
+}
+
+.hero h1{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#dce7ff;
+    max-width:700px;
+    margin:auto;
+}
+
+
+/* CONTAINER */
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.card{
+    background:white;
+    padding:32px;
+    border-radius:18px;
+    box-shadow:0 10px 35px rgba(0,0,0,.09);
+}
+
+
+/* FORM */
+
+.title{
+    text-align:center;
+    color:#071952;
+    margin-bottom:25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#071952;
+}
+
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d9dfeb;
+    border-radius:9px;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#0b4f9c;
+}
+
+
+/* BUTTON */
+
+.btn{
+    border:none;
+    padding:14px 25px;
+    border-radius:9px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.primary{
+    background:#00d9ff;
+    color:#04183d;
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+}
+
+.dark{
+    background:#071952;
+    color:white;
+}
+
+.dark:hover{
+    background:#0b4f9c;
+}
+
+
+/* QUIZ */
+
+#quizSection,
+#resultSection{
+    display:none;
+}
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    padding-bottom:15px;
+    border-bottom:1px solid #e5e8ef;
+}
+
+#timer{
+    background:#fff0f0;
+    color:#b91c1c;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.question-box{
+    border:1px solid #e4e8ef;
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:20px;
+}
+
+.question-box h3{
+    color:#071952;
+    margin-bottom:16px;
+    font-size:17px;
+}
+
+.option{
+    display:block;
+    padding:12px;
+    background:#f6f8fc;
+    margin:9px 0;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#e8f4ff;
+}
+
+.option input{
+    width:auto;
+    margin-right:10px;
+}
+
+
+/* RESULT */
+
+.result{
+    text-align:center;
+}
+
+.score{
+    font-size:38px;
+    font-weight:bold;
+    color:#071952;
+    margin:20px 0;
+}
+
+.discount{
+    background:#e7fff0;
+    color:#075c2a;
+    padding:25px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+.no-discount{
+    background:#fff3f3;
+    color:#9b1c1c;
+    padding:25px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+.code{
+    font-size:25px;
+    font-weight:bold;
+    letter-spacing:2px;
+    background:white;
+    padding:13px;
+    margin:15px auto;
+    border-radius:8px;
+    max-width:350px;
+}
+
+
+/* FOOTER */
+
+footer{
+    margin-top:50px;
+    background:#03102f;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+footer p{
+    color:#d3dced;
+    margin-top:8px;
+}
+
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+    nav{
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:12px;
+    }
+
+    .hero h1{
+        font-size:29px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .card{
+        padding:20px;
+    }
+
+    .quiz-top{
+        flex-direction:column;
+        gap:15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+<a href="index.html" class="logo">
+Samyak <span>Computer Classes</span>
+</a>
+
+<ul class="menu">
+
+<li><a href="index.html">Home</a></li>
+
+<li><a href="courses.html">Courses</a></li>
+
+<li><a href="test.html">Scholarship Test</a></li>
+
+<li>
+<a href="https://samyakindore.github.io/enquiry/">
+Enquiry
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+
+
+<section class="hero">
+
+<h1>🏆 Samyak Scholarship Test</h1>
+
+<p>
+अपना पसंदीदा Course चुनें, Test दें और 80% या उससे अधिक Score प्राप्त करने पर ₹2,000 तक का Special Discount पाएं।
+</p>
+
+</section>
+
+
+
+<div class="container">
+
+
+<!-- STUDENT FORM -->
+
+<div class="card" id="formSection">
+
+<h2 class="title">
+📝 Start Your Test
+</h2>
+
+
+<div class="form-grid">
+
+
+<div>
+
+<label>Student Name *</label>
+
+<input
+type="text"
+id="studentName"
+placeholder="अपना नाम लिखें">
+
+</div>
+
+
+
+<div>
+
+<label>Mobile Number *</label>
+
+<input
+type="tel"
+id="mobile"
+maxlength="10"
+placeholder="10 Digit Mobile Number">
+
+</div>
+
+
+
+<div class="full">
+
+<label>📚 अपना Course चुनें *</label>
+
+<select id="course">
+
+<option value="">
+-- अपना Course Select करें --
+</option>
+
+<!-- 1 to 20 -->
+
+<option>Personality Development</option>
+<option>Spoken English</option>
+<option>Interpersonal Skills</option>
+<option>IELTS</option>
+<option>French</option>
+<option>German</option>
+<option>Computer Basic</option>
+<option>RS-CIT</option>
+<option>Basic Excel</option>
+<option>Advanced Excel</option>
+<option>VBA Excel</option>
+<option>Certified Microsoft Office</option>
+<option>Tally + GST</option>
+<option>CAP (Certified Accounts Professional)</option>
+<option>CIA (Certified Industrial Accountant)</option>
+<option>SAP - FICO</option>
+<option>SAP - MM</option>
+<option>Banking Diploma</option>
+<option>MIS</option>
+<option>SQL</option>
+
+<!-- 21 to 40 -->
+
+<option>Data Analytics Diploma</option>
+<option>Tableau</option>
+<option>Microsoft Power BI</option>
+<option>Stock Market (Trading Advanced)</option>
+<option>Graphic Design Diploma</option>
+<option>DTP - Basic Graphic Designing</option>
+<option>CorelDRAW</option>
+<option>Photoshop</option>
+<option>Adobe Illustrator</option>
+<option>Adobe InDesign</option>
+<option>Fashion Designing</option>
+<option>3D Animation Blender</option>
+<option>2D & 3D Animation</option>
+<option>ZBrush</option>
+<option>3D Animation Maya</option>
+<option>Diploma in Animation</option>
+<option>Filmora Video Editing</option>
+<option>Adobe Premiere Pro</option>
+<option>Adobe After Effects</option>
+<option>Jewellery Designing 3D</option>
+
+<!-- 41 to 60 -->
+
+<option>3D CAD Matrix</option>
+<option>DOAP</option>
+<option>DCA</option>
+<option>PGDCA</option>
+<option>O-Level</option>
+<option>CCC by NIELIT</option>
+<option>Web Designing</option>
+<option>Core PHP Web Development</option>
+<option>Diploma in Website Designing</option>
+<option>Advanced PHP</option>
+<option>Blockchain Web Development</option>
+<option>Digital Marketing</option>
+<option>E-Commerce</option>
+<option>Affiliate Marketing</option>
+<option>WordPress CMS</option>
+<option>Shopify E-Commerce Platform</option>
+<option>Magento E-Commerce Web Development</option>
+<option>Laravel PHP Framework</option>
+<option>Full Stack Development</option>
+<option>HTML Programming</option>
+
+<!-- 61 to 80 -->
+
+<option>CSS Programming</option>
+<option>JavaScript</option>
+<option>Angular JavaScript Framework</option>
+<option>React JS</option>
+<option>Node JS</option>
+<option>MongoDB</option>
+<option>MEAN / MERN Stack</option>
+<option>UI/UX Designing</option>
+<option>Networking</option>
+<option>Hardware</option>
+<option>Mobile Repairing</option>
+<option>CHNE (Certified Hardware Networking Engineer)</option>
+<option>Ethical Hacking</option>
+<option>Linux Administration</option>
+<option>CCNA Advanced Networking</option>
+<option>Cloud Computing</option>
+<option>DevOps</option>
+<option>AWS Cloud</option>
+<option>Salesforce Cloud Admin</option>
+<option>Salesforce Cloud Development</option>
+
+<!-- 81 to 100 -->
+
+<option>OCA Oracle Certified Associate</option>
+<option>OCP Oracle Certified Professional</option>
+<option>Electrical CAD (AutoCAD)</option>
+<option>Embedded System</option>
+<option>Advance Robotics</option>
+<option>Arduino Programming</option>
+<option>Raspberry Pi</option>
+<option>Industrial Automation PLC & SCADA</option>
+<option>VHDL & VLSI</option>
+<option>MATLAB</option>
+<option>PCB Design</option>
+<option>Solar System & Integration</option>
+<option>Data Science</option>
+<option>Artificial Intelligence</option>
+<option>Machine Learning</option>
+<option>Python</option>
+<option>Django - Python Framework</option>
+<option>IoT</option>
+<option>R Programming</option>
+<option>Big Data Admin & Development</option>
+
+<!-- 101 to 120 -->
+
+<option>DCS Diploma in Computer Science</option>
+<option>C Programming</option>
+<option>C++ Programming</option>
+<option>Data Structure</option>
+<option>Core Java</option>
+<option>Advanced Java</option>
+<option>Android App Development</option>
+<option>iPhone App Development</option>
+<option>Dart & Flutter App Development</option>
+<option>React Native App Development</option>
+<option>C# Programming</option>
+<option>ASP.NET</option>
+<option>ASP.NET MVC</option>
+<option>ISTQB Testing</option>
+<option>Selenium Automation Testing</option>
+<option>Diploma Course in Civil</option>
+<option>AutoCAD</option>
+<option>Civil 3D</option>
+<option>Revit Architecture</option>
+<option>STAAD Pro</option>
+
+<!-- 121 to 142 -->
+
+<option>MX Road</option>
+<option>ETABS</option>
+<option>PRIMAVERA (Project Management)</option>
+<option>Interior Designing Diploma Course</option>
+<option>3DS Max Interior Design</option>
+<option>V-Ray</option>
+<option>Google SketchUp</option>
+<option>Lumion</option>
+<option>Enscape</option>
+<option>3DS Max</option>
+<option>Corona Render</option>
+<option>CATIA</option>
+<option>CNC Programming</option>
+<option>SolidWorks</option>
+<option>CREO (Pro-E)</option>
+<option>ANSYS</option>
+<option>Fusion 360</option>
+<option>ArtCAM</option>
+<option>HVAC</option>
+<option>Kids Programme - Abacus</option>
+<option>English for Kids</option>
+<option>Abacus</option>
+
+</select>
+
+</div>
+
+
+
+<div class="full" style="text-align:center;margin-top:10px;">
+
+<button
+class="btn primary"
+onclick="startTest()">
+
+🚀 Start Scholarship Test
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- QUIZ -->
+
+<div class="card" id="quizSection">
+
+<div class="quiz-top">
+
+<div>
+
+<h2 id="quizTitle">
+Course Test
+</h2>
+
+<p id="studentInfo"></p>
+
+</div>
+
+
+<div id="timer">
+⏱️ 10:00
+</div>
+
+</div>
+
+
+<div id="questions"></div>
+
+
+<div style="text-align:center;">
+
+<button
+class="btn dark"
+onclick="submitTest()">
+
+Submit Test 📊
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- RESULT -->
+
+<div class="card" id="resultSection">
+
+<div class="result">
+
+<h2>🏆 Your Test Result</h2>
+
+<p id="resultStudent"></p>
+
+<div class="score" id="score"></div>
+
+<div id="resultBox"></div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<footer>
+
+<h3>Samyak Computer Classes</h3>
+
+<p>📍 Bhawarkua, Indore</p>
+
+<p>📞 6232487747 | 💬 WhatsApp Available</p>
+
+</footer>
+
+
+
+<script>
+
+
+const enquiryLink =
+"https://samyakindore.github.io/enquiry/";
+
+
+let currentQuestions = [];
+let timerInterval;
+let seconds = 600;
+
+
+/* =====================================================
+   QUESTION BANKS
+===================================================== */
+
+
+const questionBanks = {
+
+
+computer:[
+
+{
+q:"CPU का पूरा नाम क्या है?",
+o:[
+"Central Processing Unit",
+"Computer Personal Unit",
+"Central Program Unit",
+"Control Processing Unit"
+],
+a:0
+},
+
+{
+q:"Keyboard किस प्रकार का Device है?",
+o:[
+"Input Device",
+"Output Device",
+"Storage Device",
+"Network Device"
+],
+a:0
+},
+
+{
+q:"RAM किस प्रकार की Memory है?",
+o:[
+"Temporary Memory",
+"Permanent Memory",
+"Optical Memory",
+"External Memory"
+],
+a:0
+},
+
+{
+q:"MS Word का उपयोग किसलिए किया जाता है?",
+o:[
+"Document बनाने के लिए",
+"Video Editing के लिए",
+"Computer Repair के लिए",
+"Networking के लिए"
+],
+a:0
+},
+
+{
+q:"Excel में Formula किस Symbol से शुरू होता है?",
+o:[
+"=",
+"#",
+"@",
+"&"
+],
+a:0
+}
+
+],
+
+
+language:[
+
+{
+q:"Communication का मुख्य उद्देश्य क्या है?",
+o:[
+"Information Exchange",
+"Computer Repair",
+"Accounting",
+"Printing"
+],
+a:0
+},
+
+{
+q:"Spoken English में Fluency सुधारने के लिए क्या जरूरी है?",
+o:[
+"Regular Practice",
+"केवल किताब खरीदना",
+"Computer Format करना",
+"केवल परीक्षा देना"
+],
+a:0
+},
+
+{
+q:"IELTS किससे संबंधित है?",
+o:[
+"English Language Proficiency",
+"Computer Hardware",
+"Accounting",
+"Graphic Design"
+],
+a:0
+},
+
+{
+q:"Personality Development में कौन सा Skill महत्वपूर्ण है?",
+o:[
+"Communication",
+"केवल Typing",
+"केवल Printing",
+"Computer Formatting"
+],
+a:0
+},
+
+{
+q:"Interpersonal Skills किससे संबंधित हैं?",
+o:[
+"लोगों के साथ प्रभावी व्यवहार",
+"Computer Hardware",
+"Video Rendering",
+"Database Backup"
+],
+a:0
+}
+
+],
+
+
+accounts:[
+
+{
+q:"Tally का मुख्य उपयोग क्या है?",
+o:[
+"Accounting",
+"Photo Editing",
+"Gaming",
+"Networking"
+],
+a:0
+},
+
+{
+q:"GST का पूरा नाम क्या है?",
+o:[
+"Goods and Services Tax",
+"General Service Tax",
+"Global Sales Tax",
+"Government System Tax"
+],
+a:0
+},
+
+{
+q:"Ledger किसलिए बनाया जाता है?",
+o:[
+"Accounts Record करने के लिए",
+"Photo Edit करने के लिए",
+"Website बनाने के लिए",
+"Virus हटाने के लिए"
+],
+a:0
+},
+
+{
+q:"SAP FICO किससे संबंधित है?",
+o:[
+"Financial Accounting",
+"Photo Editing",
+"Animation",
+"Video Editing"
+],
+a:0
+},
+
+{
+q:"Banking Diploma किस क्षेत्र से संबंधित है?",
+o:[
+"Banking और Financial Services",
+"Graphic Design",
+"Networking",
+"Animation"
+],
+a:0
+}
+
+],
+
+
+design:[
+
+{
+q:"Photoshop का मुख्य उपयोग क्या है?",
+o:[
+"Image Editing",
+"Accounting",
+"Programming",
+"Networking"
+],
+a:0
+},
+
+{
+q:"CorelDRAW मुख्य रूप से किसलिए उपयोग होता है?",
+o:[
+"Graphic Designing",
+"Accounting",
+"Database Management",
+"Networking"
+],
+a:0
+},
+
+{
+q:"RGB किससे संबंधित है?",
+o:[
+"Colors",
+"Computer RAM",
+"Internet",
+"Accounting"
+],
+a:0
+},
+
+{
+q:"3D Animation में क्या बनाया जाता है?",
+o:[
+"Three Dimensional Objects",
+"केवल Text Documents",
+"Accounting Sheets",
+"Network Cables"
+],
+a:0
+},
+
+{
+q:"Adobe Illustrator किसलिए प्रसिद्ध है?",
+o:[
+"Vector Graphics",
+"Accounting",
+"Database",
+"Networking"
+],
+a:0
+}
+
+],
+
+
+web:[
+
+{
+q:"HTML का मुख्य उपयोग क्या है?",
+o:[
+"Web Page Structure बनाने के लिए",
+"Accounting",
+"Photo Editing",
+"Hardware Repair"
+],
+a:0
+},
+
+{
+q:"CSS का उपयोग क्या है?",
+o:[
+"Web Page Styling",
+"Computer Formatting",
+"Accounting",
+"Networking"
+],
+a:0
+},
+
+{
+q:"JavaScript मुख्य रूप से किसलिए उपयोग होती है?",
+o:[
+"Web Pages को Interactive बनाने के लिए",
+"केवल Printing",
+"Accounting",
+"Hardware Repair"
+],
+a:0
+},
+
+{
+q:"WordPress क्या है?",
+o:[
+"CMS Platform",
+"Computer RAM",
+"Antivirus",
+"Programming Keyboard"
+],
+a:0
+},
+
+{
+q:"PHP किस प्रकार की Technology है?",
+o:[
+"Server-side Web Programming",
+"Photo Editing",
+"Accounting",
+"Hardware"
+],
+a:0
+}
+
+],
+
+
+marketing:[
+
+{
+q:"SEO का पूरा नाम क्या है?",
+o:[
+"Search Engine Optimization",
+"System Engine Operation",
+"Search Email Option",
+"Social Engine Output"
+],
+a:0
+},
+
+{
+q:"Digital Marketing किस माध्यम से Marketing करता है?",
+o:[
+"Digital Platforms",
+"केवल Newspapers",
+"केवल Radio",
+"केवल Books"
+],
+a:0
+},
+
+{
+q:"Google Ads किसलिए उपयोग होता है?",
+o:[
+"Online Advertising",
+"Photo Editing",
+"Computer Repair",
+"Programming"
+],
+a:0
+},
+
+{
+q:"E-Commerce किससे संबंधित है?",
+o:[
+"Online Buying and Selling",
+"Computer Hardware",
+"Video Editing",
+"Networking"
+],
+a:0
+},
+
+{
+q:"Affiliate Marketing में मुख्य रूप से क्या किया जाता है?",
+o:[
+"Products/Services को Promote करना",
+"Computer Format करना",
+"Photos Print करना",
+"Hardware Repair"
+],
+a:0
+}
+
+],
+
+
+network:[
+
+{
+q:"Router का मुख्य काम क्या है?",
+o:[
+"Network Traffic को Route करना",
+"Photo Edit करना",
+"Accounting करना",
+"Video Render करना"
+],
+a:0
+},
+
+{
+q:"IP Address किसलिए उपयोग होता है?",
+o:[
+"Network Device की पहचान के लिए",
+"Photo Editing",
+"Printing",
+"Accounting"
+],
+a:0
+},
+
+{
+q:"CCNA किस क्षेत्र से संबंधित है?",
+o:[
+"Computer Networking",
+"Graphic Design",
+"Accounting",
+"Animation"
+],
+a:0
+},
+
+{
+q:"Firewall किसलिए उपयोग होता है?",
+o:[
+"Network Security",
+"Video Editing",
+"Printing",
+"Accounting"
+],
+a:0
+},
+
+{
+q:"Linux क्या है?",
+o:[
+"Operating System",
+"Photo Editor",
+"Accounting Software",
+"Printer"
+],
+a:0
+}
+
+],
+
+
+programming:[
+
+{
+q:"Programming Language का उपयोग क्या है?",
+o:[
+"Computer को Instructions देने के लिए",
+"केवल Photo Edit करने के लिए",
+"केवल Printing के लिए",
+"केवल Accounting के लिए"
+],
+a:0
+},
+
+{
+q:"Python क्या है?",
+o:[
+"Programming Language",
+"Operating System",
+"Browser",
+"Printer"
+],
+a:0
+},
+
+{
+q:"Python में Function बनाने के लिए कौन सा Keyword उपयोग होता है?",
+o:[
+"def",
+"function",
+"make",
+"fun"
+],
+a:0
+},
+
+{
+q:"C और C++ किस प्रकार की Languages हैं?",
+o:[
+"Programming Languages",
+"Photo Editing Software",
+"Accounting Software",
+"Browsers"
+],
+a:0
+},
+
+{
+q:"Data Structure किससे संबंधित है?",
+o:[
+"Data को Organize करने के तरीके",
+"Photo Editing",
+"Networking Cable",
+"Printing"
+],
+a:0
+}
+
+],
+
+
+data:[
+
+{
+q:"Data Science किससे संबंधित है?",
+o:[
+"Data Analysis",
+"Photo Printing",
+"Hardware Repair",
+"Animation"
+],
+a:0
+},
+
+{
+q:"Machine Learning किस क्षेत्र से संबंधित है?",
+o:[
+"Artificial Intelligence",
+"Accounting",
+"Graphic Design",
+"Hardware"
+],
+a:0
+},
+
+{
+q:"Data Visualization का उद्देश्य क्या है?",
+o:[
+"Data को Visual Form में दिखाना",
+"Computer बंद करना",
+"Keyboard Repair",
+"Printing"
+],
+a:0
+},
+
+{
+q:"Python का उपयोग Data Science में किया जा सकता है?",
+o:[
+"हाँ",
+"नहीं",
+"केवल Printing में",
+"केवल Hardware में"
+],
+a:0
+},
+
+{
+q:"Dataset क्या है?",
+o:[
+"Data का Collection",
+"Computer Device",
+"Printer Type",
+"Network Cable"
+],
+a:0
+}
+
+],
+
+
+security:[
+
+{
+q:"Ethical Hacking का सही उद्देश्य क्या है?",
+o:[
+"Security कमजोरियों को पहचानना",
+"Illegal Data चोरी करना",
+"Virus फैलाना",
+"Accounts चोरी करना"
+],
+a:0
+},
+
+{
+q:"Strong Password में क्या होना चाहिए?",
+o:[
+"Letters Numbers और Symbols",
+"केवल 123456",
+"केवल नाम",
+"केवल जन्म वर्ष"
+],
+a:0
+},
+
+{
+q:"Phishing क्या है?",
+o:[
+"Fake Website/Message से Data चोरी का प्रयास",
+"Photo Editing",
+"Programming Language",
+"Accounting"
+],
+a:0
+},
+
+{
+q:"Cyber Security किससे संबंधित है?",
+o:[
+"Digital Systems की सुरक्षा",
+"Cooking",
+"Printing",
+"Drawing"
+],
+a:0
+},
+
+{
+q:"Firewall का उपयोग क्या है?",
+o:[
+"Unauthorized Access रोकने में",
+"Photo Editing में",
+"Video Rendering में",
+"Accounting में"
+],
+a:0
+}
+
+],
+
+
+engineering:[
+
+{
+q:"AutoCAD किसलिए उपयोग होता है?",
+o:[
+"Technical Drawing और Design",
+"Accounting",
+"Video Editing",
+"Marketing"
+],
+a:0
+},
+
+{
+q:"3D Modeling में क्या बनाया जाता है?",
+o:[
+"Three Dimensional Models",
+"केवल Text",
+"Accounting Sheets",
+"Emails"
+],
+a:0
+},
+
+{
+q:"Revit किस क्षेत्र में उपयोग होता है?",
+o:[
+"Architecture और Building Design",
+"Accounting",
+"Digital Marketing",
+"Spoken English"
+],
+a:0
+},
+
+{
+q:"PLC किस क्षेत्र से संबंधित है?",
+o:[
+"Industrial Automation",
+"Photo Editing",
+"Accounting",
+"Web Designing"
+],
+a:0
+},
+
+{
+q:"SolidWorks किस प्रकार का Software है?",
+o:[
+"CAD / Engineering Design Software",
+"Accounting Software",
+"Browser",
+"Video Player"
+],
+a:0
+}
+
+],
+
+
+mobile:[
+
+{
+q:"Android App Development किसके लिए होता है?",
+o:[
+"Android Applications बनाने के लिए",
+"Photo Editing",
+"Accounting",
+"Networking"
+],
+a:0
+},
+
+{
+q:"Flutter किससे संबंधित है?",
+o:[
+"App Development",
+"Accounting",
+"Video Editing",
+"Hardware Repair"
+],
+a:0
+},
+
+{
+q:"React Native का उपयोग क्या है?",
+o:[
+"Mobile Applications बनाने के लिए",
+"केवल Photo Editing",
+"Accounting",
+"Printing"
+],
+a:0
+},
+
+{
+q:"Mobile Repairing किससे संबंधित है?",
+o:[
+"Mobile Hardware और Repair",
+"Digital Marketing",
+"Accounting",
+"Spoken English"
+],
+a:0
+},
+
+{
+q:"IoT का पूरा नाम क्या है?",
+o:[
+"Internet of Things",
+"Input of Technology",
+"Internet of Tools",
+"Information of Technology"
+],
+a:0
+}
+
+]
+
+};
+
+
+
+/* COURSE CATEGORY DETECTOR */
+
+function getCategory(course){
+
+course = course.toLowerCase();
+
+
+if(
+course.includes("english") ||
+course.includes("personality") ||
+course.includes("ielts") ||
+course.includes("french") ||
+course.includes("german") ||
+course.includes("interpersonal") ||
+course.includes("kids") ||
+course.includes("abacus")
+){
+return "language";
+}
+
+
+if(
+course.includes("tally") ||
+course.includes("sap") ||
+course.includes("banking") ||
+course.includes("accounts") ||
+course.includes("accountant") ||
+course.includes("stock market") ||
+course.includes("mis")
+){
+return "accounts";
+}
+
+
+if(
+course.includes("photoshop") ||
+course.includes("corel") ||
+course.includes("graphic") ||
+course.includes("illustrator") ||
+course.includes("indesign") ||
+course.includes("fashion") ||
+course.includes("animation") ||
+course.includes("blender") ||
+course.includes("maya") ||
+course.includes("zbrush") ||
+course.includes("filmora") ||
+course.includes("premiere") ||
+course.includes("after effects") ||
+course.includes("jewellery") ||
+course.includes("matrix") ||
+course.includes("ui/ux")
+){
+return "design";
+}
+
+
+if(
+course.includes("html") ||
+course.includes("css") ||
+course.includes("javascript") ||
+course.includes("php") ||
+course.includes("web") ||
+course.includes("wordpress") ||
+course.includes("shopify") ||
+course.includes("magento") ||
+course.includes("laravel") ||
+course.includes("full stack") ||
+course.includes("angular") ||
+course.includes("react js") ||
+course.includes("node js") ||
+course.includes("mongodb") ||
+course.includes("mean") ||
+course.includes("mern")
+){
+return "web";
+}
+
+
+if(
+course.includes("marketing") ||
+course.includes("e-commerce") ||
+course.includes("affiliate")
+){
+return "marketing";
+}
+
+
+if(
+course.includes("network") ||
+course.includes("hardware") ||
+course.includes("ccna") ||
+course.includes("chne") ||
+course.includes("linux") ||
+course.includes("cloud") ||
+course.includes("devops") ||
+course.includes("aws") ||
+course.includes("salesforce") ||
+course.includes("oracle")
+){
+return "network";
+}
+
+
+if(
+course.includes("ethical hacking") ||
+course.includes("security") ||
+course.includes("testing")
+){
+return "security";
+}
+
+
+if(
+course.includes("data science") ||
+course.includes("artificial intelligence") ||
+course.includes("machine learning") ||
+course.includes("data analytics") ||
+course.includes("tableau") ||
+course.includes("power bi") ||
+course.includes("big data") ||
+course.includes("r programming")
+){
+return "data";
+}
+
+
+if(
+course.includes("python") ||
+course.includes("django") ||
+course.includes("java") ||
+course.includes("c programming") ||
+course.includes("c++") ||
+course.includes("data structure") ||
+course.includes("c#") ||
+course.includes("asp")
+){
+return "programming";
+}
+
+
+if(
+course.includes("android") ||
+course.includes("iphone") ||
+course.includes("flutter") ||
+course.includes("dart") ||
+course.includes("react native") ||
+course.includes("mobile repairing") ||
+course.includes("iot")
+){
+return "mobile";
+}
+
+
+if(
+course.includes("cad") ||
+course.includes("civil") ||
+course.includes("revit") ||
+course.includes("staad") ||
+course.includes("etabs") ||
+course.includes("primavera") ||
+course.includes("interior") ||
+course.includes("3ds") ||
+course.includes("v-ray") ||
+course.includes("sketchup") ||
+course.includes("lumion") ||
+course.includes("enscape") ||
+course.includes("corona") ||
+course.includes("catia") ||
+course.includes("cnc") ||
+course.includes("solidworks") ||
+course.includes("creo") ||
+course.includes("ansys") ||
+course.includes("fusion") ||
+course.includes("artcam") ||
+course.includes("hvac") ||
+course.includes("robotics") ||
+course.includes("arduino") ||
+course.includes("raspberry") ||
+course.includes("plc") ||
+course.includes("scada") ||
+course.includes("matlab") ||
+course.includes("pcb") ||
+course.includes("solar") ||
+course.includes("vhdl") ||
+course.includes("vlsi")
+){
+return "engineering";
+}
+
+
+return "computer";
+
+}
+
+
+
+/* START TEST */
+
+function startTest(){
+
+const name =
+document.getElementById("studentName").value.trim();
+
+const mobile =
+document.getElementById("mobile").value.trim();
+
+const course =
+document.getElementById("course").value;
+
+
+if(name.length < 2){
+
+alert("कृपया अपना सही नाम लिखें।");
+
+return;
+
+}
+
+
+if(!/^[0-9]{10}$/.test(mobile)){
+
+alert("कृपया 10 Digit Mobile Number लिखें।");
+
+return;
+
+}
+
+
+if(course === ""){
+
+alert("कृपया Course Select करें।");
+
+return;
+
+}
+
+
+const category =
+getCategory(course);
+
+
+currentQuestions =
+[...questionBanks[category]];
+
+
+document.getElementById("formSection")
+.style.display="none";
+
+
+document.getElementById("quizSection")
+.style.display="block";
+
+
+document.getElementById("quizTitle")
+.innerHTML="📚 "+course+" Test";
+
+
+document.getElementById("studentInfo")
+.innerHTML=
+"Student: <b>"+name+"</b> | Mobile: "+mobile;
+
+
+renderQuestions();
+
+
+seconds=600;
+
+
+startTimer();
+
+}
+
+
+
+/* SHOW QUESTIONS */
+
+function renderQuestions(){
+
+const container =
+document.getElementById("questions");
+
+
+container.innerHTML="";
+
+
+currentQuestions.forEach((item,index)=>{
+
+
+let html=`
+
+<div class="question-box">
+
+<h3>
+
+${index+1}. ${item.q}
+
+</h3>
+
+`;
+
+
+item.o.forEach((option,optionIndex)=>{
+
+html+=`
+
+<label class="option">
+
+<input
+type="radio"
+name="q${index}"
+value="${optionIndex}">
+
+${option}
+
+</label>
+
+`;
+
+});
+
+
+html+=`
+
+</div>
+
+`;
+
+
+container.innerHTML+=html;
+
+});
+
+}
+
+
+
+/* TIMER */
+
+function startTimer(){
+
+clearInterval(timerInterval);
+
+
+timerInterval=setInterval(()=>{
+
+
+seconds--;
+
+
+const minutes =
+Math.floor(seconds/60);
+
+
+const remaining =
+seconds%60;
+
+
+document.getElementById("timer")
+.innerHTML=
+"⏱️ "+
+minutes+
+":"+
+String(remaining).padStart(2,"0");
+
+
+if(seconds<=0){
+
+clearInterval(timerInterval);
+
+alert("Time Over! आपका Test Automatically Submit किया जा रहा है।");
+
+submitTest();
+
+}
+
+
+},1000);
+
+}
+
+
+
+/* SUBMIT TEST */
+
+function submitTest(){
+
+clearInterval(timerInterval);
+
+
+let score=0;
+
+
+currentQuestions.forEach((question,index)=>{
+
+
+const selected =
+document.querySelector(
+`input[name="q${index}"]:checked`
+);
+
+
+if(
+selected &&
+Number(selected.value)===question.a
+){
+
+score++;
+
+}
+
+
+});
+
+
+const percentage =
+Math.round(
+(score/currentQuestions.length)*100
+);
+
+
+const name =
+document.getElementById("studentName").value;
+
+const course =
+document.getElementById("course").value;
+
+
+document.getElementById("quizSection")
+.style.display="none";
+
+
+document.getElementById("resultSection")
+.style.display="block";
+
+
+document.getElementById("resultStudent")
+.innerHTML=
+"<b>"+name+"</b><br>"+course;
+
+
+document.getElementById("score")
+.innerHTML=
+score+
+"/"+
+currentQuestions.length+
+"<br>"+
+percentage+
+"%";
+
+
+const resultBox =
+document.getElementById("resultBox");
+
+
+if(percentage>=80){
+
+
+const discountCode =
+"SAMYAK"+Math.floor(
+10000+
+Math.random()*90000
+);
+
+
+resultBox.innerHTML=
+
+`
+
+<div class="discount">
+
+<h2>
+🎉 Congratulations!
+</h2>
+
+<p>
+
+आपने Scholarship Test Successfully Qualify कर लिया है।
+
+</p>
+
+<h2 style="margin-top:15px;">
+
+🏆 ₹2,000 OFF
+
+</h2>
+
+<p style="margin-top:10px;">
+
+Admission के समय अपना Scholarship Code दिखाएं।
+
+</p>
+
+<div class="code">
+
+${discountCode}
+
+</div>
+
+<a
+href="${enquiryLink}"
+class="btn primary"
+style="display:inline-block;margin-top:10px;">
+
+📝 Claim ₹2,000 Discount
+
+</a>
+
+</div>
+
+`;
+
+
+}else{
+
+
+resultBox.innerHTML=
+
+`
+
+<div class="no-discount">
+
+<h2>
+📚 Keep Learning!
+</h2>
+
+<p>
+
+इस बार आपका Score Scholarship Qualifying Level तक नहीं पहुंचा।
+
+आप फिर भी Course Admission के लिए Enquiry कर सकते हैं।
+
+</p>
+
+<a
+href="${enquiryLink}"
+class="btn primary"
+style="display:inline-block;margin-top:15px;">
+
+📝 Course Enquiry
+
+</a>
+
+</div>
+
+`;
+
+
+}
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
